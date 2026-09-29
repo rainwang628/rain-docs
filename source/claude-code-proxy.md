@@ -1,4 +1,4 @@
-﻿# Windows 上安装和使用 Claude Code
+# Windows 上安装和使用 Claude Code
 
 > 适用环境：Windows PowerShell，本地代理软件提供 HTTP 或混合代理端口。本文示例电脑的端口是 **7897**；其他电脑应先查看自己的代理软件设置，不要照抄端口。
 

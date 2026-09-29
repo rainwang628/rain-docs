@@ -1,0 +1,26 @@
+[
+  {
+    "slug": "github-app-access",
+    "title": "GitHub App 已连接但仓库列表为空",
+    "description": "检查应用安装位置和仓库授权，用实际读写确认连接恢复。",
+    "tag": "技术笔记 · GitHub",
+    "source": "content/github-app-access.md",
+    "date": "2026-09-29"
+  },
+  {
+    "slug": "chrome-bookmarks-sync",
+    "title": "Chrome 书签跨设备同步排查",
+    "description": "分清本地与云端书签，确认每台电脑是否真正保存到了同一个账号。",
+    "tag": "技术笔记 · 浏览器",
+    "source": "content/chrome-bookmarks-sync.md",
+    "date": "2026-09-29"
+  },
+  {
+    "slug": "claude-code-proxy",
+    "title": "Windows 上安装和使用 Claude Code",
+    "description": "从下载安装到日常联网，再到 PowerShell 自动设置代理的完整步骤。",
+    "tag": "技术笔记 · 安装指南",
+    "source": "content/claude-code-proxy.md",
+    "date": "2026-09-29"
+  }
+]

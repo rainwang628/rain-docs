@@ -1,0 +1,25 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="检查应用安装位置和仓库授权，用实际读写确认连接恢复。"><title>GitHub App 已连接但仓库列表为空 · rain 的文档</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="../../assets/site.css"><script type="application/ld+json">{"@context": "https://schema.org", "@type": "TechArticle", "headline": "GitHub App 已连接但仓库列表为空", "dateModified": "2026-09-29", "inLanguage": "zh-CN"}</script></head><body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><nav class="nav" aria-label="主导航"><a href="../../">首页</a><a href="../../categories/technical/">文章分类</a></nav></div></header><main class="wrap"><div class="crumb"><a href="../../">首页</a> / <a href="../../categories/technical/">技术笔记</a> / GitHub App 已连接但仓库列表为空</div><div class="document"><div class="doc-head"><span class="tag">技术笔记 · GitHub</span><h1>GitHub App 已连接但仓库列表为空</h1><div class="meta"><span>更新于 2026-09-29</span><a class="download" href="../../github-app-access.md" download="github-app-access.md">下载 Markdown 原文</a></div></div><article class="article"><h1>GitHub App 已连接，但仓库列表为空：安装授权排查</h1>
+<p class="note">适用场景：ChatGPT 中已经连接 GitHub，仍无法列出或操作自己的仓库；断开并重新连接后，也没有出现重新选择 GitHub 账号或仓库的界面。</p>
+<h2>本次结论</h2>
+<p><strong>ChatGPT 中显示 GitHub 已连接，不足以证明 GitHub App 已安装到拥有仓库的账号，并获得目标仓库访问权限。</strong> 本次账号是 <code>tecWang</code>，目标公开仓库是 <code>tecWang/rain-docs</code>。此前连接后查询仓库仍为空；检查 GitHub 的已安装应用时，也没有看到对应安装。完成 GitHub App 的安装和仓库授权后，仓库查询及文件写入恢复正常。</p>
+<p>GitHub App 安装时，要选对个人账号或组织，并选择 <strong>All repositories</strong> 或 <strong>Only select repositories</strong>。若使用后者，目标仓库必须在授权范围内。本次最终安装在 <code>tecWang</code> 下，授权范围为全部仓库。按需只选特定仓库也可以，但新建仓库以后应再确认其授权状态。</p>
+<h2>排查和处理步骤</h2>
+<ol><li><strong>确认仓库归属。</strong> 在 GitHub 网页上打开目标仓库，核对 <code>所有者/仓库名</code>，例如 <code>tecWang/rain-docs</code>，不要只看 ChatGPT 的“已连接”状态。</li><li><strong>检查 GitHub App 安装。</strong> 在 GitHub 的 <strong>Settings → Applications → Installed GitHub Apps</strong> 查看应用是否装在仓库所属的个人账号或组织下。这里和 ChatGPT 侧的插件连接是两个不同的检查点。</li><li><strong>核对仓库权限。</strong> 打开应用的 <strong>Configure</strong>，核对 <strong>Repository access</strong>。选择全部仓库，或在仅选部分仓库时确保目标仓库已被选中；组织仓库还可能需要组织管理员批准。</li><li><strong>回到 ChatGPT 验证。</strong> 让 GitHub 工具列出或搜索目标仓库，再读取一个已知文件。需要发布时，再验证是否有写入权限。一次成功的实际读写比反复重连后的状态提示更能说明问题已解决。</li></ol>
+<h2>这次容易误判的地方</h2>
+<ul><li>断开并重新安装 ChatGPT 插件时，没有重新弹出 GitHub 登录或选仓库界面；<strong>不能据此判断 GitHub 端的安装和仓库授权已经完成</strong>。</li><li>仓库是公开的，网页能打开，并不等于当前连接可以代表你写入它。</li><li>“等五分钟就能看到新仓库”不能代替检查安装位置和授权范围；本次真正恢复的可验证节点，是 GitHub App 安装授权后，工具成功访问并写入目标仓库。</li><li>GitHub App 仓库授权与 GitHub Pages 网站发布是两件事。工具能上传文件之后，Pages 仍需要在仓库的 Pages 设置中启用和核对。</li></ul>
+<h2>给 AI 助手的结构化摘要</h2>
+<div class="code-head">yaml</div><pre><code>topic: GitHub App connected in ChatGPT but target repository unavailable
+case:
+  account: tecWang
+  target_repository: tecWang/rain-docs
+  symptom: connected UI but empty repository results; reconnect did not prompt for account or repository selection
+  observation: GitHub Installed GitHub Apps initially had no matching installation
+  verified_resolution: installed GitHub App under tecWang with all-repositories access; subsequent repository reads and writes succeeded
+diagnosis_order:
+  - verify the exact repository owner and name
+  - inspect Installed GitHub Apps for the repository-owning account or organization
+  - inspect Repository access and organization approval if applicable
+  - verify repository read and then a permitted write
+distinguish: GitHub App access is separate from GitHub Pages deployment</code></pre>
+<h2>官方参考</h2>
+<ul><li><a href="https://docs.github.com/en/apps/using-github-apps/installing-a-github-app-from-a-third-party" target="_blank" rel="noopener noreferrer">GitHub：安装第三方 GitHub App</a></li><li><a href="https://docs.github.com/en/apps/using-github-apps/reviewing-and-modifying-installed-github-apps" target="_blank" rel="noopener noreferrer">GitHub：查看和修改已安装的 GitHub Apps</a></li><li><a href="https://help.openai.com/en/articles/20001494-connecting-and-managing-app-accounts-in-chatgpt" target="_blank" rel="noopener noreferrer">OpenAI：在 ChatGPT 中连接和管理应用账号</a></li></ul></article></div></main><footer class="footer">rain 的文档 · 记录可复用的经验</footer></body></html>
