@@ -1,14 +1,9 @@
-# 文档网站维护
+# rain 的文档
 
-文章以 `content/*.md` 为原文，`articles.json` 是首页和分类页的唯一文章清单。`build.py` 读取这两类文件，生成首页、分类页、文章预览、供 Windows 下载的 Markdown、无 BOM 的原文，以及一份公共样式表。
+公开个人文档网站。首页、分类页和文章页位于仓库根目录，Markdown 下载件也位于根目录。
 
-## 新增文章
+`_source/content/*.md` 是无 BOM 的 UTF-8 原文，`_source/articles.json` 是文章清单，`_source/build.py` 是唯一的页面生成器。根目录的 `.md` 下载件含 UTF-8 BOM，以兼容部分 Windows 编辑器；`source/*.md` 是无 BOM 的公开副本。
 
-1. 在 `content/` 新增 UTF-8 Markdown 文件。
-2. 在 `articles.json` 顶部增加一项：`slug`、`title`、`description`、`tag`、`source`、`date`。
-3. 运行 `python3 build.py` 更新 Sites 的 `dist/`；运行 `python3 build.py --output ../github-pages-rain-docs` 生成 GitHub Pages 静态文件。
-4. 检查页面和下载件后，分别发布到原网站与 GitHub 仓库。GitHub Pages 若已在仓库设置中启用，提交到 `main` 后由 GitHub 自动部署。
+新增文章时，在 `_source/content/` 放入 Markdown，并向 `_source/articles.json` 增加一项。运行 `python3 _source/build.py --output site-build` 可生成完整静态站点，再将生成文件发布到仓库根目录。`_source/PUBLISHING.md` 记录原网站与 GitHub 的双站发布流程。
 
-下载链接的 `.md` 文件带 UTF-8 BOM，方便部分 Windows 编辑器识别中文。`content/` 原文及生成的 `source/` 副本是标准无 BOM UTF-8，适合 AI、脚本和版本管理。旧文章的下载地址在生成时保留。
-
-生成器会清空并重建指定输出目录；不要把 `--output` 指向保存其他文件的目录。
+GitHub Pages 若在仓库 Settings → Pages 中启用 `main` 分支的 `/(root)`，根目录提交后会自动发布。
