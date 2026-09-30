@@ -1,5 +1,13 @@
 [
   {
+    "slug": "github-pages-supabase-ledger",
+    "title": "GitHub Pages + Supabase：跨设备购买记录",
+    "description": "给个人静态网站接入云端数据库，整理邮箱密码登录、数据权限与旧账号会话报错的解决方法。",
+    "tag": "技术笔记 · 云端数据库",
+    "source": "content/github-pages-supabase-ledger.md",
+    "date": "2026-09-30"
+  },
+  {
     "slug": "claude-code-vision-screenshot",
     "title": "Claude Code + DeepSeek 增加截图视觉能力",
     "description": "用 Vision Bridge + Gemini 给 DeepSeek 补上看图能力，并自动接收 Windows 剪贴板截图。",
