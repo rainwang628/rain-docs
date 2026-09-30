@@ -60,7 +60,7 @@ def page(title, description, current, body, depth, structured=None):
     favicon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"
     nav = ''.join(
         f'<a href="{url(path, depth)}"' + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
-        for key, path, label in [('home', '/', '首页'), ('category', '/categories/technical/', '文章分类'), ('tools', '/tools/usd-purchases/', '手工维护')]
+        for key, path, label in [('home', '/', '首页'), ('category', '/categories/technical/', '文章分类'), ('tools', '/tools/usd-cloud/', '手工维护')]
     )
     data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False).replace('<', '\\u003c') + '</script>' if structured else ''
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
@@ -105,7 +105,7 @@ def build(out):
             f'<a class="tile" href="{url("/categories/technical/", 0)}">'
             f'<span class="count">{count:02d} 篇文章</span><h2>技术笔记</h2>'
             f'<p>软件配置与排障记录</p></a></div>'
-            f'<h2 class="section-title">手工维护</h2><div class="grid"><a class="tile" href="{url("/tools/usd-purchases/", 0)}"><span class="count">个人记录</span><h2>美元购汇记录</h2><p>登记购买、修改明细，自动计算平均成本。</p></a></div>'
+            f'<h2 class="section-title">手工维护</h2><div class="grid"><a class="tile" href="{url("/tools/usd-cloud/", 0)}"><span class="count">个人记录</span><h2>美元购汇记录</h2><p>跨设备登记购买、修改明细，自动计算平均成本。</p></a></div>'
             f'<h2 class="section-title">最近发布</h2><div class="grid">{cards_home}</div></main>')
     category = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 2)}">首页</a> / 文章分类</div>'
                 f'<div class="intro"><div class="eyebrow">CATEGORY</div><h1>技术笔记</h1>'
