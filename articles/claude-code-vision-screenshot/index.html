@@ -1,0 +1,63 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="用 Vision Bridge + Gemini 给 Claude Code 中的 DeepSeek 增加截图视觉能力，并自动读取 Windows 剪贴板图片。"><title>Claude Code + DeepSeek 增加截图视觉能力 · rain 的文档</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="../../assets/site.css"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Claude Code + DeepSeek 增加截图视觉能力","dateModified":"2026-09-30","inLanguage":"zh-CN"}</script></head><body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><nav class="nav" aria-label="主导航"><a href="../../">首页</a><a href="../../categories/technical/">文章分类</a></nav></div></header><main class="wrap"><div class="crumb"><a href="../../">首页</a> / <a href="../../categories/technical/">技术笔记</a> / Claude Code 截图视觉能力</div><div class="document"><div class="doc-head"><span class="tag">技术笔记 · Claude Code</span><h1>Claude Code + DeepSeek 增加截图视觉能力</h1><div class="meta"><span>更新于 2026-09-30</span><a class="download" href="../../claude-code-vision-screenshot.md" download="claude-code-vision-screenshot.md">下载 Markdown 原文</a></div></div><article class="article"><h1>Claude Code + DeepSeek 增加截图视觉能力：Windows 自动读取微信截图</h1><p class="note">适用环境：Windows + Claude Code + CC Switch，主模型使用 DeepSeek。通过 Vision Bridge MCP 调用 Gemini 视觉模型，实现“截图 → Claude Code 直接理解 → 继续处理代码”。</p><h2>最终效果</h2><pre><code>微信 Alt+A / Win+Shift+S / 复制图片
+                ↓
+          Windows 剪贴板
+                ↓
+     watch_screenshot.ps1
+                ↓
+C:\Users\rumor\.claude\latest.png
+                ↓
+       Claude Code：“看截图”
+                ↓
+        vision-bridge MCP
+                ↓
+      Gemini（负责识图）
+                ↓
+       DeepSeek 继续处理代码</code></pre><p>DeepSeek 继续作为 Claude Code 的主力模型，Gemini 只承担图片理解，不需要为了看截图切换整个会话的模型。</p><h2>一、准备 Node.js</h2><pre><code>winget install OpenJS.NodeJS.LTS
+
+node --version
+npx --version</code></pre><h2>二、在 CC Switch 配置 Vision Bridge</h2><p>进入 <strong>CC Switch → MCP 服务器管理 → 添加 MCP → 自定义</strong>。名称填写 <code>vision-bridge</code>，显示名称填写 <code>Vision Bridge</code>，只启用到 Claude。</p><pre><code>{
+  "type": "stdio",
+  "command": "npx",
+  "args": ["-y", "mcp-vision-bridge"],
+  "env": {
+    "VISION_PROVIDER": "gemini",
+    "VISION_GEMINI_API_KEY": "替换成自己的 Gemini API Key",
+    "VISION_MODEL": "gemini-3.5-flash-lite",
+    "NODE_USE_ENV_PROXY": "1"
+  }
+}</code></pre><p>如果电脑需要通过本地代理访问 Google API，<code>NODE_USE_ENV_PROXY=1</code> 很重要。本文环境使用 <code>http://127.0.0.1:7897</code>。<strong>不要把自己的 Gemini API Key 写进 GitHub、公开文档或 CLAUDE.md。</strong></p><p>重新打开 Claude Code 后输入 <code>/mcp</code>，确认 <code>vision-bridge</code> 已连接。</p><h2>三、告诉 Claude Code 怎么处理截图</h2><p>编辑 <code>C:\Users\rumor\.claude\CLAUDE.md</code>，加入：</p><pre><code>## Screenshot handling
+
+When I say "看截图", "看下截图", "看一下截图", "看刚才截图", "看最新截图" or "screenshot", use the vision-bridge MCP tool to analyze C:\Users\rumor\.claude\latest.png and continue the current task based on the visual result.
+
+Always use vision-bridge for screenshots. Do not read the image directly, run OCR, use Python/PIL/ImageMagick, convert the image, or search the Screenshots directory.</code></pre><h2>四、让微信截图自动变成 latest.png</h2><p>创建 <code>C:\Users\rumor\.claude\ps1_scripts\watch_screenshot.ps1</code>：</p><pre><code>Add-Type -AssemblyName System.Windows.Forms
+Add-Type -AssemblyName System.Drawing
+
+$target = "C:\Users\rumor\.claude\latest.png"
+$lastHash = ""
+
+while ($true) {
+    try {
+        if ([System.Windows.Forms.Clipboard]::ContainsImage()) {
+            $image = [System.Windows.Forms.Clipboard]::GetImage()
+            if ($null -ne $image) {
+                $stream = New-Object System.IO.MemoryStream
+                $image.Save($stream, [System.Drawing.Imaging.ImageFormat]::Png)
+                $bytes = $stream.ToArray()
+                $sha256 = [System.Security.Cryptography.SHA256]::Create()
+                $hashBytes = $sha256.ComputeHash($bytes)
+                $hash = [System.BitConverter]::ToString($hashBytes)
+                if ($hash -ne $lastHash) {
+                    [System.IO.File]::WriteAllBytes($target, $bytes)
+                    $lastHash = $hash
+                }
+                $sha256.Dispose()
+                $stream.Dispose()
+                $image.Dispose()
+            }
+        }
+    }
+    catch {
+    }
+    Start-Sleep -Milliseconds 500
+}</code></pre><p>脚本每 0.5 秒检查一次 Windows 剪贴板，只有图片变化时才覆盖 <code>latest.png</code>。</p><h2>五、让脚本静默运行</h2><p>创建 <code>C:\Users\rumor\.claude\ps1_scripts\start_screenshot_watcher.vbs</code>：</p><pre><code>Set shell = CreateObject("WScript.Shell")
+shell.Run "powershell.exe -NoProfile -STA -ExecutionPolicy Bypass -WindowStyle Hidden -File ""C:\Users\rumor\.claude\ps1_scripts\watch_screenshot.ps1""", 0, False</code></pre><p><code>-STA</code> 用于保证 Windows Clipboard API 正常工作。可用 Win+R 执行 <code>wscript.exe "C:\Users\rumor\.claude\ps1_scripts\start_screenshot_watcher.vbs"</code> 进行测试。</p><h2>六、设置 Windows 自动启动</h2><p>运行 <code>taskschd.msc</code>，选择“创建任务”。名称为 <code>Claude Screenshot Watcher</code>；触发器为“登录时”；操作为启动 <code>wscript.exe</code>；参数为 <code>"C:\Users\rumor\.claude\ps1_scripts\start_screenshot_watcher.vbs"</code>；Start in 留空；重复实例选择“不启动新实例”。</p><p>最终验证：重启 Windows 后不要手动运行脚本，直接截图。如果 <code>latest.png</code> 自动更新，说明自动启动成功。</p><h2>七、日常使用</h2><ol><li>微信 <code>Alt+A</code>、<code>Win+Shift+S</code>，或复制一张图片。</li><li>回到 Claude Code。</li><li>输入 <code>看截图</code>。</li></ol><p>Claude Code 会自动读取 <code>latest.png</code>，调用 Vision Bridge，由 Gemini 理解图片，再把视觉结果交给当前 DeepSeek 主模型继续分析和修改代码。</p></article></div></main><footer class="footer">rain 的文档 · 记录可复用的经验</footer></body></html>
