@@ -27,10 +27,22 @@
     return all.map(fromDB);
   }
   async function refresh() { if(!writable||busy)return;setBusy(true);try{rows=await loadRows();render();message('已读取最新云端记录。');}catch(e){message('读取云端失败：'+e.message,true);}finally{setBusy(false);} }
+  async function verifyWriteOwner() {
+    const expected=user?.id;
+    const {data,error}=await client.auth.getUser();
+    if(error){if(error.code==='user_not_found'||error.status===401||error.status===403)throw Error('登录账号已失效，请退出后用当前网站账号重新登录。');throw Error('无法验证登录账号：'+error.message);}
+    if(!expected||!data?.user||data.user.id!==expected||user?.id!==expected)throw Error('登录账号已变化，请退出后重新登录再保存。');
+  }
+  function writeError(error) {
+    return error.code==='23503' && /usd_purchases_user_id_fkey/.test(error.message)
+      ? '当前账号 ID 在关联的用户表中不存在，请退出后重新登录；若仍报错，需要检查数据库外键。'
+      : error.message;
+  }
   async function save(next) {
     if(!writable||busy){message('请先登录并等待当前操作完成。',true);return false;}
     setBusy(true);
     try{
+      await verifyWriteOwner();
       const removed=rows.filter(r=>!next.some(n=>n.id===r.id));
       const changed=next.filter(r=>{const old=rows.find(n=>n.id===r.id);return !old||JSON.stringify(old)!==JSON.stringify(r);});
       if(removed.length>1||changed.length>1)throw Error('请逐条保存修改。');
@@ -42,12 +54,12 @@
         rows=[...rows.filter(n=>n.id!==r.id),fromDB(result.data[0])];
       }
       render();return true;
-    }catch(e){message('云端保存失败：'+e.message+' 输入已保留。',true);return false;}finally{setBusy(false);}
+    }catch(e){message('云端保存失败：'+writeError(e)+' 输入已保留。',true);return false;}finally{setBusy(false);}
   }
   async function importRows(next){
     if(!writable||busy)return;setBusy(true);
-    try{const mapped=next.map(toDB);for(let i=0;i<mapped.length;i+=200){const {error}=await client.from('usd_purchases').upsert(mapped.slice(i,i+200),{onConflict:'id',ignoreDuplicates:true});if(error)throw error;}rows=await loadRows();reset();message('已导入云端；已存在的记录未覆盖。');}
-    catch(e){message('导入未完全完成：'+e.message+' 可以重试，不会重复登记。',true);}finally{setBusy(false);}
+    try{await verifyWriteOwner();const mapped=next.map(toDB);for(let i=0;i<mapped.length;i+=200){const {error}=await client.from('usd_purchases').upsert(mapped.slice(i,i+200),{onConflict:'id',ignoreDuplicates:true});if(error)throw error;}rows=await loadRows();reset();message('已导入云端；已存在的记录未覆盖。');}
+    catch(e){message('导入未完全完成：'+writeError(e)+' 可以重试，不会重复登记。',true);}finally{setBusy(false);}
   }
   function reset() { editing = null; $('purchase-form').reset(); $('date').value = today(); $('form-title').textContent = '新增购买记录'; $('save').textContent = '保存记录'; $('cancel').hidden = true; rate(); }
   function rate() { const usd = Number($('usd').value), cny = Number($('cny').value); $('record-rate').textContent = usd > 0 && cny > 0 ? (cny / usd).toFixed(4) : '—'; }
@@ -100,7 +112,8 @@
   };
   async function applySession(session){
     if(session?.user?.id && user?.id === session.user.id)return;
-    user=session?.user||null;writable=Boolean(user);$('login-form').hidden=writable;$('account').hidden=!writable;$('account-email').textContent=user?.email||'';rows=[];reset();render();$('migrate').disabled=!writable;setBusy(false);if(writable)await refresh();
+    const draft={date:$('date').value,usd:$('usd').value,cny:$('cny').value,note:$('note').value};
+    user=session?.user||null;writable=Boolean(user);$('login-form').hidden=writable;$('account').hidden=!writable;$('account-email').textContent=user?.email||'';rows=[];reset();if(draft.usd||draft.cny||draft.note){for(const key of ['date','usd','cny','note'])$(key).value=draft[key];rate();}render();$('migrate').disabled=!writable;setBusy(false);if(writable)await refresh();
   }
   async function start(){
     const config=window.RAIN_USD_CLOUD||{};
