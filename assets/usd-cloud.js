@@ -76,7 +76,12 @@
   $('refresh').onclick=refresh;
   $('migrate').onclick=async()=>{try{const raw=localStorage.getItem(KEY);if(!raw){message('当前浏览器没有本机购买记录。');return;}const next=validate(JSON.parse(raw));if(confirm(`将本机 ${next.length} 条记录导入云端？本机原记录会保留。`))await importRows(next);}catch(e){message('迁移失败：'+e.message,true);}};
   $('logout').onclick=async()=>{if(busy)return;const {error}=await client.auth.signOut({scope:'local'});if(error)message('退出失败：'+error.message,true);};
-  $('login-form').onsubmit=async e=>{e.preventDefault();$('send-link').disabled=true;try{const {error}=await client.auth.signInWithOtp({email:$('email').value.trim(),options:{emailRedirectTo:location.origin+location.pathname}});if(error)throw error;message('已请求登录邮件。请在当前设备打开邮件中的链接；如未收到，请检查邮箱和项目邮件设置。');}catch(e){message('登录邮件发送失败：'+e.message,true);}finally{$('send-link').disabled=false;}};
+  $('login-form').onsubmit=async e=>{
+    e.preventDefault();if(!client){message('登录服务尚未加载，请稍后重试。',true);return;}$('send-link').disabled=true;
+    try{const {data,error}=await client.auth.signInWithPassword({email:$('email').value.trim(),password:$('password').value});if(error)throw error;$('password').value='';await applySession(data.session);}
+    catch(e){message(e.message==='Invalid login credentials'?'登录失败：请检查网站登录邮箱和密码。此密码不是 Google 或 Supabase 控制台密码。':'登录失败：'+e.message,true);}
+    finally{$('send-link').disabled=false;}
+  };
   async function applySession(session){
     if(session?.user?.id && user?.id === session.user.id)return;
     user=session?.user||null;writable=Boolean(user);$('login-form').hidden=writable;$('account').hidden=!writable;$('account-email').textContent=user?.email||'';rows=[];reset();render();$('migrate').disabled=!writable;setBusy(false);if(writable)await refresh();
