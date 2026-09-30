@@ -1,5 +1,13 @@
 [
   {
+    "slug": "claude-code-vision-screenshot",
+    "title": "Claude Code + DeepSeek 增加截图视觉能力",
+    "description": "用 Vision Bridge + Gemini 给 DeepSeek 补上看图能力，并自动接收 Windows 剪贴板截图。",
+    "tag": "技术笔记 · Claude Code",
+    "source": "content/claude-code-vision-screenshot.md",
+    "date": "2026-09-30"
+  },
+  {
     "slug": "github-app-access",
     "title": "GitHub App 已连接但仓库列表为空",
     "description": "检查应用安装位置和仓库授权，用实际读写确认连接恢复。",
