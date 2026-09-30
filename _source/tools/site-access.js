@@ -7,7 +7,7 @@
     window.RAIN_SITE_ACCESS=state;
     for(const el of document.querySelectorAll('[data-module]'))el.hidden=!state.allowed.includes(el.dataset.module);
     for(const el of document.querySelectorAll('[data-owner]'))el.hidden=!state.owner;
-    const login=document.getElementById('account-link');if(login)login.textContent='账号';
+    const login=document.getElementById('account-link');if(login)login.textContent=state.user?'已登录':'登录';
     const protectedPage=document.querySelector('[data-protected-module]'),gate=document.getElementById('module-gate');
     if(protectedPage){const allowed=state.allowed.includes(protectedPage.dataset.protectedModule);protectedPage.hidden=!allowed;if(gate){gate.hidden=allowed;const text=gate.querySelector('[data-gate-message]');if(text)text.textContent=!state.ready?'正在验证访问权限…':state.error?'权限服务尚未启用或暂时不可用。请在账号页面查看配置说明。':!state.user?'请先登录网站账号。':!state.approved?'你的账号正在等待网站主人确认。':'你尚未获得此模块的访问权限，请联系网站主人。';}}
     window.dispatchEvent(new CustomEvent('rain:access',{detail:state}));
