@@ -82,6 +82,22 @@
     catch(e){message(e.message==='Invalid login credentials'?'登录失败：请检查网站登录邮箱和密码。此密码不是 Google 或 Supabase 控制台密码。':'登录失败：'+e.message,true);}
     finally{$('send-link').disabled=false;}
   };
+  $('recover-password').onclick=async()=>{
+    if(!client){message('登录服务尚未加载，请稍后重试。',true);return;}
+    if(!$('email').reportValidity())return;
+    const button=$('recover-password');button.disabled=true;
+    try{const {error}=await client.auth.resetPasswordForEmail($('email').value.trim(),{redirectTo:location.origin+location.pathname});if(error)throw error;message('已提交密码设置邮件请求。请检查收件箱和垃圾邮件；打开最新邮件链接后，在本页设置网站密码。');}
+    catch(e){message(e.code==='over_email_send_rate_limit'||/rate limit/i.test(e.message)?'邮件发送额度暂时用完，请等待额度恢复后再试。若此前收到的登录链接仍有效，可打开它，再设置网站密码。':'密码设置邮件发送失败：'+e.message,true);}
+    finally{button.disabled=false;}
+  };
+  $('password-form').onsubmit=async e=>{
+    e.preventDefault();if(!client||!user){message('请先通过有效的邮箱链接或密码登录，再设置网站密码。',true);return;}
+    if($('new-password').value!==$('confirm-password').value){message('两次输入的密码不一致。',true);return;}
+    const button=$('save-password');button.disabled=true;
+    try{const {error}=await client.auth.updateUser({password:$('new-password').value});if(error)throw error;$('password-form').reset();$('password-settings').open=false;message('网站密码已保存。现在可在手机和电脑使用同一邮箱及此密码登录。');}
+    catch(e){message('网站密码保存失败：'+e.message,true);}
+    finally{button.disabled=false;}
+  };
   async function applySession(session){
     if(session?.user?.id && user?.id === session.user.id)return;
     user=session?.user||null;writable=Boolean(user);$('login-form').hidden=writable;$('account').hidden=!writable;$('account-email').textContent=user?.email||'';rows=[];reset();render();$('migrate').disabled=!writable;setBusy(false);if(writable)await refresh();
@@ -91,7 +107,7 @@
     if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(config.url||'')||!config.publishableKey){message('云端数据库尚未配置。本机版仍可使用，接入项目后才能登录和同步。',true);$('send-link').disabled=true;setBusy(false);return;}
     if(config.publishableKey.startsWith('sb_secret_')){message('配置错误：不能在网页中使用 secret key。',true);$('send-link').disabled=true;return;}
     try{const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.117.2');client=createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
-      client.auth.onAuthStateChange((_event,session)=>{setTimeout(()=>applySession(session),0);});
+      client.auth.onAuthStateChange((event,session)=>{setTimeout(async()=>{await applySession(session);if(event==='PASSWORD_RECOVERY'&&session){$('password-settings').open=true;$('new-password').focus();message('邮箱验证成功，请在“设置网站登录密码”中保存新密码。');}},0);});
       const {data,error}=await client.auth.getSession();if(error)throw error;await applySession(data.session);
     }catch(e){message('无法连接云端登录服务：'+e.message,true);$('send-link').disabled=true;}
   }
