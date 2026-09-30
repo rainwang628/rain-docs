@@ -11,7 +11,20 @@
     try{const [{data:members,error},{data:grants,error:grantError}]=await Promise.all([client.from('site_members').select('user_id,email,approved,is_owner').order('email'),client.from('site_module_permissions').select('user_id,module')]);if(error)throw error;if(grantError)throw grantError;if(!window.RAIN_SITE_ACCESS?.owner)return;$('members').replaceChildren();
       for(const member of members){if(member.is_owner)continue;const row=document.createElement('div');row.className='category-row';const title=document.createElement('h3');title.textContent=member.email;row.append(title);const checks=[];
         for(const [key,text] of [['approved','确认此用户'],...Object.entries(modules)]){const label=document.createElement('label');label.style.cssText='display:flex;flex-direction:row;align-items:center;margin:10px 0';const input=document.createElement('input');input.type='checkbox';input.style.cssText='width:20px;min-height:20px';input.checked=key==='approved'?member.approved:grants.some(g=>g.user_id===member.user_id&&g.module===key);label.append(input,document.createTextNode(text));row.append(label);checks.push({key,input});}
-        const button=document.createElement('button');button.type='button';button.textContent='保存此用户权限';button.onclick=async()=>{button.disabled=true;try{const {error}=await client.rpc('site_set_permissions',{target_user:member.user_id,allow_user:checks[0].input.checked,allowed_modules:checks.filter(c=>c.key!=='approved'&&c.input.checked).map(c=>c.key)});if(error)throw error;message('已保存 '+member.email+' 的权限。该用户刷新权限或重新打开页面后生效。');}catch(e){message('授权保存失败：'+e.message,true);}finally{button.disabled=false;}};row.append(button);$('members').append(row);}
+        const status=document.createElement('p');status.setAttribute('role','status');status.setAttribute('aria-live','polite');status.style.cssText='margin:12px 0 0;overflow-wrap:anywhere';
+        const button=document.createElement('button');button.type='button';button.textContent='保存此用户权限';button.onclick=async()=>{
+          button.disabled=true;button.textContent='正在保存…';status.textContent='正在保存权限…';status.classList.remove('error');
+          try{
+            const {error}=await client.rpc('site_set_permissions',{target_user:member.user_id,allow_user:checks[0].input.checked,allowed_modules:checks.filter(c=>c.key!=='approved'&&c.input.checked).map(c=>c.key)});
+            if(error)throw error;
+            status.textContent=checks[0].input.checked?'已保存：用户已确认；允许模块：'+(checks.filter(c=>c.key!=='approved'&&c.input.checked).map(c=>modules[c.key]).join('、')||'暂未分配')+'。该用户刷新权限后生效。':'已保存：已撤销用户确认及全部模块权限。';
+            message('已保存 '+member.email+' 的权限。该用户刷新权限或重新打开页面后生效。');
+          }catch(e){
+            const detail=e.message||'请求失败，请重试';
+            status.textContent='授权保存失败：'+detail+(e.code?'（'+e.code+'）':'');status.classList.add('error');
+            message(status.textContent,true);
+          }finally{button.disabled=false;button.textContent='保存此用户权限';}
+        };row.append(button,status);$('members').append(row);}
       if(!members.some(m=>!m.is_owner))$('members').textContent='暂无申请用户。';
     }catch(e){message('读取用户失败：'+e.message,true);}
   }
