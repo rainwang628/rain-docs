@@ -1,3 +1,2 @@
-// Only a Supabase Project URL and browser-safe publishable key belong here.
-// Never put a database password, secret key, or service_role key in this file.
-window.RAIN_USD_CLOUD = Object.freeze({ url: '', publishableKey: '' });
+// Supabase browser-safe public configuration.
+window.RAIN_USD_CLOUD = Object.freeze({ url: 'https://ucautsubldfvxoraeajb.supabase.co', publishableKey: 'sb_publishable_ZKiKMMUSWq0TMR4z1IbCHQ_4hj_cdpS' });
