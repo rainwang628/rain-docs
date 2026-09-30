@@ -1,0 +1,30 @@
+{
+  "ai": {
+    "title": "AI",
+    "description": "AI 工具的安装、使用与实践",
+    "subcategories": {
+      "claude": {
+        "title": "Claude",
+        "description": "Claude Code 安装、配置与能力扩展"
+      }
+    }
+  },
+  "technical": {
+    "title": "技术笔记",
+    "description": "软件配置、数据服务与排障记录",
+    "subcategories": {
+      "github": {
+        "title": "GitHub",
+        "description": "仓库连接、应用授权与发布"
+      },
+      "browser": {
+        "title": "浏览器",
+        "description": "浏览器配置与跨设备同步"
+      },
+      "cloud-database": {
+        "title": "云端数据库",
+        "description": "数据库接入、账号与数据维护"
+      }
+    }
+  }
+}

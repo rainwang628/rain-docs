@@ -60,7 +60,7 @@ def page(title, description, current, body, depth, structured=None):
     favicon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"
     nav = ''.join(
         f'<a href="{url(path, depth)}"' + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
-        for key, path, label in [('home', '/', '首页'), ('category', '/categories/technical/', '文章分类'), ('tools', '/tools/usd-cloud/', '手工维护')]
+        for key, path, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/usd-cloud/', '手工维护')]
     )
     data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False).replace('<', '\\u003c') + '</script>' if structured else ''
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
@@ -77,6 +77,11 @@ def page(title, description, current, body, depth, structured=None):
 
 def build(out):
     articles = json.loads((root / 'articles.json').read_text(encoding='utf-8'))
+    categories = json.loads((root / 'categories.json').read_text(encoding='utf-8'))
+    for item in articles:
+        category = categories[item['category']]
+        subcategory = category['subcategories'][item['subcategory']]
+        item['tag'] = category['title'] + ' · ' + subcategory['title']
     slugs = [item['slug'] for item in articles]
     if len(slugs) != len(set(slugs)):
         raise ValueError('Article slugs must be unique')
@@ -96,24 +101,53 @@ def build(out):
                 f'<p>{html.escape(item["description"])}</p>'
                 f'<span class="date">{html.escape(item["date"])}</span></a>')
 
+    def category_tile(path, title, description, count, depth):
+        return (f'<a class="tile" href="{url(path, depth)}">'
+                f'<span class="count">{count:02d} 篇文章</span><h2>{html.escape(title)}</h2>'
+                f'<p>{html.escape(description)}</p></a>')
+
+    def category_tiles(depth):
+        return ''.join(category_tile('/categories/' + key + '/', category['title'],
+                      category['description'], sum(a['category'] == key for a in articles), depth)
+                      for key, category in categories.items())
+
     cards_home = ''.join(card(item, 0) for item in articles)
-    cards_category = ''.join(card(item, 2) for item in articles)
     count = len(articles)
     home = (f'<main class="wrap"><div class="intro"><div class="eyebrow">PERSONAL NOTES</div>'
             f'<h1>文档与笔记</h1><p>整理日常遇到的问题和已经验证的做法。</p></div>'
-            f'<h2 class="section-title">文章分类</h2><div class="grid">'
-            f'<a class="tile" href="{url("/categories/technical/", 0)}">'
-            f'<span class="count">{count:02d} 篇文章</span><h2>技术笔记</h2>'
-            f'<p>软件配置与排障记录</p></a></div>'
+            f'<h2 class="section-title">文章分类</h2><div class="grid">{category_tiles(0)}</div>'
             f'<h2 class="section-title">手工维护</h2><div class="grid"><a class="tile" href="{url("/tools/usd-cloud/", 0)}"><span class="count">个人记录</span><h2>美元购汇记录</h2><p>跨设备登记购买、修改明细，自动计算平均成本。</p></a></div>'
             f'<h2 class="section-title">最近发布</h2><div class="grid">{cards_home}</div></main>')
-    category = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 2)}">首页</a> / 文章分类</div>'
-                f'<div class="intro"><div class="eyebrow">CATEGORY</div><h1>技术笔记</h1>'
-                f'<p>软件配置与排障记录 · {count} 篇</p></div><div class="grid">{cards_category}</div></main>')
+    overview = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 1)}">首页</a> / 文章分类</div>'
+                f'<div class="intro"><div class="eyebrow">CATEGORIES</div><h1>文章分类</h1>'
+                f'<p>{count} 篇文章，按主题浏览。</p></div><div class="grid">{category_tiles(1)}</div></main>')
     pages = {
-        out / 'index.html': page('首页', '个人技术笔记与文档分类', 'home', home, 0),
-        out / 'categories' / 'technical' / 'index.html': page('技术笔记', '软件配置与排障记录', 'category', category, 2),
+        out / 'index.html': page('首页', '个人笔记与文档分类', 'home', home, 0),
+        out / 'categories/index.html': page('文章分类', '按主题浏览 AI 与技术笔记', 'category', overview, 1),
     }
+    for key, category in categories.items():
+        selected = [a for a in articles if a['category'] == key]
+        tiles = ''.join(category_tile('/categories/' + key + '/' + subkey + '/', sub['title'],
+                       sub['description'], sum(a['subcategory'] == subkey for a in selected), 2)
+                       for subkey, sub in category['subcategories'].items())
+        cards = ''.join(card(a, 2) for a in selected)
+        body = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 2)}">首页</a> / '
+                f'<a href="{url("/categories/", 2)}">文章分类</a> / {html.escape(category["title"])}</div>'
+                f'<div class="intro"><div class="eyebrow">CATEGORY</div><h1>{html.escape(category["title"])}</h1>'
+                f'<p>{html.escape(category["description"])} · {len(selected)} 篇</p></div>'
+                f'<h2 class="section-title">子分类</h2><div class="grid">{tiles}</div>'
+                f'<h2 class="section-title">全部文章</h2><div class="grid">{cards}</div></main>')
+        pages[out / 'categories' / key / 'index.html'] = page(category['title'], category['description'], 'category', body, 2)
+        for subkey, sub in category['subcategories'].items():
+            subset = [a for a in selected if a['subcategory'] == subkey]
+            cards = ''.join(card(a, 3) for a in subset)
+            body = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 3)}">首页</a> / '
+                    f'<a href="{url("/categories/", 3)}">文章分类</a> / '
+                    f'<a href="{url("/categories/" + key + "/", 3)}">{html.escape(category["title"])}</a> / '
+                    f'{html.escape(sub["title"])}</div><div class="intro"><div class="eyebrow">SUBCATEGORY</div>'
+                    f'<h1>{html.escape(sub["title"])}</h1><p>{html.escape(sub["description"])} · {len(subset)} 篇</p></div>'
+                    f'<div class="grid">{cards}</div></main>')
+            pages[out / 'categories' / key / subkey / 'index.html'] = page(sub['title'], sub['description'], 'category', body, 3)
     for item in articles:
         depth = 2
         source = root / item['source']
@@ -126,9 +160,12 @@ def build(out):
         clean_source = out / 'source' / f'{slug}.md'
         clean_source.parent.mkdir(exist_ok=True)
         clean_source.write_text(original, encoding='utf-8')
+        category = categories[item['category']]
+        subcategory = category['subcategories'][item['subcategory']]
         body = (f'<main class="wrap"><div class="crumb">'
                 f'<a href="{url("/", depth)}">首页</a> / '
-                f'<a href="{url("/categories/technical/", depth)}">技术笔记</a> / '
+                f'<a href="{url("/categories/" + item["category"] + "/", depth)}">{html.escape(category["title"])}</a> / '
+                f'<a href="{url("/categories/" + item["category"] + "/" + item["subcategory"] + "/", depth)}">{html.escape(subcategory["title"])}</a> / '
                 f'{html.escape(item["title"])}</div><div class="document"><div class="doc-head">'
                 f'<span class="tag">{html.escape(item["tag"])}</span>'
                 f'<h1>{html.escape(item["title"])}</h1><div class="meta">'
