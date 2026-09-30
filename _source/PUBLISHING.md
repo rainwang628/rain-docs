@@ -21,3 +21,20 @@
 登记记录仅存于访问者浏览器的 localStorage，不放入源代码或公开仓库；JSON 导出用于备份和跨设备导入，浏览器打印可保存 PDF。更新网站时须保留存储键 `rain.usd-purchases.v1`，不得发布用户的实际交易记录。
 
 截图视觉文章已补入文章清单，重新生成页面时不会丢失。
+
+
+## 手动分类管理
+
+`categories.json` 定义可选大类与子类，`articles.json` 保存发布时的默认归类。云端 `site_article_categories` 的 `main` 行保存文章 slug 对应的归类覆盖。公开页面读取这些公开分类，管理页面使用同一 Supabase 网站账号登录；修改权限在初始化 SQL 中绑定当前维护用户 UUID。
+
+首次登录 `/tools/account/`，复制当前账号的初始化 SQL，再在 SQL Editor 执行；公开模板 `tools/website-access-schema.sql` 的 `__OWNER_EMAIL__` 需替换为本人邮箱，然后打开 `/tools/article-categories/`。初始化不会重建 Auth 用户或修改购买记录。删除并重建维护账号后，需重新执行该脚本绑定新 UUID；脚本会保留已保存的分类。
+
+分类保存用 revision 防止设备间覆盖，成功后刷新页面生效。云端不可达时访客页回退到发布时的默认分类。新增文章默认使用清单中的归类；已有 slug 的云端归类优先，不随重新发布被清空。新增可选分类仍需更新 categories.json 并重新发布。
+
+## 模块权限
+
+公开博客不要求登录。`site_members` 保存申请及确认状态，`site_module_permissions` 保存按用户开放的模块，网站主人通过 `/tools/account/` 管理。只有 SQL 初始化绑定的网站主人能调用授权 RPC，用户不能通过前端修改自身确认状态或授予权限。分类读数据仍公开，写入要求分类管理权限。购买记录增加 restrictive RLS 模块检查，保留原来的逐账号隔离。
+
+登录后的新用户自动提交访问申请；用户需先在 Auth 完成邮箱确认。若默认邮件服务限制陌生收件人或频率，网站主人可以配置自定义 SMTP，或在 Authentication > Users 手工创建确认属于该朋友的网站账号。URL Configuration 还需加入 `/tools/account/` 的完整地址。
+
+GitHub Pages 上的 HTML、JS 和静态小游戏代码依然公开可下载；界面隐藏是导航体验，云端 RLS 和受控 RPC 才是数据及操作权限。不能在静态文件内存储凭据或依赖页面隐藏来保护敏感数据。小游戏当前为浏览器内投骰子及随机选人，没有云端房间或多人实时同步。

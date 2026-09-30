@@ -1,0 +1,9 @@
+<main class="wrap ledger">
+<div class="crumb"><a href="../../">首页</a> / <a href="../../categories/">文章分类</a> / 分类管理</div>
+<h1>文章分类管理</h1>
+<p class="storage-note">为每篇文章选择大类和子类，保存后所有设备与访客都会使用同一份分类。文章内容和原链接保持不变。</p>
+<p id="message" role="status" aria-live="polite"></p>
+<section class="panel" id="setup-panel" hidden><h2>启用云端分类管理</h2><p>请在现有 Supabase 项目的 SQL Editor 执行一次初始化脚本，再点击“重新加载”。脚本创建分类表和模块权限，并为购买记录增加模块访问检查，不清空记录。</p><p><a href="../../website-access-schema.sql" target="_blank" rel="noopener">打开初始化 SQL</a></p><button id="retry-setup" type="button">重新加载</button></section>
+<section class="panel"><h2>维护账号</h2><form id="login-form"><label>网站登录邮箱<input id="email" type="email" autocomplete="email" required></label><label style="margin-top:14px">网站登录密码<input id="password" type="password" autocomplete="current-password" required></label><p class="hint">使用购买记录网站的同一账号。只有被授权的维护账号可以修改分类。</p><button id="login" type="submit">登录</button></form><div id="account" hidden><p id="account-email"></p><button id="logout" type="button" class="secondary">退出登录</button></div></section>
+<section class="panel"><div class="section-head"><h2>文章归类</h2><button id="refresh" type="button" class="secondary">读取最新分类</button></div><p class="hint">选择已有大类与子类。当前提供 AI（Claude、ChatGPT）和技术笔记（GitHub、浏览器、云端数据库）。</p><form id="category-form"><div id="category-fields"></div><div class="actions" style="margin-top:20px"><button id="save" type="submit" disabled>保存全部分类</button><a href="../../categories/">查看分类页</a></div></form></section>
+</main>

@@ -6,6 +6,10 @@
       "claude": {
         "title": "Claude",
         "description": "Claude Code 安装、配置与能力扩展"
+      },
+      "chatgpt": {
+        "title": "ChatGPT",
+        "description": "ChatGPT 使用、插件连接与协作"
       }
     }
   },

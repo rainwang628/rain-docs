@@ -119,7 +119,7 @@
     const config=window.RAIN_USD_CLOUD||{};
     if(!/^https:\/\/[a-z0-9-]+\.supabase\.co\/?$/.test(config.url||'')||!config.publishableKey){message('云端数据库尚未配置。本机版仍可使用，接入项目后才能登录和同步。',true);$('send-link').disabled=true;setBusy(false);return;}
     if(config.publishableKey.startsWith('sb_secret_')){message('配置错误：不能在网页中使用 secret key。',true);$('send-link').disabled=true;return;}
-    try{const {createClient}=await import('https://esm.sh/@supabase/supabase-js@2.117.2');client=createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+    try{client=await window.RAIN_SITE_AUTH;
       client.auth.onAuthStateChange((event,session)=>{setTimeout(async()=>{await applySession(session);if(event==='PASSWORD_RECOVERY'&&session){$('password-settings').open=true;$('new-password').focus();message('邮箱验证成功，请在“设置网站登录密码”中保存新密码。');}},0);});
       const {data,error}=await client.auth.getSession();if(error)throw error;await applySession(data.session);
     }catch(e){message('无法连接云端登录服务：'+e.message,true);$('send-link').disabled=true;}

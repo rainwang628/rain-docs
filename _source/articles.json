@@ -23,8 +23,8 @@
     "description": "检查应用安装位置和仓库授权，用实际读写确认连接恢复。",
     "source": "content/github-app-access.md",
     "date": "2026-09-29",
-    "category": "technical",
-    "subcategory": "github"
+    "category": "ai",
+    "subcategory": "chatgpt"
   },
   {
     "slug": "chrome-bookmarks-sync",
