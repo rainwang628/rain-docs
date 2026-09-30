@@ -145,6 +145,14 @@ def build(out):
     pages[out / 'tools/usd-purchases/index.html'] = tool_page
     for ext in ('css', 'js'):
         shutil.copyfile(root / f'tools/usd-purchases.{ext}', out / f'assets/usd-purchases.{ext}')
+    cloud_body = (root / 'tools/usd-cloud.html').read_text(encoding='utf-8')
+    cloud_page = page('美元购汇记录 · 云端版', '跨设备维护美元购买记录', 'tools', cloud_body, 2)
+    cloud_page = cloud_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><script src="../../assets/usd-cloud-config.js" defer></script><script src="../../assets/usd-cloud.js" defer></script></head>')
+    pages[out / 'tools/usd-cloud/index.html'] = cloud_page
+    for filename in ('usd-cloud.js', 'usd-cloud-config.js'):
+        shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
+    for filename in ('usd-cloud-schema.sql', 'usd-cloud-setup.md'):
+        shutil.copyfile(root / 'tools' / filename, out / filename)
     # Preserve download URLs from the first two published articles.
     for slug, previous in {
         'claude-code-proxy': 'claude-code-install-proxy.md',
