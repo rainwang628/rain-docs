@@ -61,7 +61,7 @@ def page(title, description, current, body, depth, structured=None):
     favicon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"
     nav = ''.join(
         f'<a href="{url(path, depth)}"' + (' id="account-link"' if key == 'account' else '') + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
-        for key, path, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块'), ('account', '/tools/account/', '账号')]
+        for key, path, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块')]
     )
     data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False).replace('<', '\\u003c') + '</script>' if structured else ''
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
@@ -76,7 +76,7 @@ def page(title, description, current, body, depth, structured=None):
             f'<script src="{url("/assets/site-access.js", depth)}" defer></script>'
             f'</head><body><header class="top"><div class="top-inner">'
             f'<a class="brand" href="{url("/", depth)}">rain / 文档</a>'
-            f'<button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航">{nav}</nav></div></header>'
+            f'<a href="{url("/tools/account/", depth)}" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航">{nav}</nav></div></header>'
             f'{body}<footer class="footer">rain 的文档 · 记录可复用的经验</footer></body></html>')
 
 
