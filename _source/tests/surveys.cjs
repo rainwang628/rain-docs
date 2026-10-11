@@ -1,6 +1,14 @@
 const {PGlite}=require(process.env.RAIN_PGLITE_MODULE||'@electric-sql/pglite'),fs=require('fs'),path=require('path'),assert=require('assert');
 const M=require('../tools/surveys-model.js'),sql=fs.readFileSync(path.join(__dirname,'../tools/surveys-schema.sql'),'utf8');
 const OWNER='11111111-1111-4111-8111-111111111111',FRIEND='22222222-2222-4222-8222-222222222222',SID='a8c24d1e-074c-4d90-86a0-dc5d94cfb58b',RID='33333333-3333-4333-8333-333333333333';
+const stored=new Map(),storage={getItem:k=>stored.get(k),setItem:(k,v)=>stored.set(k,v)};
+let generated=0;const generate=()=>{generated++;return RID;};
+assert.equal(M.submissionId(storage,'survey-a',generate),RID);assert.equal(M.submissionId(storage,'survey-a',generate),RID);assert.equal(generated,1);
+M.submissionId(storage,'survey-b',generate);assert.equal(generated,2);
+assert.equal(M.nickname(RID),M.nickname(RID));assert.match(M.nickname(RID),/^月亮兔子 · 333333$/);
+assert.notEqual(M.nickname(RID),M.nickname('44444444-4444-4444-8444-444444444444'));
+assert.equal(M.submissionId({getItem(){throw Error('disabled');},setItem(){throw Error('disabled');}},'private',generate),RID);
+assert.equal(M.nickname('invalid'),'匿名答卷');stored.set('corrupt','bad');assert.equal(M.submissionId(storage,'corrupt',generate),RID);
 (async()=>{const db=new PGlite();await db.exec(`create role anon;create role authenticated;create schema auth;create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;create function public.site_is_owner() returns boolean language sql stable security definer as $$select auth.uid()='${OWNER}'::uuid$$;revoke all on function public.site_is_owner() from public;grant execute on function public.site_is_owner() to authenticated;`);await db.exec(sql);
 async function identity(role,id=''){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false)",[id]);await db.exec('set role '+role);}
 async function rejects(fn,pattern){try{await fn();}catch(e){if(pattern)assert.match(e.message,pattern);return;}throw Error('Expected rejection');}

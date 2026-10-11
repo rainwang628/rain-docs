@@ -10,5 +10,19 @@ const template={title:'四人小分队 · 下次玩什么？',description:'最�
 function validateDefinition(s){if(!s.title?.trim()||s.title.length>120)throw Error('请填写120字以内的标题');if((s.description||'').length>2000)throw Error('填写说明过长');if(!Array.isArray(s.questions)||!s.questions.length||s.questions.length>30)throw Error('每份问卷需要1—30道题');const ids=new Set();for(const q of s.questions){if(!q.id||ids.has(q.id))throw Error('问题编号重复');ids.add(q.id);if(!q.title?.trim()||q.title.length>500)throw Error('请填写500字以内的问题标题');if(!['text','single','multiple','rating'].includes(q.type))throw Error('不支持的题型');if(q.type!=='text'){if(!Array.isArray(q.options)||!q.options.length||q.options.length>30||new Set(q.options).size!==q.options.length||q.options.some(o=>typeof o!=='string'||!o.trim()||o.length>200))throw Error('选项需要1—30项，不能重复或留空');}if(q.type==='multiple'&&(!Number.isInteger(q.max)||q.max<1||q.max>q.options.length))throw Error('最多选择数须介于1和选项总数之间');}return s;}
 function validateAnswers(s,a){for(const q of s.questions){const v=a[q.id];if(q.type==='text'){if(typeof v!=='string'||v.length>2000||(q.required&&!v.trim()))throw Error('请检查：'+q.title);}else if(q.type==='single'){if((q.required||v)&&!q.options.includes(v))throw Error('请完成：'+q.title);}else if(q.type==='multiple'){if(!Array.isArray(v)||new Set(v).size!==v.length||v.some(o=>!q.options.includes(o))||v.length>q.max||(q.required&&!v.length))throw Error('请检查多选数量：'+q.title);}else{if(!v||typeof v!=='object'||q.options.some(o=>!['0','1','2','3','4',...(q.required?[]:[''])].includes(v[o])))throw Error('请完成评分：'+q.title);}}return a;}
 function summarize(s,rows){return s.questions.map(q=>{if(q.type==='rating')return {...q,stats:q.options.map(label=>{const values=rows.map(r=>Number(r.answers[q.id]?.[label])).filter(v=>Number.isInteger(v)&&v>=1&&v<=4);return {label,n:values.length,average:values.length?values.reduce((a,b)=>a+b,0)/values.length:null,skipped:rows.filter(r=>r.answers[q.id]?.[label]==='0').length};})};if(q.type==='text')return {...q,texts:rows.map(r=>r.answers[q.id]).filter(v=>v?.trim())};return {...q,stats:q.options.map(label=>({label,n:rows.filter(r=>q.type==='single'?r.answers[q.id]===label:(r.answers[q.id]||[]).includes(label)).length}))};});}
-const api={template,validateDefinition,validateAnswers,summarize};root.RainSurveys=api;if(typeof module!=='undefined')module.exports=api;
+const uuidPattern=/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+function nickname(id){
+ if(!uuidPattern.test(id||''))return '匿名答卷';
+ const hex=id.replaceAll('-','').toLowerCase();
+ const adjectives=['晴天','微风','星光','月亮','软糖','薄荷','椰子','橘子','奶茶','晚霞','云朵','山间','森林','海盐','春日','秋日'];
+ const animals=['水獭','小熊','企鹅','兔子','海豚','熊猫','松鼠','猫咪','鹿鹿','狐狸','考拉','刺猬','海豹','鲸鱼','小狗','羊驼'];
+ return adjectives[parseInt(hex[0],16)]+animals[parseInt(hex[1],16)]+' · '+hex.slice(-6).toUpperCase();
+}
+function submissionId(storage,key,generate){
+ let id;try{id=storage?.getItem(key);}catch{}
+ if(uuidPattern.test(id||''))return id;
+ id=generate();if(!uuidPattern.test(id||''))throw Error('无法生成匿名答卷标识，请刷新重试');
+ try{storage?.setItem(key,id);}catch{}return id;
+}
+const api={template,validateDefinition,validateAnswers,summarize,nickname,submissionId};root.RainSurveys=api;if(typeof module!=='undefined')module.exports=api;
 })(typeof window!=='undefined'?window:globalThis);
