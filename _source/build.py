@@ -216,7 +216,7 @@ def build(out):
     pages[out / 'tools/article-categories/index.html'] = management_page
     for filename in ('site-categories.js', 'article-categories.js', 'article-categories.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
-    for filename in ('site-nav.js', 'site-access.js', 'site-account.js', 'games.js'):
+    for filename in ('site-nav.js', 'site-access.js', 'site-account.js'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     shutil.copyfile(root / 'tools/website-access-schema.sql', out / 'website-access-schema.sql')
     account_body = (root / 'tools/site-account.html').read_text(encoding='utf-8')
@@ -225,7 +225,7 @@ def build(out):
     pages[out / 'tools/account/index.html'] = account_page
     game_body = protect((root / 'tools/games.html').read_text(encoding='utf-8'), 'games')
     game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2)
-    game_page = game_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><script src="../../assets/games.js" defer></script></head>')
+    game_page = game_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"></head>')
     pages[out / 'tools/games/index.html'] = game_page
     pages[out / 'tools/index.html'] = page('我的模块', '访问已授权的网站模块', 'tools', (root / 'tools/module-hub.html').read_text(encoding='utf-8'), 1)
     party_body = protect((root / 'tools/truth-or-dare.html').read_text(encoding='utf-8'), 'games')
