@@ -235,6 +235,13 @@ def build(out):
     pages[out / 'tools/games/truth-or-dare/index.html'] = party_page
     for ext in ('css', 'js'):
         shutil.copyfile(root / f'tools/truth-or-dare.{ext}', out / f'assets/truth-or-dare.{ext}')
+    survey_body = (root / 'tools/surveys.html').read_text(encoding='utf-8')
+    survey_page = page('问卷调研', '创建问卷、收集答卷与查询活动反馈', 'tools', survey_body, 2)
+    survey_page = survey_page.replace('</head>', '<link rel="stylesheet" href="../../assets/surveys.css?v=20261011"><script src="../../assets/surveys-model.js?v=20261011" defer></script><script src="../../assets/surveys.js?v=20261011" defer></script></head>')
+    pages[out / 'tools/surveys/index.html'] = survey_page
+    for filename in ('surveys.js', 'surveys-model.js', 'surveys.css'):
+        shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
+    shutil.copyfile(root / 'tools/surveys-schema.sql', out / 'surveys-schema.sql')
     # Preserve download URLs from the first two published articles.
     for slug, previous in {
         'claude-code-proxy': 'claude-code-install-proxy.md',
