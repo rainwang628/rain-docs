@@ -228,6 +228,13 @@ def build(out):
     game_page = game_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><script src="../../assets/games.js" defer></script></head>')
     pages[out / 'tools/games/index.html'] = game_page
     pages[out / 'tools/index.html'] = page('我的模块', '访问已授权的网站模块', 'tools', (root / 'tools/module-hub.html').read_text(encoding='utf-8'), 1)
+    party_body = protect((root / 'tools/truth-or-dare.html').read_text(encoding='utf-8'), 'games')
+    party_page = page('今晚有点不对劲 · 真心话大冒险', '四人聚会真心话与大冒险', 'tools', party_body, 3)
+    party_page = party_page.replace('../../tools/account/', '../../../tools/account/').replace('href="../../"', 'href="../../../"')
+    party_page = party_page.replace('</head>', '<link rel="stylesheet" href="../../../assets/truth-or-dare.css?v=20261011"><script src="../../../assets/truth-or-dare.js?v=20261011" defer></script></head>')
+    pages[out / 'tools/games/truth-or-dare/index.html'] = party_page
+    for ext in ('css', 'js'):
+        shutil.copyfile(root / f'tools/truth-or-dare.{ext}', out / f'assets/truth-or-dare.{ext}')
     # Preserve download URLs from the first two published articles.
     for slug, previous in {
         'claude-code-proxy': 'claude-code-install-proxy.md',
