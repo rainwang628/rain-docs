@@ -18,7 +18,7 @@
             const {error}=await client.rpc('site_set_permissions',{target_user:member.user_id,allow_user:checks[0].input.checked,allowed_modules:checks.filter(c=>c.key!=='approved'&&c.input.checked).map(c=>c.key)});
             if(error)throw error;
             status.textContent=checks[0].input.checked?'已保存：用户已确认；允许模块：'+(checks.filter(c=>c.key!=='approved'&&c.input.checked).map(c=>modules[c.key]).join('、')||'暂未分配')+'。该用户刷新权限后生效。':'已保存：已撤销用户确认及全部模块权限。';
-            message('已保存 '+member.email+' 的权限。该用户刷新权限或重新打开页面后生效。');
+            message('已保存 '+member.email+' 的权限。该用户主动刷新权限后立即生效，或等待本地权限缓存过期（最长 2 小时）。');
           }catch(e){
             const detail=e.message||'请求失败，请重试';
             status.textContent='授权保存失败：'+detail+(e.code?'（'+e.code+'）':'');status.classList.add('error');

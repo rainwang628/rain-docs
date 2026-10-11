@@ -82,7 +82,7 @@ def page(title, description, current, body, depth, structured=None):
             f'<script src="{url("/assets/usd-cloud-config.js", depth)}" defer></script>'
             f'<script src="{url("/assets/site-categories.js", depth)}" defer></script>'
             f'<script src="{url("/assets/site-nav.js?v=20260930-1930", depth)}" defer></script>'
-            f'<script src="{url("/assets/site-access.js?v=20260930-1930", depth)}" defer></script>'
+            f'<script src="{url("/assets/site-access.js?v=20261011-access2h", depth)}" defer></script>'
             f'</head><body><header class="top"><div class="top-inner">'
             f'<a class="brand" href="{url("/", depth)}">rain / 文档</a>'
             f'<a href="{url("/tools/account/", depth)}" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航">{nav}</nav></div></header>'
@@ -221,7 +221,7 @@ def build(out):
     shutil.copyfile(root / 'tools/website-access-schema.sql', out / 'website-access-schema.sql')
     account_body = (root / 'tools/site-account.html').read_text(encoding='utf-8')
     account_page = page('账号与权限', '申请与管理网站模块访问', 'account', account_body, 2)
-    account_page = account_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/site-account.js" defer></script></head>')
+    account_page = account_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/site-account.js?v=20261011-access2h" defer></script></head>')
     pages[out / 'tools/account/index.html'] = account_page
     game_body = protect((root / 'tools/games.html').read_text(encoding='utf-8'), 'games')
     game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2)
