@@ -158,6 +158,59 @@
 唱一句你会的歌，跑调也算完成。
 给自己设计一个三秒钟的出场动作。
 用三个表情演出：困了、饿了、放假了。`);
+ add('truth',4,'all',`你最典型的一次“嘴上说不在乎，回家越想越气”是什么？
+你有没有发过一条只想让某个人看到的朋友圈？内容是什么？
+你有没有撤回消息后，假装什么都没发生？原本想说什么？
+你最想吐槽的一种暧昧操作是什么？你自己做过吗？
+你有没有故意说“你忙吧”，其实想听“我想陪你”？
+你有没有看见对方在线却没回复，脑补过一整部连续剧？
+你最容易在哪种场景里吃醋，却不好意思承认？
+你有没有明明很想见面，却说“看你方便”？当时在装什么？
+有人对你忽冷忽热时，你会追问、装冷淡，还是直接退出？
+你曾经给喜欢的人找过最离谱的借口是什么？
+你最想删掉的一次恋爱黑历史是什么？只讲愿意公开的部分。
+你有没有故意试探别人是不是在意你？试探方式是什么？
+你有没有把聊天截图给朋友分析？朋友的分析有多离谱？不用展示截图。
+如果你的感情经历是连续剧，哪一集最值得观众发弹幕？
+你有没有“我绝不主动”说完不到一天就主动了？发生了什么？
+你最讨厌哪种“假装无意”的撩法，但又确实容易上钩？`);
+ add('truth',4,'couple',`你有没有故意对老公冷淡，等他自己发现哪里不对？后来发现了吗？
+你们争论时，你哪句“随便”其实一点都不随便？
+你曾经误会老公的哪件事，脑补出一场大戏？
+你有没有对朋友吐槽老公，转头又觉得他挺可爱？说一个小例子。
+你最想给老公贴哪张恋综标签：嘴硬、迟钝、直球还是行动派？举证。只需你回答。`);
+ add('truth',4,'guest',`给你和{partner}最近的互动起个热搜标题，允许夸张，但要解释真实依据。
+{partner}哪次表现让你一度想多了？没有也可以直接说没有。
+如果{partner}说“我怕你误会”，你第一反应会是什么？
+你有没有试图从{partner}的一句话里分析好感？当时怎么解读的？
+如果明天{partner}不主动找你，你会主动吗？别给标准答案。
+你更希望{partner}把话说清楚，还是暂时保留一点暧昧？
+你最想向{partner}澄清的一件事是什么？对方可以只听不答。
+你觉得自己和{partner}谁更会装淡定？拿一个互动细节作证。`);
+ add('dare',4,'all',`演一场20秒“我没吃醋”：台词必须有“你们聊得挺开心啊”。独角戏即可。
+把“哦，你忙吧”分别演成真体贴、假淡定、委屈三种版本。
+用恋综观察员的语气解说自己最近的一次心动，30秒。
+演一个“消息发出去后，开始反复检查措辞”的人，禁止真的发消息。
+把“我今天刚好路过”演成全场都能看穿的借口。
+给自己的一次恋爱脑行为起一个热搜标题，再用15秒解释。
+用反派登场的语气说“原来我才是最后一个知道的”，再切回正常语气。
+给自己颁一个“年度嘴硬奖”，即兴发表20秒获奖感言。
+演一场“闺蜜说别回，我说最后回一句”，你一人分饰两角。
+现场为你的恋爱黑历史录一段30秒口头预告片，不需要真的录音。
+分别用霸总、委屈小狗、冷静成年人三种语气说：“下次能不能早点告诉我？”
+演一场“表面随便，内心已经安排好约会”，一人分饰内心和本人。
+用三个表情演完：等消息、收到消息、发现只是广告。
+以恋综导演的口吻给自己安排一段心动剧情，只演你自己的部分。`);
+ add('dare',4,'couple',`独自演一场“老公终于发现我为什么不高兴”，包括你的内心旁白，不需要他配合。
+用20秒模仿自己跟老公说“没事”时的三种真实含义。
+给你们家最常出现的一场小争论起一个电视剧名，再读一段夸张预告。
+扮演婚恋观察员，点评自己最嘴硬的一个习惯，必须加一个例子。`);
+ add('dare',4,'guest',`面向{partner}演一段15秒“我才没有等你消息”；先说明是在演戏，对方不用回应。
+用恋综采访的口吻说：“今天{partner}最让我意外的是……”只讲真实小事。
+把“有空再约”改写成直球、傲娇、搞笑三个版本，对{partner}读出来。表演不代表承诺。
+独自演一段“见{partner}之前装淡定，见面之后笑得藏不住”的对比。
+给你和{partner}的互动写一句恋综预告台词，读出来并说明是虚构片段。
+用主持人语气问{partner}一个你确实好奇的轻松问题，对方可以跳过。不要追问。`);
  let level=2,turn=0,current=-1,type='',used=new Set(),last=null,clock=null,remaining=30,history=[];
  const names=()=>[0,1,2,3].map(i=>$('name'+i).value.trim()||['老公','老婆','男嘉宾','女嘉宾'][i]);
  const random=n=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return Math.floor(a[0]/4294967296*n);};
@@ -165,7 +218,7 @@
  function eligible(t,p){return rows.filter(q=>q.type===t&&(p===0?q.role==='husband':q.level===level&&(q.role==='all'||q.role===(p<2?'couple':'guest'))));}
  function choose(t,p){let pool=eligible(t,p).filter(q=>!used.has(q.id));if(!pool.length){eligible(t,p).forEach(q=>used.delete(q.id));pool=eligible(t,p).filter(q=>q.id!==last?.id);}const q=pool[random(pool.length)];used.add(q.id);return q;}
  function stopClock(){clearInterval(clock);clock=null;remaining=30;$('seconds').textContent='30';$('startTimer').textContent='开始计时';}
- function draw(t,keep=false){if(current<0)return;stopClock();if(!keep)turn++;type=t;last=choose(t,current);const text=render(last,current);$('kind').textContent=(t==='truth'?'真心话':'大冒险')+' / '+(current===0?'老公轻松题':['','暖场八卦','暧昧升温','劲爆直球'][level]);$('round').textContent='第 '+turn+' 回合';$('player').textContent=names()[current]+' · '+(current<2?'夫妻组':'朋友组');$('prompt').textContent=text;$('detail').textContent=t==='truth'?'讲愿意分享的真话，其他人可以追问一次，玩家可以不答。':'互动涉及搭档时，先问一句“可以吗？”；对方拒绝就用替代任务或换题。';$('timer').hidden=t!=='dare';$('swap').disabled=false;const card=document.querySelector('.question');card.classList.remove('pop');void card.offsetWidth;card.classList.add('pop');history.unshift(names()[current]+' · '+(t==='truth'?'真心话':'大冒险')+'：'+text);history=history.slice(0,60);paintHistory();}
+ function draw(t,keep=false){if(current<0)return;stopClock();if(!keep)turn++;type=t;last=choose(t,current);const text=render(last,current);$('kind').textContent=(t==='truth'?'真心话':'大冒险')+' / '+(current===0?'老公轻松题':['','暖场八卦','暧昧升温','劲爆直球','Drama 修罗场'][level]);$('round').textContent='第 '+turn+' 回合';$('player').textContent=names()[current]+' · '+(current<2?'夫妻组':'朋友组');$('prompt').textContent=text;$('detail').textContent=t==='truth'?'讲愿意分享的真话，其他人可以追问一次，玩家可以不答。':'互动涉及搭档时，先问一句“可以吗？”；对方拒绝就用替代任务或换题。';$('timer').hidden=t!=='dare';$('swap').disabled=false;const card=document.querySelector('.question');card.classList.remove('pop');void card.offsetWidth;card.classList.add('pop');history.unshift(names()[current]+' · '+(t==='truth'?'真心话':'大冒险')+'：'+text);history=history.slice(0,60);paintHistory();}
  function paintHistory(){$('history').replaceChildren(...history.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));$('count').textContent=history.length+' 题';}
  [0,1,2,3].forEach(i=>{try{const n=JSON.parse(localStorage.getItem('rain.party.names.v1')||'null');if(Array.isArray(n)&&typeof n[i]==='string')$('name'+i).value=n[i].slice(0,16);}catch{}$('name'+i).addEventListener('change',()=>{paintPlayers();try{localStorage.setItem('rain.party.names.v1',JSON.stringify(names()));}catch{}});});
  document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>{level=Number(b.dataset.level);document.querySelectorAll('[data-level]').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active));});if(current>=0&&type)draw(type,true);}));
