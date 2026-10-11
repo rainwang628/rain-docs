@@ -128,19 +128,49 @@
 和{partner}各完成一句：“下次见面，我希望……”；不需要给对方承诺。
 问{partner}“你愿意让我多了解你一点吗？”认真听答案，不追问理由。
 向全场介绍{partner}最吸引你的一个特点，不用替关系下定义。`);
+ add('truth',1,'husband',`老婆最近做过哪件小事，让你觉得挺暖心？
+你和老婆谁更爱赖床？举一个小例子。
+老婆最喜欢吃什么？一口气说出三样。
+你觉得老婆哪张照片最好看？描述一下就行。
+你们平时谁更容易把对方逗笑？
+如果今晚你请客，你最想带老婆吃什么？
+你最近一次被老婆夸，是因为什么？
+说一个只有你知道的老婆的小可爱习惯。
+你们一起看过最有意思的电影或电视剧是什么？
+如果明天不用上班，你最想怎么过？
+你最拿手的一道菜是什么？老婆怎么评价？
+你第一次见老婆时，觉得她是什么性格？
+你今天对老婆最满意的一件事是什么？
+你们家谁更擅长找东西？谁经常喊“我那个呢”？
+你给老婆买过最实用的一件东西是什么？
+老婆最近想去哪里玩？你记得吗？`);
+ add('dare',1,'husband',`用一句话夸老婆，不能只说“好看”。
+给老婆比一个爱心，姿势随你。
+用三个词介绍老婆的优点。
+用播音员的语气说：“今天这局，我负责轻松。”
+做一个你最拿手的搞笑表情，保持三秒。
+模仿自己早上不想起床的样子。
+用一句土味情话逗老婆笑，笑场也算完成。
+给今晚的四人聚会起一个搞笑名字。
+用五秒钟表演“我终于下班了”。
+对老婆说一句“今天辛苦了”，再说一个具体原因。
+以餐厅服务员的语气，问老婆想吃点什么。
+唱一句你会的歌，跑调也算完成。
+给自己设计一个三秒钟的出场动作。
+用三个表情演出：困了、饿了、放假了。`);
  let level=2,turn=0,current=-1,type='',used=new Set(),last=null,clock=null,remaining=30,history=[];
  const names=()=>[0,1,2,3].map(i=>$('name'+i).value.trim()||['老公','老婆','男嘉宾','女嘉宾'][i]);
  const random=n=>{const a=new Uint32Array(1);crypto.getRandomValues(a);return Math.floor(a[0]/4294967296*n);};
  const render=(q,p)=>q.text.replaceAll('{partner}',names()[p^1]);
- function eligible(t,p){return rows.filter(q=>q.type===t&&q.level===level&&(q.role==='all'||q.role===(p<2?'couple':'guest')));}
+ function eligible(t,p){return rows.filter(q=>q.type===t&&(p===0?q.role==='husband':q.level===level&&(q.role==='all'||q.role===(p<2?'couple':'guest'))));}
  function choose(t,p){let pool=eligible(t,p).filter(q=>!used.has(q.id));if(!pool.length){eligible(t,p).forEach(q=>used.delete(q.id));pool=eligible(t,p).filter(q=>q.id!==last?.id);}const q=pool[random(pool.length)];used.add(q.id);return q;}
  function stopClock(){clearInterval(clock);clock=null;remaining=30;$('seconds').textContent='30';$('startTimer').textContent='开始计时';}
- function draw(t,keep=false){if(current<0)return;stopClock();if(!keep)turn++;type=t;last=choose(t,current);const text=render(last,current);$('kind').textContent=(t==='truth'?'真心话':'大冒险')+' / '+['','暖场八卦','暧昧升温','劲爆直球'][level];$('round').textContent='第 '+turn+' 回合';$('player').textContent=names()[current]+' · '+(current<2?'夫妻组':'朋友组');$('prompt').textContent=text;$('detail').textContent=t==='truth'?'讲愿意分享的真话，其他人可以追问一次，玩家可以不答。':'互动涉及搭档时，先问一句“可以吗？”；对方拒绝就用替代任务或换题。';$('timer').hidden=t!=='dare';$('swap').disabled=false;const card=document.querySelector('.question');card.classList.remove('pop');void card.offsetWidth;card.classList.add('pop');history.unshift(names()[current]+' · '+(t==='truth'?'真心话':'大冒险')+'：'+text);history=history.slice(0,60);paintHistory();}
+ function draw(t,keep=false){if(current<0)return;stopClock();if(!keep)turn++;type=t;last=choose(t,current);const text=render(last,current);$('kind').textContent=(t==='truth'?'真心话':'大冒险')+' / '+(current===0?'老公轻松题':['','暖场八卦','暧昧升温','劲爆直球'][level]);$('round').textContent='第 '+turn+' 回合';$('player').textContent=names()[current]+' · '+(current<2?'夫妻组':'朋友组');$('prompt').textContent=text;$('detail').textContent=t==='truth'?'讲愿意分享的真话，其他人可以追问一次，玩家可以不答。':'互动涉及搭档时，先问一句“可以吗？”；对方拒绝就用替代任务或换题。';$('timer').hidden=t!=='dare';$('swap').disabled=false;const card=document.querySelector('.question');card.classList.remove('pop');void card.offsetWidth;card.classList.add('pop');history.unshift(names()[current]+' · '+(t==='truth'?'真心话':'大冒险')+'：'+text);history=history.slice(0,60);paintHistory();}
  function paintHistory(){$('history').replaceChildren(...history.map(text=>{const li=document.createElement('li');li.textContent=text;return li;}));$('count').textContent=history.length+' 题';}
  [0,1,2,3].forEach(i=>{try{const n=JSON.parse(localStorage.getItem('rain.party.names.v1')||'null');if(Array.isArray(n)&&typeof n[i]==='string')$('name'+i).value=n[i].slice(0,16);}catch{}$('name'+i).addEventListener('change',()=>{paintPlayers();try{localStorage.setItem('rain.party.names.v1',JSON.stringify(names()));}catch{}});});
  document.querySelectorAll('[data-level]').forEach(b=>b.addEventListener('click',()=>{level=Number(b.dataset.level);document.querySelectorAll('[data-level]').forEach(x=>{const active=x===b;x.classList.toggle('active',active);x.setAttribute('aria-pressed',String(active));});if(current>=0&&type)draw(type,true);}));
  function paintPlayers(){document.querySelectorAll('[data-player]').forEach(b=>{const p=Number(b.dataset.player);b.querySelector('span').textContent=names()[p];b.setAttribute('aria-pressed',String(p===current));b.classList.toggle('selected',p===current);});}
- function selectPlayer(p){stopClock();current=p;last=null;type='';paintPlayers();$('truth').disabled=false;$('dare').disabled=false;$('mix').disabled=false;$('swap').disabled=true;$('timer').hidden=true;$('kind').textContent='已选玩家 · 等待抽题';$('player').textContent=names()[p]+' · '+(p<2?'夫妻组':'朋友组');$('prompt').textContent='轮到 '+names()[p]+' 交代一下';$('detail').textContent='选真心话、大冒险，或者随机抽一题。抽题后仍保持选中这个人。';}
+ function selectPlayer(p){stopClock();current=p;last=null;type='';paintPlayers();$('truth').disabled=false;$('dare').disabled=false;$('mix').disabled=false;$('swap').disabled=true;$('timer').hidden=true;$('kind').textContent='已选玩家 · 等待抽题';$('player').textContent=names()[p]+' · '+(p<2?'夫妻组':'朋友组');$('prompt').textContent='轮到 '+names()[p]+' 交代一下';$('detail').textContent=p===0?'给老公准备了简单题：聊日常、夸老婆、做个搞笑动作。三个档位都使用轻松题。':'选真心话、大冒险，或者随机抽一题。抽题后仍保持选中这个人。';}
  document.querySelectorAll('[data-player]').forEach(b=>b.addEventListener('click',()=>selectPlayer(Number(b.dataset.player))));
  $('pickRandom').onclick=()=>selectPlayer(random(4));paintPlayers();
  $('truth').onclick=()=>draw('truth');$('dare').onclick=()=>draw('dare');$('mix').onclick=()=>draw(random(2)?'truth':'dare');$('swap').onclick=()=>draw(type,true);
