@@ -22,6 +22,7 @@
     const login=document.getElementById('account-link');if(login)login.textContent=state.user?'已登录':'登录';
     const protectedPage=document.querySelector('[data-protected-module]'),gate=document.getElementById('module-gate');
     if(protectedPage){const allowed=state.allowed.includes(protectedPage.dataset.protectedModule);protectedPage.hidden=!allowed;if(gate){gate.hidden=allowed;const text=gate.querySelector('[data-gate-message]');if(text)text.textContent=!state.ready?'正在验证访问权限…':state.error?'权限服务尚未启用或暂时不可用。请在账号页面查看配置说明。':!state.user?'请先登录网站账号。':!state.approved?'你的账号正在等待网站主人确认。':'你尚未获得此模块的访问权限，请联系网站主人。';}}
+    if(gate?.hasAttribute('data-owner-gate')){gate.hidden=state.ready&&state.owner;const msg=gate.querySelector('[data-gate-message]');if(msg)msg.textContent=!state.ready?'正在验证访问权限…':state.error?'权限校验失败，请刷新页面或查看账号状态。':!state.user?'请先登录网站账号。':!state.owner?'此页面仅对网站主人开放。':'';}
     window.dispatchEvent(new CustomEvent('rain:access',{detail:state}));
   }
   function refreshAccess(session,force=false){
