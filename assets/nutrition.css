@@ -5,9 +5,9 @@
 .n-week-head h2{font-size:20px;margin:0 0 3px}.n-week-head p{margin:0}
 .n-week-controls{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .n-week-controls button{padding:6px 11px}.n-week-controls #week-label{font-size:14px;font-weight:650;min-width:104px;text-align:center}
-.n-week-chart{width:100%;margin-top:12px}.n-week-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.n-week-chart{width:100%;max-width:100%;min-width:0;margin-top:12px;overflow:hidden}.n-week-chart svg{display:block;width:100%;max-width:100%;min-width:0;height:auto;overflow:visible}
 .n-week-details{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:5px;margin-top:10px}
 .week-day{padding:7px 3px;text-align:center;border:1px solid var(--line);border-radius:8px;font-size:12px}
 .week-day span,.week-day strong{display:block}.week-day strong{font-size:12px;white-space:nowrap}
 .n-week-summary{font-weight:650;font-size:14px;margin:14px 0 4px}
-@media(max-width:650px){.n-weekly{padding:12px}.n-week-details{grid-template-columns:repeat(4,minmax(0,1fr))}.n-week-controls{width:100%}.n-week-head h2{font-size:18px}.n-week-chart{overflow-x:auto}.n-week-chart svg{min-width:360px}}
+@media(max-width:650px){.n-weekly{padding:12px}.n-week-details{grid-template-columns:repeat(4,minmax(0,1fr))}.n-week-controls{width:100%}.n-week-head h2{font-size:18px}.n-week-chart{overflow:hidden;min-width:0}.n-week-chart svg{width:100%;max-width:100%;min-width:0}}
