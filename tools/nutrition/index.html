@@ -2,11 +2,12 @@
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>饮食管理 · rain 的文档</title>
 <link rel="stylesheet" href="../../assets/site.css">
-<link rel="stylesheet" href="../../assets/nutrition.css?v=1">
+<link rel="stylesheet" href="../../assets/nutrition.css?v=2">
 <script src="../../assets/usd-cloud-config.js" defer></script>
 <script src="../../assets/site-nav.js" defer></script>
 <script src="../../assets/site-access.js?v=20261018-gatefix" defer></script>
-<script src="../../assets/nutrition.js?v=1" defer></script></head>
+<script src="../../assets/nutrition.js?v=2" defer></script>
+<script src="../../assets/nutrition-weekly.js?v=1" defer></script></head>
 <body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><a href="../account/" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">☰ 菜单</button><nav class="nav" id="site-navigation"><a href="../../">首页</a><a href="../../categories/">文章分类</a><a href="../" aria-current="page">我的模块</a></nav></div></header>
 <main id="module-gate" data-owner-gate class="wrap"><h1>饮食管理</h1><p data-gate-message>正在验证访问权限…</p><p><a href="../account/">登录 / 查看权限</a></p></main>
 <div data-owner hidden><main class="wrap nutrition">
@@ -17,6 +18,13 @@
 <section id="tab-journal" class="n-section">
 <div class="n-toolbar"><label>日期 <input type="date" id="meal-date"></label><button type="button" id="new-meal" class="n-secondary">＋ 新增食物</button></div>
 <div class="n-stats" id="daily-stats"></div><p class="n-hint">未填写的营养值表示未知，不按 0 估算。当天未记录的餐次不等于没吃。</p>
+<section class="n-weekly" aria-labelledby="weekly-heading">
+<div class="n-week-head"><div><h2 id="weekly-heading">每周能量趋势</h2><p class="n-hint">按周一至周日汇总已记录热量（kcal）</p></div><div class="n-week-controls"><button type="button" id="week-prev" class="n-secondary" aria-label="上一周">‹</button><span id="week-label" aria-live="polite"></span><button type="button" id="week-next" class="n-secondary" aria-label="下一周">›</button><button type="button" id="week-today" class="n-secondary">本周</button></div></div>
+<div id="week-chart" class="n-week-chart" aria-live="polite"><p class="n-hint">正在加载周报…</p></div>
+<div id="week-details" class="n-week-details"></div>
+<p id="week-summary" class="n-week-summary"></p>
+<p class="n-hint">浅绿色区域：每日目标 1800–2000 kcal。未记录的日期留空，不按 0 计算；带 * 的日期存在热量未知项，仅显示已知部分。记录不完整时，图上数值不代表当天实际总摄入。</p>
+</section>
 <div id="meal-list"></div>
 </section>
 <section id="tab-foods" class="n-section" hidden>
