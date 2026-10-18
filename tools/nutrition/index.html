@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>饮食管理 · rain 的文档</title>
+<link rel="stylesheet" href="../../assets/site.css">
+<link rel="stylesheet" href="../../assets/nutrition.css?v=1">
+<script src="../../assets/usd-cloud-config.js" defer></script>
+<script src="../../assets/site-nav.js" defer></script>
+<script src="../../assets/site-access.js" defer></script>
+<script src="../../assets/nutrition.js?v=1" defer></script></head>
+<body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><a href="../account/" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">☰ 菜单</button><nav class="nav" id="site-navigation"><a href="../../">首页</a><a href="../../categories/">文章分类</a><a href="../" aria-current="page">我的模块</a></nav></div></header>
+<main id="module-gate" class="wrap"><h1>饮食管理</h1><p data-gate-message>正在验证访问权限…</p><p><a href="../account/">登录 / 查看权限</a></p></main>
+<div data-owner hidden><main class="wrap nutrition">
+<div class="crumb"><a href="../../">首页</a> / <a href="../">我的模块</a> / 饮食管理</div>
+<div class="nutrition-head"><div><div class="eyebrow">NUTRITION JOURNAL</div><h1>饮食管理</h1><p>只记录吃了什么与营养摄入。体重仍由苹果健康管理。</p></div><button type="button" id="reload" class="n-secondary">刷新数据</button></div>
+<p id="nutrition-status" role="status" aria-live="polite">准备连接…</p>
+<div class="n-tabs"><button type="button" class="active" data-tab="journal">每日饮食</button><button type="button" data-tab="foods">常用食物库</button><button type="button" data-tab="import">ChatGPT 快速导入</button></div>
+<section id="tab-journal" class="n-section">
+<div class="n-toolbar"><label>日期 <input type="date" id="meal-date"></label><button type="button" id="new-meal" class="n-secondary">＋ 新增食物</button></div>
+<div class="n-stats" id="daily-stats"></div><p class="n-hint">未填写的营养值表示未知，不按 0 估算。当天未记录的餐次不等于没吃。</p>
+<div id="meal-list"></div>
+</section>
+<section id="tab-foods" class="n-section" hidden>
+<div class="n-toolbar"><label>搜索食物 <input id="food-search" placeholder="名称或品牌"></label><button type="button" id="new-food" class="n-secondary">＋ 新增食物</button></div>
+<p class="n-hint">营养数据按所填基准重量记录。更新食物库不会更改已有饮食记录。</p><div id="food-list"></div>
+</section>
+<section id="tab-import" class="n-section" hidden>
+<h2>粘贴结构化饮食记录</h2><p class="n-hint">先让 ChatGPT 按下方格式输出 JSON，再粘贴预览。确认后一次写入。导入不自动覆盖已有记录，避免重复。</p>
+<textarea id="import-json" rows="11" spellcheck="false" placeholder='{"meal_date":"2026-10-18","meal_type":"lunch","items":[{"food_name":"酱牛肉","amount_g":100,"kcal":128,"protein_g":21.7,"fat_g":3.8,"sodium_mg":874}]}'></textarea>
+<div class="n-actions"><button type="button" id="preview-import">检查记录</button><button type="button" id="save-import" disabled>确认导入</button></div><div id="import-preview"></div>
+</section>
+<dialog id="nutrition-dialog"><form id="nutrition-form" method="dialog"><h2 id="form-heading">编辑</h2><input type="hidden" id="edit-id">
+<div id="meal-fields"><div class="n-fields"><label>日期<input id="edit-date" type="date"></label><label>餐次<select id="edit-type"><option value="breakfast">早餐</option><option value="lunch">午餐</option><option value="dinner">晚餐</option><option value="snack">加餐</option></select></label></div>
+<label>从食物库选择（可选）<select id="edit-food-id"><option value="">手动输入</option></select></label>
+</div>
+<div class="n-fields"><label>食物名称<input id="edit-name" maxlength="120" required></label><label>品牌<input id="edit-brand" maxlength="120"></label><label id="amount-label">食用重量（克）<input id="edit-amount" type="number" min=".001" step="any" required></label></div>
+<div class="n-fields"><label>热量 kcal<input id="edit-kcal" type="number" min="0" step="any"></label><label>蛋白质 g<input id="edit-protein" type="number" min="0" step="any"></label><label>脂肪 g<input id="edit-fat" type="number" min="0" step="any"></label><label>碳水 g<input id="edit-carbs" type="number" min="0" step="any"></label><label>钠 mg<input id="edit-sodium" type="number" min="0" step="any"></label></div>
+<label id="note-label">备注 / 来源<textarea id="edit-note" rows="2"></textarea></label>
+<div class="n-actions"><button type="submit" id="submit-edit">保存</button><button type="button" id="cancel-edit" class="n-secondary">取消</button></div></form></dialog>
+</main></div><footer class="footer">rain 的文档 · 饮食记录</footer></body></html>
