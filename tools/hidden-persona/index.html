@@ -18,6 +18,42 @@
 
 .share-modal{text-align:center}.share-modal h2{font-size:20px;color:#553565;margin:2px 0 8px}.share-hint{font-size:12px;color:#887791;line-height:1.75;margin:10px 0}.share-modal img{display:block;width:min(100%,340px);height:auto;max-height:54vh;object-fit:contain;border:1px solid #e6d6ed;border-radius:16px;margin:12px auto;box-shadow:0 12px 35px #68417822;user-select:auto;-webkit-touch-callout:default}.share-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}.share-buttons button{padding:12px 9px;font-size:13px;min-height:48px}@media(max-width:370px){.share-buttons{grid-template-columns:1fr}}
 
+
+/* V3: 手机答题固定操作栏，选择时不再整页重绘 */
+.quiz{padding-bottom:135px}
+.quiz-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:30;width:min(620px,calc(100vw - 28px));margin:0;padding:10px;display:flex;gap:10px;align-items:stretch;border-radius:20px;border:1px solid #e5d5ec;background:rgba(255,255,255,.97);box-shadow:0 12px 38px #5736712d;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.quiz-nav>.ghost,.quiz-nav>.primary{flex:1;min-width:0;min-height:52px}
+.quiz .quiz-tip{padding:8px 0 22px}
+@media(max-width:420px){.quiz-nav{width:calc(100vw - 20px);padding:8px;border-radius:17px}.quiz-nav>.ghost,.quiz-nav>.primary{padding:11px 7px;font-size:14px}.question-card{margin-top:12px;padding:18px 15px}.q-icon{padding:4px 0 8px;font-size:27px}.q-hint{margin-bottom:16px}.answer{padding:12px 11px;min-height:52px}}
+/* V3: 付费报告的可视化与内容结构 */
+.dual-view{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.dual-card{padding:17px 13px;border-radius:18px;background:#f6eafb;border:1px solid #e9d8f4}
+.dual-card:last-child{background:#f0e9f9}
+.dual-card small{display:block;color:#9875ac;font-size:11px;font-weight:800;letter-spacing:1px}
+.dual-card strong{display:block;color:#523166;font-size:18px;margin-top:5px}
+.dual-card p{font-size:12px;line-height:1.7;margin-top:5px}
+.report-intro{background:linear-gradient(125deg,#473459,#845d96);border-radius:22px;color:#fff;padding:25px 20px;margin:18px 0 6px;box-shadow:0 14px 35px #68448622}
+.report-intro small{color:#e7c8e9;letter-spacing:1.8px;font-size:10px}
+.report-intro h2{color:#fff;margin:5px 0;font-size:22px}
+.report-intro p{color:#f8eafd;font-size:13px;line-height:1.8}
+.report-kicker{display:inline-block;font-size:11px;font-weight:850;color:#a978c0;letter-spacing:1.5px;margin-bottom:6px}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.insight{background:#faf5fd;border:1px solid #eee0f3;border-radius:15px;padding:14px}
+.insight strong{display:block;color:#65417f;font-size:13px}
+.insight p{font-size:12px;margin-top:5px}
+.story-card{background:#f9f3fc;border-radius:16px;padding:16px;margin-top:10px;border-left:3px solid #c18ed9}
+.story-card strong{display:block;font-size:13px;color:#714a83}
+.story-card p{margin-top:5px}
+.report-callout{background:linear-gradient(115deg,#f8effb,#f3eefb);border-radius:15px;padding:16px;color:#765387;margin:14px 0;border:1px solid #ead8ef;font-size:14px;line-height:1.85}
+.guide-list{display:grid;gap:9px;margin:13px 0}
+.guide-row{display:flex;align-items:flex-start;gap:12px;padding:14px;background:#fbf7fd;border-radius:13px}
+.guide-row b{color:#a579b6;font-size:18px}
+.guide-row p{margin:0!important}
+.report-summary{border-radius:18px;background:#3f2c54;color:white;padding:22px;margin:12px 0;text-align:center}
+.report-summary p{color:#f5e8ff;font-size:16px}
+.report-summary small{color:#dec9e9;font-size:11px}
+@media(max-width:370px){.dual-view,.insight-grid{grid-template-columns:1fr}}
+
 </style>
   
 </head>
@@ -66,7 +102,7 @@ const types={
 };
 const dims={warm:['对外亲和','更热情','更克制'],lead:['内在主导','更主动','更随性'],feel:['情绪感知','更细腻','更冷静'],bound:['边界意识','更清晰','更包容']};
 const KEY='paradox-lab-quiz-v1';
-let answers=Array(questions.length).fill(null), current=0, view='home', showFull=false;
+let answers=Array(questions.length).fill(null), current=0, view='home', showFull=false, advanceTimer=null;
 const app=document.getElementById('app');
 function readSaved(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s?.version===1 && Array.isArray(s.answers)&&s.answers.length===questions.length){const a=s.answers.map(x=>Number.isInteger(x)&&x>=0&&x<=3?x:null);answers=a;current=Math.min(questions.length-1,Math.max(0,Number(s.current)||0));}}catch(e){/*private browsing may block storage*/}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify({version:1,answers,current}))}catch(e){/*no tracking*/}}
@@ -75,14 +111,34 @@ function home(){view='home';window.scrollTo(0,0);const started=answers.some(x=>x
   document.getElementById('startBtn').onclick=()=>{const missing=answers.findIndex(x=>x===null);if(missing===-1)result();else {current=started?Math.max(0,current):0;quiz();}};
   const restart=document.getElementById('restartBtn');if(restart)restart.onclick=()=>confirm('确认清空当前答题进度，重新开始吗？')&&reset();
 }
-function quiz(){view='quiz';window.scrollTo(0,0);const q=questions[current];app.innerHTML=`<div class="quiz"><div class="quiz-top"><span>正在发现你的另一面…</span><strong>${String(current+1).padStart(2,'0')} / ${questions.length}</strong></div><div class="progress" role="progressbar" aria-valuenow="${current+1}" aria-valuemin="1" aria-valuemax="12" aria-label="测评进度"><div style="width:${(current+1)/questions.length*100}%"></div></div><div class="question-card panel"><div class="q-icon">${q.icon}</div><div class="q-text">${q.q}</div><div class="q-hint">凭第一直觉选择，没有正确答案</div><div class="answers" role="group" aria-label="请选择最符合你的选项">${q.a.map((v,i)=>`<button class="answer ${answers[current]===i?'selected':''}" data-id="${i}" aria-pressed="${answers[current]===i}"><span class="letter">${'ABCD'[i]}</span>${v[0]}</button>`).join('')}</div></div><div class="quiz-nav"><button class="ghost" id="prevBtn">← ${current===0?'返回首页':'上一题'}</button><button class="primary" id="nextBtn" ${answers[current]===null?'disabled':''}>${current===questions.length-1?'查看我的结果':'下一题'} →</button></div><p class="quiz-tip">🔒 答题进度仅保存在你当前浏览器中，可随时返回继续。</p></div>`;
-  app.querySelectorAll('.answer').forEach(b=>b.onclick=()=>{answers[current]=Number(b.dataset.id);save();quizKeepScroll()});
-  document.getElementById('prevBtn').onclick=()=>{if(current===0)home();else{current--;save();quiz();}};
-  document.getElementById('nextBtn').onclick=()=>{if(answers[current]===null)return;if(current===questions.length-1){result()}else{current++;save();quiz()}};
+
+function quiz(){
+  if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}
+  view='quiz';window.scrollTo(0,0);
+  const q=questions[current];
+  app.innerHTML=`<div class="quiz"><div class="quiz-top"><span>正在发现你的另一面…</span><strong>${String(current+1).padStart(2,'0')} / ${questions.length}</strong></div><div class="progress" role="progressbar" aria-valuenow="${current+1}" aria-valuemin="1" aria-valuemax="12" aria-label="测评进度"><div style="width:${(current+1)/questions.length*100}%"></div></div><div class="question-card panel"><div class="q-icon">${q.icon}</div><div class="q-text">${q.q}</div><div class="q-hint">凭第一直觉选择，没有正确答案</div><div class="answers" role="group" aria-label="请选择最符合你的选项">${q.a.map((v,i)=>`<button class="answer ${answers[current]===i?'selected':''}" data-id="${i}" aria-pressed="${answers[current]===i}"><span class="letter">${'ABCD'[i]}</span>${v[0]}</button>`).join('')}</div></div><div class="quiz-nav" aria-label="题目导航"><button class="ghost" id="prevBtn">← ${current===0?'返回首页':'上一题'}</button><button class="primary" id="nextBtn" ${answers[current]===null?'disabled':''}>${current===questions.length-1?'查看我的结果':'下一题'} →</button></div><p class="quiz-tip">🔒 答题进度仅保存在当前设备 · 选择后自动进入下一题</p></div>`;
+  const buttons=[...app.querySelectorAll('.answer')];
+  buttons.forEach(b=>b.onclick=()=>{
+    answers[current]=Number(b.dataset.id);
+    save();
+    // 只修改按钮状态，不重建 DOM；避免 iOS 上自动回顶/跳屏。
+    for(const item of buttons){const yes=item===b;item.classList.toggle('selected',yes);item.setAttribute('aria-pressed',String(yes));}
+    document.getElementById('nextBtn').disabled=false;
+    b.blur();
+    const step=current;
+    if(advanceTimer!==null)clearTimeout(advanceTimer);
+    advanceTimer=setTimeout(()=>{
+      advanceTimer=null;
+      if(view!=='quiz'||current!==step)return;
+      if(current===questions.length-1)result();
+      else{current++;save();quiz();}
+    },480);
+  });
+  document.getElementById('prevBtn').onclick=()=>{if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}if(current===0)home();else{current--;save();quiz();}};
+  document.getElementById('nextBtn').onclick=()=>{if(answers[current]===null)return;if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}if(current===questions.length-1)result();else{current++;save();quiz();}};
 }
-function quizKeepScroll(){const y=window.scrollY;quiz();window.scrollTo(0,y)}
 function calculate(){const totals={warm:0,lead:0,feel:0,bound:0};questions.forEach((q,i)=>{const a=q.a[answers[i]];if(a){totals[q.axes[0]]+=a[1];totals[q.axes[1]]+=a[2];}});const scores={};for(const k of Object.keys(totals)){let value=50+totals[k]*3.5;if(totals[k]===0){const q=questions.find(x=>x.axes.includes(k));const first=q.a[answers[questions.indexOf(q)]],axisPos=q.axes.indexOf(k);value=50+(first[axisPos+1]>0?1:-1)}scores[k]=Math.round(Math.max(5,Math.min(95,value)))}const code=(scores.warm>=50?'1':'0')+(scores.lead>=50?'1':'0')+(scores.feel>=50?'1':'0');const confidence=Math.round(75+Math.min(20,(Math.abs(scores.warm-50)+Math.abs(scores.lead-50)+Math.abs(scores.feel-50))/7));return {code,type:types[code],scores,confidence};}
-function result(){if(answers.some(x=>x===null)){current=answers.findIndex(x=>x===null);return quiz()};view='result';window.scrollTo(0,0);const r=calculate();const t=r.type;const d=r.scores;app.innerHTML=`<div class="result"><p class="result-tag">✦ YOUR HIDDEN SIDE ✦</p><div class="result-hero"><p class="match-caption">你与这种反差人格的趣味匹配度</p><div class="match">${r.confidence}<small>%</small></div><h1 class="result-name">「${t.name}」</h1><p class="subtitle">${t.subtitle}</p><div class="chip-row"><span class="chip">${d.warm>=50?'亲和外表':'克制外表'}</span><span class="chip">${d.lead>=50?'隐藏主见':'自然随性'}</span><span class="chip">${d.feel>=50?'细腻敏感':'情绪冷静'}</span><span class="chip">${d.bound>=50?'有边界感':'心软包容'}</span></div><div class="quote">“${t.quote}”</div></div><div class="section panel"><h2>01 · 别人眼里的你，和真正的你</h2><p>${t.intro}</p></div><div class="section panel"><h2>02 · 你的四维选择倾向</h2><p>由本次题目选择生成的娱乐化倾向，不代表专业心理量表分数。</p>${Object.entries(dims).map(([k,v])=>`<div class="measure"><span>${v[0]}</span><div class="track"><div class="fill" style="width:${d[k]}%"></div></div><b>${d[k]}%</b></div>`).join('')}<p class="notice">数值越高越接近左侧所述维度的强度，并非优劣排名。</p></div><div class="btn-row"><button id="shareBtn" class="primary">✨ 生成独立分享图片</button><button id="copyBtn" class="ghost">🔗 复制邀请文案</button></div><div class="locked"><div class="locked-icon">🔮</div><h2>还有一些反差，连你自己都没发现</h2><p>解锁隐藏特质、关系模式、优点与盲区、三句人格签名</p><div class="price">¥0.99 <del>计划常规价 ¥2.99</del></div><p class="offer-explainer">首发计划：前 5000 名付费用户 ¥0.99；当前仅作演示，不显示剩余名额，也不制造倒计时。</p><button id="previewBtn" class="primary wide" style="margin-top:15px;max-width:370px">${showFull?'收起演示报告':'免费预览完整版（演示）'}</button><p class="offer-explainer">当前为产品演示版，尚未接入支付，不会向你收款。</p></div><div id="full" class="full-report ${showFull?'':'hidden'}"></div><div class="btn-row"><button class="ghost" id="homeBtn">返回首页</button><button class="ghost" id="againBtn">重新测一次</button></div></div>`;
+function result(){if(answers.some(x=>x===null)){current=answers.findIndex(x=>x===null);return quiz()};view='result';window.scrollTo(0,0);const r=calculate();const t=r.type;const d=r.scores;app.innerHTML=`<div class="result"><p class="result-tag">✦ YOUR HIDDEN SIDE ✦</p><div class="result-hero"><p class="match-caption">你与这种反差人格的趣味匹配度</p><div class="match">${r.confidence}<small>%</small></div><h1 class="result-name">「${t.name}」</h1><p class="subtitle">${t.subtitle}</p><div class="chip-row"><span class="chip">${d.warm>=50?'亲和外表':'克制外表'}</span><span class="chip">${d.lead>=50?'隐藏主见':'自然随性'}</span><span class="chip">${d.feel>=50?'细腻敏感':'情绪冷静'}</span><span class="chip">${d.bound>=50?'有边界感':'心软包容'}</span></div><div class="quote">“${t.quote}”</div></div><div class="section panel"><h2>01 · 别人眼里的你，和真正的你</h2><p>${t.intro}</p></div><div class="section panel"><h2>02 · 一眼看穿你的「双面模式」</h2><div class="dual-view"><div class="dual-card"><small>OTHERS SEE · 别人以为</small><strong>${d.warm>=50?'温柔好接近':'安静有距离'}</strong><p>${d.warm>=50?'你似乎总能照顾气氛，不愿让人难堪。':'你像一个不爱抢话的观察者，情绪不轻易外露。'}</p></div><div class="dual-card"><small>INSIDE YOU · 实际上</small><strong>${d.lead>=50?'内心很有主意':'自带自由节奏'}</strong><p>${d.lead>=50?'关键的选择里，你远比表面更有坚持。':'重要的时候，你会按照自己的步调认真决定。'}</p></div></div><p>${t.gap}</p></div><div class="section panel"><h2>03 · 你的四维选择倾向</h2><p>由本次题目选择生成的娱乐化倾向，不代表专业心理量表分数。</p>${Object.entries(dims).map(([k,v])=>`<div class="measure"><span>${v[0]}</span><div class="track"><div class="fill" style="width:${d[k]}%"></div></div><b>${d[k]}%</b></div>`).join('')}<p class="notice">数值越高越接近左侧所述维度的强度，并非优劣排名。</p></div><div class="btn-row"><button id="shareBtn" class="primary">✨ 生成独立分享图片</button><button id="copyBtn" class="ghost">🔗 复制邀请文案</button></div><div class="locked"><div class="locked-icon">🔮</div><h2>还有一些反差，连你自己都没发现</h2><p>解锁 9 个深度章节：场景剧本、双面分析、关系说明书、盲区与行动建议等</p><div class="price">¥0.99 <del>计划常规价 ¥2.99</del></div><p class="offer-explainer">首发计划：前 5000 名付费用户 ¥0.99；当前仅作演示，不显示剩余名额，也不制造倒计时。</p><button id="previewBtn" class="primary wide" style="margin-top:15px;max-width:370px">${showFull?'收起演示报告':'免费体验深度报告（公测）'}</button><p class="offer-explainer">当前为产品演示版，尚未接入支付，不会向你收款。</p></div><div id="full" class="full-report ${showFull?'':'hidden'}"></div><div class="btn-row"><button class="ghost" id="homeBtn">返回首页</button><button class="ghost" id="againBtn">重新测一次</button></div></div>`;
  document.getElementById('shareBtn').onclick=()=>openSharePreview(r);
  document.getElementById('copyBtn').onclick=copyShare;
  document.getElementById('previewBtn').onclick=()=>{showFull=!showFull;resultPreserve();};
