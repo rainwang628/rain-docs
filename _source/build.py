@@ -82,7 +82,7 @@ def page(title, description, current, body, depth, structured=None):
             f'<script src="{url("/assets/usd-cloud-config.js", depth)}" defer></script>'
             f'<script src="{url("/assets/site-categories.js", depth)}" defer></script>'
             f'<script src="{url("/assets/site-nav.js?v=20260930-1930", depth)}" defer></script>'
-            f'<script src="{url("/assets/site-access.js?v=20261011-access2h", depth)}" defer></script>'
+            f'<script src="{url("/assets/site-access.js?v=20261024-session-stable", depth)}" defer></script>'
             f'</head><body><header class="top"><div class="top-inner">'
             f'<a class="brand" href="{url("/", depth)}">rain / 文档</a>'
             f'<a href="{url("/tools/account/", depth)}" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航">{nav}</nav></div></header>'
@@ -203,7 +203,7 @@ def build(out):
         shutil.copyfile(root / f'tools/usd-purchases.{ext}', out / f'assets/usd-purchases.{ext}')
     cloud_body = protect((root / 'tools/usd-cloud.html').read_text(encoding='utf-8'), 'usd-purchases')
     cloud_page = page('美元购汇记录 · 云端版', '跨设备维护美元购买记录', 'tools', cloud_body, 2)
-    cloud_page = cloud_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><script src="../../assets/usd-cloud.js" defer></script></head>')
+    cloud_page = cloud_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><script src="../../assets/usd-cloud.js?v=20261024-session-stable" defer></script></head>')
     pages[out / 'tools/usd-cloud/index.html'] = cloud_page
     for filename in ('usd-cloud.js', 'usd-cloud-config.js'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
@@ -237,7 +237,7 @@ def build(out):
         shutil.copyfile(root / f'tools/truth-or-dare.{ext}', out / f'assets/truth-or-dare.{ext}')
     survey_body = (root / 'tools/surveys.html').read_text(encoding='utf-8')
     survey_page = page('问卷调研', '创建问卷、收集答卷与查询活动反馈', 'tools', survey_body, 2)
-    survey_page = survey_page.replace('</head>', '<link rel="stylesheet" href="../../assets/surveys.css?v=20261011-nickname"><script src="../../assets/surveys-model.js?v=20261011-nickname" defer></script><script src="../../assets/surveys.js?v=20261011-nickname" defer></script></head>')
+    survey_page = survey_page.replace('</head>', '<link rel="stylesheet" href="../../assets/surveys.css?v=20261024-survey-draft-fix"><script src="../../assets/surveys-model.js?v=20261024-survey-draft-fix" defer></script><script src="../../assets/surveys.js?v=20261024-survey-draft-fix" defer></script></head>')
     pages[out / 'tools/surveys/index.html'] = survey_page
     for filename in ('surveys.js', 'surveys-model.js', 'surveys.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)

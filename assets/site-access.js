@@ -2,7 +2,7 @@
   'use strict';
   const modules={'usd-purchases':'购买记录','article-categories':'分类管理','games':'小游戏'};
   const CACHE_KEY='rain.site.access.v2', CACHE_TTL=2*60*60*1000;
-  let client, state={user:null,ready:false,owner:false,approved:false,allowed:[],error:null}, generation=0, pending=null;
+  let client, state={user:null,ready:false,owner:false,approved:false,allowed:[],error:null}, generation=0, pending=null, lastPaintKey=null, authEventSequence=0;
   const config=window.RAIN_USD_CLOUD;
   const freshAccountPage=/\/tools\/account\/(?:index\.html)?$/.test(location.pathname);
   function clearCache(){try{sessionStorage.removeItem(CACHE_KEY);}catch{}}
@@ -23,7 +23,9 @@
     const protectedPage=document.querySelector('[data-protected-module]'),gate=document.getElementById('module-gate');
     if(protectedPage){const allowed=state.allowed.includes(protectedPage.dataset.protectedModule);protectedPage.hidden=!allowed;if(gate){gate.hidden=allowed;const text=gate.querySelector('[data-gate-message]');if(text)text.textContent=!state.ready?'正在验证访问权限…':state.error?'权限服务尚未启用或暂时不可用。请在账号页面查看配置说明。':!state.user?'请先登录网站账号。':!state.approved?'你的账号正在等待网站主人确认。':'你尚未获得此模块的访问权限，请联系网站主人。';}}
     if(gate?.hasAttribute('data-owner-gate')){gate.hidden=state.ready&&state.owner;const msg=gate.querySelector('[data-gate-message]');if(msg)msg.textContent=!state.ready?'正在验证访问权限…':state.error?'权限校验失败，请刷新页面或查看账号状态。':!state.user?'请先登录网站账号。':!state.owner?'此页面仅对网站主人开放。':'';}
-    window.dispatchEvent(new CustomEvent('rain:access',{detail:state}));
+    // Token renewal is not a page/account change. Notify only meaningful access changes.
+    const paintKey=JSON.stringify([state.user?.id||null,state.user?.email||null,state.ready,state.owner,state.approved,[...state.allowed].sort(),state.error||null]);
+    if(paintKey!==lastPaintKey){lastPaintKey=paintKey;window.dispatchEvent(new CustomEvent('rain:access',{detail:state}));}
   }
   function refreshAccess(session,force=false){
     if(!session){++generation;pending=null;clearCache();state={user:null,ready:true,owner:false,approved:false,allowed:[],error:null};paint();return Promise.resolve(state);}
@@ -69,9 +71,10 @@
       client=createClient(config.url,config.publishableKey,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
       client.auth.onAuthStateChange((event,session)=>{
         if(event==='PASSWORD_RECOVERY')window.RAIN_PENDING_RECOVERY=true;
-        if(event==='SIGNED_OUT'){refreshAccess(null);return;}
         if(event==='INITIAL_SESSION')return;
-        setTimeout(()=>refreshAccess(session,event==='USER_UPDATED'||freshAccountPage),0);
+        const sequence=++authEventSequence;
+        if(event==='SIGNED_OUT'){refreshAccess(null);return;}
+        setTimeout(()=>{if(sequence===authEventSequence)refreshAccess(session,event==='USER_UPDATED');},0);
       });
       const {data,error}=await client.auth.getSession();if(error)throw error;
       await refreshAccess(data.session,freshAccountPage);return client;

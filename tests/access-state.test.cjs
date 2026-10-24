@@ -1,0 +1,23 @@
+const fs=require('fs'),vm=require('vm'),assert=require('assert/strict');
+const emitted=[],cache=new Map();
+const src=fs.readFileSync(__dirname+'/../assets/site-access.js','utf8');
+const cut=src.indexOf('  // This cache controls static navigation only.');
+const window={RAIN_USD_CLOUD:{url:'https://test.supabase.co'},dispatchEvent:e=>emitted.push(e.detail)};
+const ctx={window,location:{pathname:'/tools/surveys/'},document:{querySelectorAll:()=>[],getElementById:()=>null,querySelector:()=>null},CustomEvent:function(n,o){this.detail=o.detail},sessionStorage:{getItem:k=>cache.get(k),setItem:(k,v)=>cache.set(k,v),removeItem:k=>cache.delete(k)},Date,JSON,Number,Promise};
+vm.runInNewContext(src.slice(0,cut)+`window.test={paint,refreshAccess,set(s){state=s;},client(c){client=c;}};})();`,ctx);
+const t=window.test,base={user:{id:'dad',email:'dad@example.test'},ready:true,owner:true,approved:true,allowed:['games','usd-purchases'],error:null};
+t.set(base);t.paint();t.set({...base,user:{...base.user},allowed:['usd-purchases','games']});t.paint();
+assert.equal(emitted.length,1,'same account and permission set notify once');
+t.set({...base,owner:false});t.paint();assert.equal(emitted.length,2,'permission change notifies');
+t.set({...base,user:{id:'mom',email:'mom@example.test'}});t.paint();assert.equal(emitted.length,3,'account switch notifies');
+(async()=>{
+ await t.refreshAccess(null);assert.equal(emitted.length,4,'logout notifies');
+ let resolve;const pendingUser=new Promise(r=>resolve=r);
+ const query={select(){return this},eq(){return this},maybeSingle(){return Promise.resolve({data:{is_owner:true,approved:true}})},then(fn){return Promise.resolve({data:[]}).then(fn)}};
+ t.client({auth:{getUser:()=>pendingUser},from:()=>query});
+ const pending=t.refreshAccess({user:base.user},true);
+ await t.refreshAccess(null);
+ resolve({data:{user:base.user}});await pending;
+ assert.equal(window.RAIN_SITE_ACCESS.user,null,'late permission response cannot undo logout');
+ console.log('PASS: unchanged access dedupe, permission changes, account switch, logout, stale async response');
+})().catch(e=>{console.error(e);process.exitCode=1});

@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   const KEY = 'rain.usd-purchases.v1';
-  let client, user, busy=false;
+  let client, user, busy=false, sessionApplied=false;
   const $ = id => document.getElementById(id);
   let rows = [], editing = null, writable = false, snapshot = null;
   const money = (n, currency) => new Intl.NumberFormat('zh-CN', { style: 'currency', currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
@@ -22,8 +22,10 @@
   const toDB=r=>({id:r.id,user_id:user.id,purchase_date:r.date,usd:r.usd,cny:r.cny,note:r.note,revision:crypto.randomUUID()});
   const fromDB=r=>({id:r.id,date:r.purchase_date,usd:Number(r.usd),cny:Number(r.cny),note:r.note,revision:r.revision});
   async function loadRows() {
+    const expected=user?.id;if(!expected)throw Error('请先登录');
     const all=[];
-    for(let from=0;;from+=1000){const {data,error}=await client.from('usd_purchases').select('*').eq('user_id',user.id).order('purchase_date',{ascending:false}).order('id').range(from,from+999);if(error)throw error;all.push(...data);if(data.length<1000)break;}
+    for(let from=0;;from+=1000){const {data,error}=await client.from('usd_purchases').select('*').eq('user_id',expected).order('purchase_date',{ascending:false}).order('id').range(from,from+999);if(error)throw error;all.push(...data);if(data.length<1000)break;}
+    if(user?.id!==expected)throw Error('登录账号已变化，请重新读取记录');
     return all.map(fromDB);
   }
   async function refresh() { if(!writable||busy)return;setBusy(true);try{rows=await loadRows();render();message('已读取最新云端记录。');}catch(e){message('读取云端失败：'+e.message,true);}finally{setBusy(false);} }
@@ -111,9 +113,10 @@
     finally{button.disabled=false;}
   };
   async function applySession(session){
-    if(session?.user?.id && user?.id === session.user.id)return;
-    const draft={date:$('date').value,usd:$('usd').value,cny:$('cny').value,note:$('note').value};
-    user=session?.user||null;writable=Boolean(user);$('login-form').hidden=writable;$('account').hidden=!writable;$('account-email').textContent=user?.email||'';rows=[];reset();if(draft.usd||draft.cny||draft.note){for(const key of ['date','usd','cny','note'])$(key).value=draft[key];rate();}render();$('migrate').disabled=!writable;setBusy(false);if(writable)await refresh();
+    const nextUser=session?.user||null;
+    if(sessionApplied&&(user?.id||null)===(nextUser?.id||null)){user=nextUser;return;}
+    sessionApplied=true;
+    user=session?.user||null;writable=Boolean(user);$('login-form').hidden=writable;$('account').hidden=!writable;$('account-email').textContent=user?.email||'';rows=[];reset();render();$('migrate').disabled=!writable;setBusy(false);if(writable)await refresh();
   }
   async function start(){
     const config=window.RAIN_USD_CLOUD||{};
