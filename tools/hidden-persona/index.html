@@ -302,27 +302,7 @@ function quiz(){if(!accessActive){home();return;}
   document.getElementById('nextBtn').onclick=()=>{if(answers[current]===null)return;if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}if(current===questions.length-1)result();else{current++;save();quiz();}};
 }
 function calculate(){const totals={warm:0,lead:0,feel:0,bound:0};questions.forEach((q,i)=>{const a=q.a[answers[i]];if(a){totals[q.axes[0]]+=a[1];totals[q.axes[1]]+=a[2];}});const scores={};for(const k of Object.keys(totals)){let value=50+totals[k]*3.5;if(totals[k]===0){const q=questions.find(x=>x.axes.includes(k));const first=q.a[answers[questions.indexOf(q)]],axisPos=q.axes.indexOf(k);value=50+(first[axisPos+1]>0?1:-1)}scores[k]=Math.round(Math.max(5,Math.min(95,value)))}const code=(scores.warm>=50?'1':'0')+(scores.lead>=50?'1':'0')+(scores.feel>=50?'1':'0');const confidence=Math.round(75+Math.min(20,(Math.abs(scores.warm-50)+Math.abs(scores.lead-50)+Math.abs(scores.feel-50))/7));return {code,type:types[code],scores,confidence};}
-const paidHooks={
-'110':{question:'为什么你明明会照顾人，却常常被默认应该负责到底？',promise:'找到温柔和承担责任之间的界线'},
-'111':{question:'为什么你平时最会打圆场，碰到某些事却突然很倔？',promise:'拆解你从随和切换到坚持的时刻'},
-'101':{question:'为什么你在人群里总能接住气氛，散场后却更想安静？',promise:'看见你热情背后的真实消耗'},
-'100':{question:'为什么你和谁都能聊，却不太容易真正向人敞开？',promise:'找到你对亲密与自由的平衡点'},
-'010':{question:'为什么你心里早有答案，别人却误以为你没想法？',promise:'看清你的沉默与行动之间的距离'},
-'011':{question:'为什么你明明很在乎，却总让别人以为你很淡定？',promise:'理解你的慢热表达和深度投入'},
-'001':{question:'为什么你表面若无其事，心里却能记住许多细节？',promise:'读懂你冷静外表下的感受力'},
-'000':{question:'为什么你常说顺其自然，遇到在意的事又特别坚定？',promise:'分清随性和真正的坚持'}
-};
-function renderHook(r){
- const h=paidHooks[r.code],p=questions[0].a[answers[0]][0],q=questions[4].a[answers[4]][0];
- return `<section class="conversion-hook panel"><span class="hook-eyebrow">🔍 从你亲自选的答案里，看到一处线索</span>
- <h2>${h.question}</h2>
- <p class="hook-note">我们把两个情境并排看看。它们不一定矛盾，但可能解释你在不同关系里的两种表现。</p>
- <div class="hook-choices"><div><small>初到朋友聚会，你选择</small><p>「${p}」</p></div><div><small>面对麻烦的请求，你选择</small><p>「${q}」</p></div></div>
- <p class="hook-question">这两种选择放在一起，你会怎么理解自己？</p>
- <p class="hook-answer">在完整报告里，我们会从你的具体答案出发，进一步展开：${h.promise}。</p>
- </section>`;
-}
-function result(){if(!accessActive){home();return;}showFull=true;if(answers.some(x=>x===null)){current=answers.findIndex(x=>x===null);return quiz()};view='result';window.scrollTo(0,0);const r=calculate();const t=r.type;const d=r.scores;app.innerHTML=`<div class="result"><p class="result-tag">✦ YOUR HIDDEN SIDE ✦</p><div class="result-hero"><p class="match-caption">你与这种反差人格的趣味匹配度</p><div class="match">${r.confidence}<small>%</small></div><h1 class="result-name">「${t.name}」</h1><p class="subtitle">${t.subtitle}</p><div class="chip-row"><span class="chip">${d.warm>=50?'亲和外表':'克制外表'}</span><span class="chip">${d.lead>=50?'隐藏主见':'自然随性'}</span><span class="chip">${d.feel>=50?'细腻敏感':'情绪冷静'}</span><span class="chip">${d.bound>=50?'有边界感':'心软包容'}</span></div><div class="quote">“${t.quote}”</div></div><div class="section panel quick-summary"><h2>你的第一层人格线索</h2><p>${t.intro.split('。')[0]}。</p><p class="quick-note">已包含在本次体验内，你可以保存自己的专属结果卡。</p></div><div class="btn-row"><button id="shareBtn" class="primary">✨ 生成我的专属人格卡</button><button id="copyBtn" class="ghost">🔗 邀请朋友也测测</button></div>${renderHook(r)}<div class="unlocked-notice">✅ 深度人格档案 · 以下内容均包含在你的体验资格中</div><div id="full" class="full-report ${showFull?'':'hidden'}"></div><div class="btn-row"><button class="ghost" id="homeBtn">返回首页</button><button class="ghost" id="againBtn">重新测一次</button></div></div>`;
+function result(){if(!accessActive){home();return;}showFull=true;if(answers.some(x=>x===null)){current=answers.findIndex(x=>x===null);return quiz()};view='result';window.scrollTo(0,0);const r=calculate();const t=r.type;const d=r.scores;app.innerHTML=`<div class="result"><p class="result-tag">✦ YOUR HIDDEN SIDE ✦</p><div class="result-hero"><p class="match-caption">你与这种反差人格的趣味匹配度</p><div class="match">${r.confidence}<small>%</small></div><h1 class="result-name">「${t.name}」</h1><p class="subtitle">${t.subtitle}</p><div class="chip-row"><span class="chip">${d.warm>=50?'亲和外表':'克制外表'}</span><span class="chip">${d.lead>=50?'隐藏主见':'自然随性'}</span><span class="chip">${d.feel>=50?'细腻敏感':'情绪冷静'}</span><span class="chip">${d.bound>=50?'有边界感':'心软包容'}</span></div><div class="quote">“${t.quote}”</div></div><div class="btn-row"><button id="shareBtn" class="primary">✨ 生成我的专属人格卡</button><button id="copyBtn" class="ghost">🔗 邀请朋友也测测</button></div><div class="unlocked-notice">✦ 你的专属深度人格档案</div><div id="full" class="full-report ${showFull?'':'hidden'}"></div><div class="btn-row"><button class="ghost" id="homeBtn">返回首页</button><button class="ghost" id="againBtn">重新测一次</button></div></div>`;
  document.getElementById('shareBtn').onclick=()=>openSharePreview(r);
  document.getElementById('copyBtn').onclick=copyShare;
 
