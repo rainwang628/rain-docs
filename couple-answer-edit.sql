@@ -31,6 +31,7 @@ begin
  if u is null then raise exception '请先登录'; end if;
  select * into c from couple_private.sessions where survey_id=p_survey for update;
  if not found or u not in(c.dad_id,c.mom_id) then raise exception '这份问卷仅限羊爸和羊妈访问'; end if;
+ if u is distinct from c.dad_id then raise exception '无权修改答卷' using errcode='42501'; end if;
  if c.purged_at is not null or c.expires_at<=now() then raise exception '答卷已到期，不能修改'; end if;
  select * into s from public.site_surveys where id=p_survey for share;
  if not s.is_open then raise exception '问卷已关闭，不能修改'; end if;

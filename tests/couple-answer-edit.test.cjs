@@ -15,3 +15,5 @@ input.value='supplement';t.saveCoupleDraft();assert.equal(t.draft().answers.q1,'
 $('couple-edit-cancel').onclick();assert.equal(t.editing(),false);assert.equal(t.draft(),undefined);assert.equal($('survey-form').hidden,true);assert.equal(data.responses[0].answers.q1,'own original');
 assert.equal(data.responses[1].answers.q1,'partner original');
 console.log('PASS: prefill own answer, save label, edit draft and revision, cancel without changing either answer');
+
+const momData={...data,role:'mom'};t.setup(momData);t.beginCoupleEdit(momData);assert.equal(t.editing(),false);assert.equal($('survey-description').hidden,true);console.log('PASS: mom cannot enter edit mode; description hidden');

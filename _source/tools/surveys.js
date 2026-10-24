@@ -76,7 +76,7 @@ function showComparison(data){
  const toolbar=el('div',undefined,'survey-toolbar');
  const refresh=el('button','刷新对方状态');refresh.type='button';refresh.onclick=()=>run(()=>loadCouple());
  toolbar.append(refresh);
- if(data.survey.is_open){const edit=el('button','修改我的答卷');edit.type='button';edit.onclick=()=>beginCoupleEdit(data);toolbar.append(edit);}
+ if(data.role==='dad'&&data.survey.is_open){const edit=el('button','修改我的答卷');edit.type='button';edit.onclick=()=>beginCoupleEdit(data);toolbar.append(edit);}
  if(data.role==='dad'){
  const pdf=el('button','导出 PDF');pdf.type='button';
  pdf.onclick=()=>run(async()=>{
@@ -103,7 +103,7 @@ function showComparison(data){
 
 function beginCoupleEdit(data,answers){
  const mine=data.responses.find(r=>r.role===data.role);
- if(!mine||!data.survey.is_open||data.expired)return;
+ if(data.role!=='dad'||!mine||!data.survey.is_open||data.expired)return;
  ++coupleTurn;clearInterval(couplePoll);
  coupleEditing=true;coupleEditRevision=mine.revision;
  $('couple-comparison')?.remove();
@@ -138,12 +138,12 @@ async function loadCouple(){
  const identity=document.querySelector('.survey-identity');
  identity.querySelector('span').textContent='当前填写身份';
  $('survey-nickname').textContent=data.role==='dad'?'🐑 羊爸':'🐑 羊妈';
- identity.querySelector('p').textContent='身份由登录账号确定。自己提交后才可查看双方答卷；提交后可修改本人答卷，修改不延长保留时间。双方完成后7天自动删除在线答卷。';
- if(data.submitted){showComparison(data);const mine=data.responses.find(r=>r.role===data.role);if(restored?.editing&&mine?.revision===restored.revision)beginCoupleEdit(data,restoredAnswers);else if(restored?.editing)status('答卷已在其他页面更新，已显示最新已保存版本。');}
+ identity.querySelector('p').textContent='身份由登录账号确定。自己提交后才可查看双方答卷；双方完成后7天自动删除在线答卷。';
+ if(data.submitted){showComparison(data);const mine=data.responses.find(r=>r.role===data.role);if(data.role==='dad'&&restored?.editing&&mine?.revision===restored.revision)beginCoupleEdit(data,restoredAnswers);else if(restored?.editing)status('答卷已在其他页面更新，已显示最新已保存版本。');}
  else{$('couple-comparison')?.remove();$('survey-submit').textContent='确认提交并查看对照';}
 }
 
-function makeFill(s,prefill=null){current=s;const intimate=s.questions.some(q=>q.theme==='couple');document.body.classList.toggle('couple-theme',intimate);if(!anonymousId){let storage;try{storage=localStorage;}catch{}anonymousId=M.submissionId(storage,draftKey()+'.submission',()=>crypto.randomUUID());}$('survey-nickname').textContent=M.nickname(anonymousId);$('survey-fill').hidden=false;$('survey-title').textContent=s.title;$('survey-description').textContent=intimate?s.description.replace('提交后不可修改','提交后可修改本人答卷，修改不延长保留时间').replace('不保存本地答案草稿','草稿临时保存在当前标签页，刷新可恢复；提交或退出账号时清除'):s.description;let draft={};try{if(!intimate)draft=JSON.parse(localStorage.getItem(draftKey())||'{}');else{localStorage.removeItem(draftKey());}}catch{}if(intimate)draft=readCoupleDraft(s);if(prefill)draft=prefill;const container=$('survey-questions');container.replaceChildren();
+function makeFill(s,prefill=null){current=s;const intimate=s.questions.some(q=>q.theme==='couple');document.body.classList.toggle('couple-theme',intimate);if(!anonymousId){let storage;try{storage=localStorage;}catch{}anonymousId=M.submissionId(storage,draftKey()+'.submission',()=>crypto.randomUUID());}$('survey-nickname').textContent=M.nickname(anonymousId);$('survey-fill').hidden=false;$('survey-title').textContent=s.title;$('survey-description').hidden=intimate;$('survey-description').textContent=intimate?'':s.description;let draft={};try{if(!intimate)draft=JSON.parse(localStorage.getItem(draftKey())||'{}');else{localStorage.removeItem(draftKey());}}catch{}if(intimate)draft=readCoupleDraft(s);if(prefill)draft=prefill;const container=$('survey-questions');container.replaceChildren();
 let visibleNumber=0;for(const [i,q] of s.questions.entries()){const group=el('fieldset');group.dataset.question=q.id;group.append(el('legend',`${q.followUpFor?'':(++visibleNumber)+'. '}${q.title}${q.required?' *':'（选填）'}`));if(q.followUpFor)group.classList.add('survey-followup');if(q.hint)group.append(el('p',q.hint,'survey-note'));const value=draft[q.id];
 if(q.type==='text'){const input=el('textarea');input.maxLength=2000;input.required=q.required;input.value=typeof value==='string'?value:'';input.setAttribute('aria-label',q.title);if(intimate){input.rows=3;input.placeholder=COUPLE_PLACEHOLDERS[q.id]||q.hint||'写下自己的真实想法和希望对方如何回应。';}group.append(input);if(Array.isArray(q.promptWords)&&q.promptWords.length){const prompts=el('details',undefined,'survey-prompts');prompts.append(el('summary','参考提示 · 需要时展开'),el('p','仅供启发，不用逐项回答，也不代表应该选择这些。','survey-note'),el('p',q.promptWords.join(' · '),'survey-prompt-words'));group.append(prompts);}}
 else if(q.type==='rating'){for(const item of q.options){const row=el('label',undefined,'survey-rating');row.append(el('span',item));const select=el('select');select.dataset.item=item;select.required=q.required;for(const [v,t] of [['','请选择'],['1','不喜欢'],['2','比较一般'],['3','还不错'],['4','很喜欢'],['0','没参加 / 记不清']]){const option=el('option',t);option.value=v;select.append(option);}select.value=value?.[item]||'';row.append(select);group.append(row);}}
