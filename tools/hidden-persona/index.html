@@ -54,6 +54,32 @@
 .report-summary small{color:#dec9e9;font-size:11px}
 @media(max-width:370px){.dual-view,.insight-grid{grid-template-columns:1fr}}
 
+
+/* V4: 优先呈现个性化好奇点，而不是在免费区复述完整报告 */
+.quick-summary p{font-size:14px;line-height:1.8}
+.quick-summary .quick-note{font-size:12px;color:#a390ad;margin-top:7px}
+.conversion-hook{padding:23px 20px;margin:12px 0 14px;border-color:#d9bee9;background:linear-gradient(150deg,#fffaff,#f5edfb);box-shadow:0 10px 34px #aa77be20}
+.hook-eyebrow{display:block;color:#a06bc0;font-weight:850;font-size:11px;letter-spacing:1px;margin-bottom:8px}
+.conversion-hook h2{font-size:21px;line-height:1.48;color:#503064;margin:0 0 10px}
+.conversion-hook p{font-size:13px;line-height:1.8}
+.hook-note{color:#85748c!important}
+.hook-choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px 0}
+.hook-choices>div{background:#fff;border:1px solid #ebd9f3;border-radius:14px;padding:13px 11px}
+.hook-choices small{display:block;color:#9e82ac;font-size:11px;margin-bottom:5px}
+.hook-choices p{color:#62436e;font-weight:650;line-height:1.65}
+.hook-question{font-weight:800!important;color:#5c3b72!important}
+.hook-answer{color:#735881!important}
+.value-wall{padding:25px 19px;border-style:solid;border-color:#e0c6ef;border-radius:22px}
+.value-wall h2{font-size:20px;line-height:1.5}
+.value-wall .paywall-lead{max-width:490px;margin:10px auto 14px;line-height:1.85}
+.value-sample{background:#fff;border:1px solid #ead8f0;padding:18px 15px;text-align:left;border-radius:16px;max-width:520px;margin:12px auto}
+.value-sample small{font-weight:800;color:#a079ad;font-size:11px}
+.value-sample p{color:#5d3d70;font-size:15px;line-height:1.85;margin:9px 0;font-weight:650}
+.value-sample span{font-size:12px;color:#96809f}
+.value-contents{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;max-width:520px;margin:15px auto}
+.value-contents p{margin:0;background:#f8f0fb;border-radius:10px;padding:11px 10px;font-size:12px;color:#79578b;line-height:1.6}
+@media(max-width:480px){.hook-choices,.value-contents{grid-template-columns:1fr}.conversion-hook h2{font-size:19px}.conversion-hook{padding:19px 16px}}
+
 </style>
   
 </head>
@@ -138,10 +164,40 @@ function quiz(){
   document.getElementById('nextBtn').onclick=()=>{if(answers[current]===null)return;if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}if(current===questions.length-1)result();else{current++;save();quiz();}};
 }
 function calculate(){const totals={warm:0,lead:0,feel:0,bound:0};questions.forEach((q,i)=>{const a=q.a[answers[i]];if(a){totals[q.axes[0]]+=a[1];totals[q.axes[1]]+=a[2];}});const scores={};for(const k of Object.keys(totals)){let value=50+totals[k]*3.5;if(totals[k]===0){const q=questions.find(x=>x.axes.includes(k));const first=q.a[answers[questions.indexOf(q)]],axisPos=q.axes.indexOf(k);value=50+(first[axisPos+1]>0?1:-1)}scores[k]=Math.round(Math.max(5,Math.min(95,value)))}const code=(scores.warm>=50?'1':'0')+(scores.lead>=50?'1':'0')+(scores.feel>=50?'1':'0');const confidence=Math.round(75+Math.min(20,(Math.abs(scores.warm-50)+Math.abs(scores.lead-50)+Math.abs(scores.feel-50))/7));return {code,type:types[code],scores,confidence};}
-function result(){if(answers.some(x=>x===null)){current=answers.findIndex(x=>x===null);return quiz()};view='result';window.scrollTo(0,0);const r=calculate();const t=r.type;const d=r.scores;app.innerHTML=`<div class="result"><p class="result-tag">✦ YOUR HIDDEN SIDE ✦</p><div class="result-hero"><p class="match-caption">你与这种反差人格的趣味匹配度</p><div class="match">${r.confidence}<small>%</small></div><h1 class="result-name">「${t.name}」</h1><p class="subtitle">${t.subtitle}</p><div class="chip-row"><span class="chip">${d.warm>=50?'亲和外表':'克制外表'}</span><span class="chip">${d.lead>=50?'隐藏主见':'自然随性'}</span><span class="chip">${d.feel>=50?'细腻敏感':'情绪冷静'}</span><span class="chip">${d.bound>=50?'有边界感':'心软包容'}</span></div><div class="quote">“${t.quote}”</div></div><div class="section panel"><h2>01 · 别人眼里的你，和真正的你</h2><p>${t.intro}</p></div><div class="section panel"><h2>02 · 一眼看穿你的「双面模式」</h2><div class="dual-view"><div class="dual-card"><small>OTHERS SEE · 别人以为</small><strong>${d.warm>=50?'温柔好接近':'安静有距离'}</strong><p>${d.warm>=50?'你似乎总能照顾气氛，不愿让人难堪。':'你像一个不爱抢话的观察者，情绪不轻易外露。'}</p></div><div class="dual-card"><small>INSIDE YOU · 实际上</small><strong>${d.lead>=50?'内心很有主意':'自带自由节奏'}</strong><p>${d.lead>=50?'关键的选择里，你远比表面更有坚持。':'重要的时候，你会按照自己的步调认真决定。'}</p></div></div><p>${t.gap}</p></div><div class="section panel"><h2>03 · 你的四维选择倾向</h2><p>由本次题目选择生成的娱乐化倾向，不代表专业心理量表分数。</p>${Object.entries(dims).map(([k,v])=>`<div class="measure"><span>${v[0]}</span><div class="track"><div class="fill" style="width:${d[k]}%"></div></div><b>${d[k]}%</b></div>`).join('')}<p class="notice">数值越高越接近左侧所述维度的强度，并非优劣排名。</p></div><div class="btn-row"><button id="shareBtn" class="primary">✨ 生成独立分享图片</button><button id="copyBtn" class="ghost">🔗 复制邀请文案</button></div><div class="locked"><div class="locked-icon">🔮</div><h2>还有一些反差，连你自己都没发现</h2><p>深度档案包含：情境剧本、人格地图、关系说明书、盲区与行动建议等</p><div class="price">¥0.99 <del>计划常规价 ¥2.99</del></div><p class="offer-explainer">首发计划：前 5000 名付费用户 ¥0.99；当前仅作演示，不显示剩余名额，也不制造倒计时。</p><button id="previewBtn" class="primary wide" style="margin-top:15px;max-width:370px">${showFull?'收起演示报告':'免费体验深度报告（公测）'}</button><p class="offer-explainer">当前为产品演示版，尚未接入支付，不会向你收款。</p></div><div id="full" class="full-report ${showFull?'':'hidden'}"></div><div class="btn-row"><button class="ghost" id="homeBtn">返回首页</button><button class="ghost" id="againBtn">重新测一次</button></div></div>`;
+const paidHooks={
+'110':{question:'为什么你明明会照顾人，却常常被默认应该负责到底？',promise:'找到温柔和承担责任之间的界线'},
+'111':{question:'为什么你平时最会打圆场，碰到某些事却突然很倔？',promise:'拆解你从随和切换到坚持的时刻'},
+'101':{question:'为什么你在人群里总能接住气氛，散场后却更想安静？',promise:'看见你热情背后的真实消耗'},
+'100':{question:'为什么你和谁都能聊，却不太容易真正向人敞开？',promise:'找到你对亲密与自由的平衡点'},
+'010':{question:'为什么你心里早有答案，别人却误以为你没想法？',promise:'看清你的沉默与行动之间的距离'},
+'011':{question:'为什么你明明很在乎，却总让别人以为你很淡定？',promise:'理解你的慢热表达和深度投入'},
+'001':{question:'为什么你表面若无其事，心里却能记住许多细节？',promise:'读懂你冷静外表下的感受力'},
+'000':{question:'为什么你常说顺其自然，遇到在意的事又特别坚定？',promise:'分清随性和真正的坚持'}
+};
+function renderHook(r){
+ const h=paidHooks[r.code],p=questions[0].a[answers[0]][0],q=questions[4].a[answers[4]][0];
+ return `<section class="conversion-hook panel"><span class="hook-eyebrow">🔍 从你亲自选的答案里，看到一处线索</span>
+ <h2>${h.question}</h2>
+ <p class="hook-note">我们把两个情境并排看看。它们不一定矛盾，但可能解释你在不同关系里的两种表现。</p>
+ <div class="hook-choices"><div><small>初到朋友聚会，你选择</small><p>「${p}」</p></div><div><small>面对麻烦的请求，你选择</small><p>「${q}」</p></div></div>
+ <p class="hook-question">这两种选择放在一起，你会怎么理解自己？</p>
+ <p class="hook-answer">在完整报告里，我们会从你的具体答案出发，进一步展开：${h.promise}。</p>
+ </section>`;
+}
+function result(){if(answers.some(x=>x===null)){current=answers.findIndex(x=>x===null);return quiz()};view='result';window.scrollTo(0,0);const r=calculate();const t=r.type;const d=r.scores;app.innerHTML=`<div class="result"><p class="result-tag">✦ YOUR HIDDEN SIDE ✦</p><div class="result-hero"><p class="match-caption">你与这种反差人格的趣味匹配度</p><div class="match">${r.confidence}<small>%</small></div><h1 class="result-name">「${t.name}」</h1><p class="subtitle">${t.subtitle}</p><div class="chip-row"><span class="chip">${d.warm>=50?'亲和外表':'克制外表'}</span><span class="chip">${d.lead>=50?'隐藏主见':'自然随性'}</span><span class="chip">${d.feel>=50?'细腻敏感':'情绪冷静'}</span><span class="chip">${d.bound>=50?'有边界感':'心软包容'}</span></div><div class="quote">“${t.quote}”</div></div><div class="section panel quick-summary"><h2>你的第一层人格线索</h2><p>${t.intro.split('。')[0]}。</p><p class="quick-note">人格结果和专属分享图都免费提供。</p></div><div class="btn-row"><button id="shareBtn" class="primary">✨ 免费生成我的人格卡</button><button id="copyBtn" class="ghost">🔗 邀请朋友也测测</button></div>${renderHook(r)}<div class="locked value-wall">
+ <span class="hook-eyebrow">THE STORY BEHIND YOUR TYPE</span>
+ <h2>人格标签只是开头，真正有趣的是「为什么」</h2>
+ <p class="paywall-lead">用你的 12 道选择，生成一份有具体情境、有对照、有建议的个人反差报告。</p>
+ <div class="value-sample"><small>报告片段预览 · 根据你的结果变化</small><p>「${t.gap.split('。')[0]}。」</p><span>后面还有你在友情、亲密关系和不同冲突情境中的表现。</span></div>
+ <div class="value-contents"><p>✓ 哪些真实选择，最能体现你的反差</p><p>✓ 为什么别人可能误读你的性格</p><p>✓ 关系里的舒适区、容易卡住的地方</p><p>✓ 具体到情境的行动建议与人格签名</p></div>
+ <div class="price">¥0.99 <del>拟定常规价 ¥2.99</del></div>
+ <p class="offer-explainer">预计前 5000 名付费用户享首发价。目前为产品公测，无须付费即可体验完整报告。</p>
+ <button id="previewBtn" class="primary wide" style="margin-top:15px;max-width:370px">${showFull?'收起完整报告':'🔓 免费试看完整报告（公测）'}</button>
+ <p class="offer-explainer">目前未接入支付，不会扣费；公测体验仅用于收集产品反馈。</p>
+ </div><div id="full" class="full-report ${showFull?'':'hidden'}"></div><div class="btn-row"><button class="ghost" id="homeBtn">返回首页</button><button class="ghost" id="againBtn">重新测一次</button></div></div>`;
  document.getElementById('shareBtn').onclick=()=>openSharePreview(r);
  document.getElementById('copyBtn').onclick=copyShare;
- document.getElementById('previewBtn').onclick=()=>{showFull=!showFull;resultPreserve();};
+ document.getElementById('previewBtn').onclick=()=>{showFull=!showFull;resultPreserve();if(showFull)document.getElementById('full')?.scrollIntoView({behavior:'smooth',block:'start'});};
  document.getElementById('homeBtn').onclick=home;
  document.getElementById('againBtn').onclick=()=>confirm('确定重新测试吗？现有选择将被清空。')&&reset();
  if(showFull)renderFull(r);
