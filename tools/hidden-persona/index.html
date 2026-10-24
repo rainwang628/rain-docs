@@ -193,39 +193,72 @@ function pill(ctx,text,x,y,w){
  ctx.fillStyle='#765688';ctx.textAlign='center';ctx.font='600 23px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(text,x+w/2,y+37);
 }
 async function makeShareImage(r){
- const W=1080,H=1440,canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
- const ctx=canvas.getContext('2d');if(!ctx)throw Error('你的浏览器暂不支持图片生成');
- const bg=ctx.createLinearGradient(0,0,W,H);bg.addColorStop(0,'#f1e4fb');bg.addColorStop(.47,'#fff6fa');bg.addColorStop(1,'#e9e5fc');
- ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
- for(const [x,y,r,c] of [[950,125,290,'#eed1ec'],[72,1040,310,'#ead4f5'],[870,1290,210,'#fbd9e7']]){
-   const g=ctx.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,c);g.addColorStop(1,'#ffffff00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
- }
- // 轻质感、不绑定个人站点；可直接发布为完整图片，而非手机截图。
- ctx.strokeStyle='#fffafc';ctx.lineWidth=7;rounded(ctx,42,45,W-84,H-90,38);ctx.stroke();
- ctx.strokeStyle='#d8c1e7';ctx.lineWidth=2;rounded(ctx,62,65,W-124,H-130,29);ctx.stroke();
- for(const [x,y,r] of [[160,170,11],[910,200,16],[140,600,8],[940,682,9],[160,1230,9],[897,1160,14]])star(ctx,x,y,r);
- ctx.textAlign='center';ctx.fillStyle='#9878a8';ctx.font='600 26px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('✦  反 差 实 验 室  ✦',W/2,174);
- ctx.font='500 25px Georgia,serif';ctx.fillStyle='#ac92b3';ctx.fillText('YOUR HIDDEN SIDE',W/2,215);
- ctx.fillStyle='#85609f';ctx.font='500 29px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('我的隐藏反差人格是',W/2,320);
- ctx.fillStyle='#472a58';ctx.font='bold 82px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(r.type.name,W/2,448);
- ctx.fillStyle='#826a90';ctx.font='27px "PingFang SC","Microsoft YaHei",sans-serif';wrapped(ctx,r.type.subtitle,W/2,511,840,40,2);
- ctx.fillStyle='#af78bb';ctx.font='bold 100px Georgia,serif';ctx.fillText(r.confidence+'%',W/2,672);
- ctx.fillStyle='#987ea4';ctx.font='25px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('人格趣味匹配指数',W/2,720);
- const tags=[r.scores.warm>=50?'外柔亲和':'外冷克制',r.scores.lead>=50?'内有主见':'随性自由',r.scores.feel>=50?'细腻敏感':'冷静理性'];
- const chipW=254,gap=18,total=chipW*3+gap*2,base=(W-total)/2;
- tags.forEach((t,i)=>pill(ctx,t,base+i*(chipW+gap),786,chipW));
- ctx.fillStyle='rgba(255,255,255,.84)';rounded(ctx,112,895,856,218,28);ctx.fill();
- ctx.strokeStyle='#e9d7eb';ctx.lineWidth=2;ctx.stroke();
- star(ctx,154,920,12,'#c799c8');star(ctx,930,1080,12,'#c799c8');
- ctx.fillStyle='#633e79';ctx.font='600 33px "PingFang SC","Microsoft YaHei",sans-serif';ctx.textAlign='center';wrapped(ctx,'“'+r.type.quote+'”',W/2,973,730,58,3);
- ctx.fillStyle='#6e4d80';ctx.font='bold 31px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('你，又是哪一种反差人格？',W/2,1220);
- ctx.fillStyle='#967da3';ctx.font='24px "PingFang SC","Microsoft YaHei",sans-serif';
- ctx.fillText('12 道题 · 8 种人格 · 免费参与',W/2,1274);
- ctx.font='20px "PingFang SC","Microsoft YaHei",sans-serif';
- const host=location.hostname && location.hostname!=='localhost' && location.hostname!=='127.0.0.1' ? location.hostname : '反差实验室 · 体验版';
- ctx.fillText(host,W/2,1322);
- ctx.fillText('原创娱乐测评 · 非专业心理诊断',W/2,1369);
- return await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('图片生成失败')),'image/png'));
+  // 结果卡完全在本地生成，不上传答题记录；这是分享卡，不是付费长报告。
+  const W=1080,H=1920,canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext('2d');if(!ctx)throw Error('当前浏览器暂不支持生成图片');
+  ctx.textBaseline='alphabetic';
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#ecdefb');bg.addColorStop(.50,'#fff9fb');bg.addColorStop(1,'#e7e1fa');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  for(const [x,y,radius,col] of [[960,75,400,'#e1beed'],[30,850,420,'#fce2ee'],[980,1730,440,'#cec4f5']]){
+    const g=ctx.createRadialGradient(x,y,20,x,y,radius);
+    g.addColorStop(0,col);g.addColorStop(1,'#ffffff00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();
+  }
+  ctx.fillStyle='rgba(255,255,255,.87)';rounded(ctx,45,40,990,1845,34);ctx.fill();
+  ctx.strokeStyle='#ead7f0';ctx.lineWidth=2;ctx.stroke();
+  // 品牌顶部
+  ctx.fillStyle='#a583b7';ctx.textAlign='center';ctx.font='700 28px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText('✦  反 差 实 验 室  ✦',540,133);
+  ctx.font='500 23px Georgia,serif';ctx.fillStyle='#b29abe';ctx.fillText('PARADOX PERSONALITY REPORT',540,171);
+  ctx.strokeStyle='#e4cdea';ctx.beginPath();ctx.moveTo(150,204);ctx.lineTo(930,204);ctx.stroke();
+  // 身份区
+  ctx.fillStyle='#8a6a9a';ctx.font='600 31px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('我的隐藏反差人格是',540,276);
+  ctx.fillStyle='#4e315f';ctx.font='bold 78px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(r.type.name,540,385);
+  ctx.fillStyle='#826f8d';ctx.font='28px "PingFang SC","Microsoft YaHei",sans-serif';
+  wrapped(ctx,r.type.subtitle,540,433,810,42,2);
+  // 中央匹配徽章
+  const glow=ctx.createRadialGradient(540,608,20,540,608,154);
+  glow.addColorStop(0,'#f6e4fa');glow.addColorStop(1,'#e4d2f600');
+  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(540,608,154,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle='#d9b9e9';ctx.lineWidth=4;ctx.beginPath();ctx.arc(540,608,117,0,Math.PI*2);ctx.stroke();
+  ctx.fillStyle='#9b68b6';ctx.font='bold 75px Georgia,serif';ctx.fillText(r.confidence+'%',540,620);
+  ctx.fillStyle='#876d98';ctx.font='24px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('趣味匹配指数',540,665);
+  const tags=[r.scores.warm>=50?'自然亲和':'慢热克制',r.scores.lead>=50?'内有主见':'随性自由',r.scores.feel>=50?'细腻感知':'冷静清醒'];
+  tags.forEach((t,i)=>pill(ctx,t,119+i*283,775,260));
+  // 金句卡
+  ctx.fillStyle='#f6eef9';rounded(ctx,110,866,860,146,20);ctx.fill();
+  ctx.fillStyle='#b287c5';ctx.textAlign='center';ctx.font='28px Georgia,serif';ctx.fillText('✦  MY PERSONALITY SIGNATURE  ✦',540,906);
+  ctx.fillStyle='#644374';ctx.font='600 33px "PingFang SC","Microsoft YaHei",sans-serif';
+  wrapped(ctx,'“'+r.type.quote+'”',540,952,755,44,2);
+  // 人前与内心：反差本身可视化
+  ctx.textAlign='left';ctx.font='bold 29px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillStyle='#50345f';
+  ctx.fillText('你的双面模式',115,1085);
+  rounded(ctx,110,1110,414,201,20);ctx.fillStyle='#f8f0fb';ctx.fill();
+  rounded(ctx,540,1110,430,201,20);ctx.fillStyle='#f0ebfa';ctx.fill();
+  ctx.fillStyle='#9e79b4';ctx.font='600 22px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('别人可能看到',140,1153);ctx.fillText('内心真正的你',570,1153);
+  ctx.fillStyle='#5f4072';ctx.font='bold 35px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText(r.scores.warm>=50?'容易亲近':'安静克制',140,1220);
+  ctx.fillText(r.scores.lead>=50?'坚定有主见':'自在有节奏',570,1220);
+  ctx.fillStyle='#896f98';ctx.font='23px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText(r.scores.warm>=50?'看起来很好商量':'不急着展示热情',140,1270);
+  ctx.fillText(r.scores.lead>=50?'重要事情有自己的方向':'喜欢掌控自己的步调',570,1270);
+  // 四维倾向：给分享图更强信息量
+  ctx.fillStyle='#50345f';ctx.font='bold 29px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('你的四维选择倾向',115,1382);
+  ctx.fillStyle='#a48ba9';ctx.font='20px "PingFang SC","Microsoft YaHei",sans-serif';ctx.textAlign='right';ctx.fillText('根据本次答题趣味计算',966,1382);
+  const measures=[['对外亲和',r.scores.warm],['内在主导',r.scores.lead],['情绪感知',r.scores.feel],['边界意识',r.scores.bound]];
+  measures.forEach(([label,val],i)=>{
+    const y=1440+i*75;
+    ctx.textAlign='left';ctx.fillStyle='#725985';ctx.font='25px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(label,122,y);
+    rounded(ctx,332,y-20,515,20,10);ctx.fillStyle='#eee2f0';ctx.fill();
+    rounded(ctx,332,y-20,Math.max(25,515*val/100),20,10);ctx.fillStyle=i%2?'#cf95bb':'#9777c0';ctx.fill();
+    ctx.textAlign='right';ctx.fillStyle='#6b4e7e';ctx.font='700 25px Georgia,serif';ctx.fillText(val+'%',951,y);
+  });
+  // 邀请文案：不需要截屏
+  ctx.strokeStyle='#ead5ee';ctx.beginPath();ctx.moveTo(125,1732);ctx.lineTo(955,1732);ctx.stroke();
+  ctx.fillStyle='#604275';ctx.textAlign='center';ctx.font='bold 32px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('你，又是哪一种反差人格？',540,1792);
+  ctx.fillStyle='#9b83a5';ctx.font='22px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('12 道题 · 8 种人格 · 免费测 · 保存你的专属卡',540,1833);
+  ctx.font='18px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('原创趣味测试，仅供娱乐，不构成心理诊断',540,1867);
+  return await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('图片生成失败')),'image/png'));
 }
 function imageDownload(blob,name){
  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
@@ -233,10 +266,10 @@ function imageDownload(blob,name){
 async function openSharePreview(r){
  try{
   const btn=document.getElementById('shareBtn');if(btn){btn.disabled=true;btn.textContent='正在生成高清图片…'}
-  const blob=await makeShareImage(r);const filename='反差人格-'+r.type.name+'.png';
+  const blob=await makeShareImage(r);const filename='反差人格-'+r.type.name+'-专属结果卡.png';
   if(shareImageUrl)URL.revokeObjectURL(shareImageUrl);
   shareImageUrl=URL.createObjectURL(blob);
-  document.getElementById('modalBody').innerHTML=`<div class="share-modal"><h2>✨ 你的专属分享图片</h2><p class="share-hint">已经生成单独的高清 PNG 图片（1080 × 1440），没有网站按钮和浏览器边框。</p><img id="sharePreview" alt="你的反差人格分享图片预览，可以长按保存" src="${shareImageUrl}"><div class="share-buttons"><button class="primary" id="downloadPng" type="button">⬇ 保存 PNG 图片</button><button class="ghost" id="systemShare" type="button">↗ 分享给朋友</button></div><p class="share-hint">iPhone：可长按上方图片选择“存储到照片”，也可点“分享给朋友”。如果在微信内打不开保存功能，可尝试用 Safari 打开。</p></div>`;
+  document.getElementById('modalBody').innerHTML=`<div class="share-modal"><h2>✨ 你的专属分享图片</h2><p class="share-hint">已经生成高清 PNG（1080 × 1920），包含人格标签、反差模式、金句和四维倾向。</p><img id="sharePreview" alt="你的反差人格分享图片预览，可以长按保存" src="${shareImageUrl}"><div class="share-buttons"><button class="primary" id="downloadPng" type="button">⬇ 保存 PNG 图片</button><button class="ghost" id="systemShare" type="button">↗ 分享给朋友</button></div><p class="share-hint">iPhone：可长按上方图片选择“存储到照片”，也可点“分享给朋友”。如果在微信内打不开保存功能，可尝试用 Safari 打开。</p></div>`;
   const modal=document.getElementById('modal');modal.showModal();
   document.getElementById('downloadPng').onclick=()=>{imageDownload(blob,filename);flash('已触发 PNG 保存；iPhone 也可以长按预览图保存 ✨')};
   document.getElementById('systemShare').onclick=async()=>{
