@@ -110,6 +110,113 @@
 @media(max-width:480px){.gate-hero{padding:27px 15px}.gate-hero h1{font-size:24px}.gate-access,.gate-benefits{padding:21px 16px}.gate-benefit-grid{grid-template-columns:1fr}}
 
 .hero-traits{max-width:540px;margin:9px auto 12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.hero-traits span{display:inline-block;padding:4px 12px;border:1px solid #e7d8ed;background:#faf4fc;color:#8b6aa1;border-radius:999px;font-size:12px;font-weight:700}
+
+/* V6 八仙国风系统：原创暗八仙器物、清透绢纸与玉青金色 */
+:root{
+ --ink:#263d38;--text:#40564e;--muted:#73857c;--accent:#27766b;
+ --accent2:#bc8462;--line:#d9e5d9;--bg:#f7f7ee;--card:#fffef8;
+ --light:#f1f7ef;--shadow:0 16px 42px rgba(39,84,64,.10)
+}
+body{background:radial-gradient(ellipse at 3% 0%,#e8f5ed 0,transparent 46%),
+ radial-gradient(ellipse at 100% 35%,#f9eee0 0,transparent 55%),
+ linear-gradient(165deg,#f8f7ed,#f1f7f1 60%,#f7f1e5);
+ color:var(--ink)}
+.ambient-one{background:#d6e9d6}.ambient-two{background:#f2dfcb}
+.logo{color:#2c544e}.logo-icon{background:#2d655f;border-radius:50%;border:2px solid #cead77;font-family:"Songti SC","STSong",serif;font-weight:800}
+.corner-tag{color:#538377;border-color:#c5dbce;background:#f6f9ef}
+.panel{background:rgba(255,254,247,.92);border-color:#dce7d8}
+.hero-label,.result-tag,.report-kicker{color:#4e8271}
+.chip,.hero-traits span{color:#477365;background:#edf5ec;border-color:#d2e5d5}
+.launch{background:#ebf7ed;border-color:#cfe5d4;color:#387a5f}
+.launch strong{color:#8b654a}
+.primary{background:linear-gradient(105deg,#1e645c,#428b77 58%,#71a18c);box-shadow:0 10px 23px #39776340}
+.primary:hover{box-shadow:0 12px 26px #39776355}
+.ghost{color:#2c7062;border-color:#c9decf;background:#fffdf8}
+.answer{background:linear-gradient(90deg,#fffefa,#f4f9f3);border-color:#d8e5d9;color:#3e6152}
+.answer.selected{background:#eaf5e9;border-color:#478f7b;box-shadow:0 0 0 2px #d9efdc inset}
+.answer .letter{background:#e6f1e6;color:#428b74}
+.answer.selected .letter{background:#357b69;color:#fff}
+.progress{background:#dce7d8}.progress>div{background:linear-gradient(90deg,#4b927c,#d8b274)}
+.quiz-nav{border-color:#d4e2d2;box-shadow:0 14px 30px #4d725027}
+.question-card{background:#fffefa}
+.gate-hero{background:radial-gradient(ellipse at 50% 0,#dbece3,#fffdf4 57%,#f6f0e5 100%);border:1px solid #d7e1cb}
+.gate-hero h1{color:#2c534b;font-family:"Songti SC","STSong","Noto Serif SC",serif;letter-spacing:2px;font-size:34px}
+.gate-hero p{color:#647f70}
+.gate-label{color:#577c6e}
+.gate-glow{color:#b08c58}
+.gate-access h2{color:#315e53}.gate-access input{border-color:#c4d9c8;color:#315548}
+.gate-access input:focus{border-color:#5c9881;box-shadow:0 0 0 3px #a7d3b96b}
+.gate-benefit-grid>div{background:#f1f7ee}.gate-benefit-grid strong{color:#497b69}
+.gate-samples span{background:#e7f1eb;color:#4c7969}
+.hero-crown{font-size:12px;letter-spacing:6px;color:#a27d53;text-align:center;font-weight:800;margin:7px 0}
+.immortal-cover{border-radius:25px;max-width:540px;width:100%;margin:0 auto;background:
+ radial-gradient(circle at 49% 0,#ffffffba,transparent 44%),
+ repeating-linear-gradient(-45deg,#ffffff10 0 5px,#b4c7a914 5px 6px),
+ linear-gradient(140deg,#e7f2e4 0,#f7f1df 48%,#deece7 100%);
+ border:1px solid #c5d6c0;padding:26px 16px 19px;box-shadow:0 22px 48px #477f6c24;position:relative;overflow:hidden}
+.immortal-cover:before,.immortal-cover:after{content:'☁';position:absolute;font-size:60px;color:#bfccb1aa;pointer-events:none}
+.immortal-cover:before{top:45px;left:-16px}.immortal-cover:after{right:-10px;bottom:30px}
+.immortal-cover h2{color:#2d5b51;font-size:31px;font-weight:850;letter-spacing:1px;font-family:"Songti SC","STSong",serif;text-align:center;line-height:1.4;margin:4px 0 6px}
+.immortal-cover-note{font-size:13px;color:#8a947d;text-align:center;margin-bottom:19px}
+.immortal-lineup{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr));position:relative;z-index:1}
+.immortal-mini{min-width:0;text-align:center;padding:8px 4px 10px;border:1px solid #d7e2d5;border-radius:14px;background:#ffffffab;box-shadow:0 5px 12px #2c61530d}
+.immortal-mini-portrait{aspect-ratio:320/345;overflow:hidden;border-radius:12px}
+.immortal-mini-portrait svg{width:100%;height:100%;display:block}
+.immortal-mini span{font-size:13px;color:#466d5d;display:block;margin:4px auto 0;font-weight:800}
+.cover-bottom{font-size:11px;text-align:center;margin:16px 0 0;color:#998360;letter-spacing:2px}
+.cover-bottom span{color:#448473;padding:0 4px}
+.gate-lineup{max-width:520px;margin:22px auto 0}
+.gate-lineup .immortal-mini{background:#fffdf7a8}
+.lore-note{font-size:11px!important;color:#8c987e!important;line-height:1.8;margin-top:9px!important}
+.result-hero{background:radial-gradient(circle at 50% 0,#e6f2e6,#fffdf3 68%,#f2eddd);border-color:#d6dec8}
+.result-hero:before{color:#d8decb;opacity:.3}
+.result-immortal-art{max-width:250px;margin:0 auto 8px;position:relative;z-index:1}
+.result-immortal-art svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 12px #55705a26)}
+.immortal-eyebrow{color:#ad8961;letter-spacing:2px;font-size:11px;font-weight:900}
+.result-name{color:#2d6555;font-family:"Songti SC","STSong",serif;font-size:52px!important;line-height:1.33}
+.immortal-epithet{color:#a17754;font-size:18px;font-weight:850;letter-spacing:3px;margin:5px 0}
+.result-hero .subtitle{font-size:13px;color:#5c8275;line-height:1.8}
+.result-match{display:flex;align-items:baseline;justify-content:center;gap:12px;margin:12px auto}
+.result-match strong{font-size:29px;color:#ad8354;font-family:Georgia,serif}
+.result-match span{font-size:12px;color:#8a9b84}
+.immortal-weapon{font-size:12px;color:#9a7f5d;margin:6px auto}
+.result-hero .quote{background:#eff5e9;border-left-color:#ba9a63;color:#527669}
+.immortal-artifact{display:grid;place-items:center;flex:none;width:54px;height:54px;border-radius:50%;color:#fff9e9;background:#5b8878;border:2px solid #e7d1a1;font:900 24px "Songti SC","STSong",serif;box-shadow:0 5px 15px #477b6230}
+.lore-crest{display:flex;align-items:center;gap:14px;margin:15px 0;border-radius:16px;padding:14px;background:#eef6e9;border:1px solid #dce7d5}
+.lore-crest strong{display:block;color:#3b6d5b}
+.lore-crest p{margin:2px 0 0}
+.immortal-lore{background:linear-gradient(140deg,#fffefa,#f2f8ed)}
+.report-intro{background:linear-gradient(120deg,#265c55,#608879);box-shadow:0 12px 29px #2b756c24}
+.report-intro small{color:#daead9}.report-intro p{color:#f2faf2}
+.report-callout{background:#eff6e8;border-color:#d3dfcf;color:#4b705a}
+.dual-card{background:#eef6eb;border-color:#d2e1cd}
+.dual-card:last-child{background:#f7f0e5}
+.dual-card strong{color:#356c5b}
+.dual-card small{color:#739a82}
+.story-card{background:#f3f7ef;border-left-color:#b5a16e}
+.story-card strong{color:#50745b}
+.insight{background:#f6f8f0;border-color:#dce6d8}
+.insight strong{color:#447a66}.guide-row{background:#f3f8ed}
+.report-summary{background:#305a51}
+.report-summary p{color:#faf5df}
+.unlocked-notice{color:#52785f;background:#eaf4e7;border-color:#c9dfc8}
+.quote{background:#eff5e9;color:#496f5a;border-left-color:#b29a68}
+.share-modal h2{color:#356558}
+.modal-box{background:#fffef9}
+@media(max-width:480px){
+ .immortal-cover{padding:20px 10px 14px}
+ .immortal-cover h2{font-size:27px}
+ .immortal-lineup{gap:6px}
+ .immortal-mini{padding:6px 2px 8px;border-radius:10px}
+ .immortal-mini-portrait{border-radius:8px}
+ .immortal-mini span{font-size:11px;margin-top:2px}
+ .hero-crown{font-size:10px;letter-spacing:4px}
+ .gate-hero h1{font-size:27px}
+ .result-immortal-art{max-width:210px}
+ .result-name{font-size:44px!important}
+ .gate-lineup{gap:7px}
+}
+
 </style>
   
 </head>
