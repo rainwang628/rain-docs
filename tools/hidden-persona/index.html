@@ -497,72 +497,83 @@ function pill(ctx,text,x,y,w){
  ctx.fillStyle='#765688';ctx.textAlign='center';ctx.font='600 23px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(text,x+w/2,y+37);
 }
 async function makeShareImage(r){
-  // 结果卡完全在本地生成，不上传答题记录；这是分享卡，不是付费长报告。
-  const W=1080,H=1920,canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
-  const ctx=canvas.getContext('2d');if(!ctx)throw Error('当前浏览器暂不支持生成图片');
-  ctx.textBaseline='alphabetic';
+  // 全部画面在当前设备生成。原始购买链接、兑换码、答题记录均不写入分享图。
+  const t=r.type,W=1080,H=1920;
+  const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext('2d');if(!ctx)throw Error('当前浏览器不支持图片生成');
   const bg=ctx.createLinearGradient(0,0,W,H);
-  bg.addColorStop(0,'#ecdefb');bg.addColorStop(.50,'#fff9fb');bg.addColorStop(1,'#e7e1fa');
+  bg.addColorStop(0,'#e3efe7');bg.addColorStop(.47,'#fffdf3');bg.addColorStop(1,'#e2ede5');
   ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
-  for(const [x,y,radius,col] of [[960,75,400,'#e1beed'],[30,850,420,'#fce2ee'],[980,1730,440,'#cec4f5']]){
-    const g=ctx.createRadialGradient(x,y,20,x,y,radius);
-    g.addColorStop(0,col);g.addColorStop(1,'#ffffff00');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,radius,0,Math.PI*2);ctx.fill();
+  // 绢纸气息的云海与金线；不使用任何现成 IP 角色图片。
+  ctx.lineWidth=3;ctx.strokeStyle='#accac08a';
+  for(let j=0;j<8;j++){
+    ctx.beginPath();const yy=1100+j*53;
+    ctx.moveTo(-25,yy);
+    ctx.bezierCurveTo(210,yy-48,315,yy+30,525,yy-10);
+    ctx.bezierCurveTo(735,yy-55,880,yy+38,1120,yy-8);
+    ctx.stroke();
   }
-  ctx.fillStyle='rgba(255,255,255,.87)';rounded(ctx,45,40,990,1845,34);ctx.fill();
-  ctx.strokeStyle='#ead7f0';ctx.lineWidth=2;ctx.stroke();
-  // 品牌顶部
-  ctx.fillStyle='#a583b7';ctx.textAlign='center';ctx.font='700 28px "PingFang SC","Microsoft YaHei",sans-serif';
-  ctx.fillText('✦  反 差 实 验 室  ✦',540,133);
-  ctx.font='500 23px Georgia,serif';ctx.fillStyle='#b29abe';ctx.fillText('PARADOX PERSONALITY REPORT',540,171);
-  ctx.strokeStyle='#e4cdea';ctx.beginPath();ctx.moveTo(150,204);ctx.lineTo(930,204);ctx.stroke();
-  // 身份区
-  ctx.fillStyle='#8a6a9a';ctx.font='600 31px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('我的隐藏反差人格是',540,276);
-  ctx.fillStyle='#4e315f';ctx.font='bold 78px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(r.type.name,540,385);
-  ctx.fillStyle='#826f8d';ctx.font='28px "PingFang SC","Microsoft YaHei",sans-serif';
-  wrapped(ctx,r.type.subtitle,540,433,810,42,2);
-  // 中央匹配徽章
-  const glow=ctx.createRadialGradient(540,608,20,540,608,154);
-  glow.addColorStop(0,'#f6e4fa');glow.addColorStop(1,'#e4d2f600');
-  ctx.fillStyle=glow;ctx.beginPath();ctx.arc(540,608,154,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle='#d9b9e9';ctx.lineWidth=4;ctx.beginPath();ctx.arc(540,608,117,0,Math.PI*2);ctx.stroke();
-  ctx.fillStyle='#9b68b6';ctx.font='bold 75px Georgia,serif';ctx.fillText(r.confidence+'%',540,620);
-  ctx.fillStyle='#876d98';ctx.font='24px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('趣味匹配指数',540,665);
-  const tags=[r.scores.warm>=50?'自然亲和':'慢热克制',r.scores.lead>=50?'内有主见':'随性自由',r.scores.feel>=50?'细腻感知':'冷静清醒'];
-  tags.forEach((t,i)=>pill(ctx,t,119+i*283,775,260));
-  // 金句卡
-  ctx.fillStyle='#f6eef9';rounded(ctx,110,866,860,146,20);ctx.fill();
-  ctx.fillStyle='#b287c5';ctx.textAlign='center';ctx.font='28px Georgia,serif';ctx.fillText('✦  MY PERSONALITY SIGNATURE  ✦',540,906);
-  ctx.fillStyle='#644374';ctx.font='600 33px "PingFang SC","Microsoft YaHei",sans-serif';
-  wrapped(ctx,'“'+r.type.quote+'”',540,952,755,44,2);
-  // 人前与内心：反差本身可视化
-  ctx.textAlign='left';ctx.font='bold 29px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillStyle='#50345f';
-  ctx.fillText('你的双面模式',115,1085);
-  rounded(ctx,110,1110,414,201,20);ctx.fillStyle='#f8f0fb';ctx.fill();
-  rounded(ctx,540,1110,430,201,20);ctx.fillStyle='#f0ebfa';ctx.fill();
-  ctx.fillStyle='#9e79b4';ctx.font='600 22px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('别人可能看到',140,1153);ctx.fillText('内心真正的你',570,1153);
-  ctx.fillStyle='#5f4072';ctx.font='bold 35px "PingFang SC","Microsoft YaHei",sans-serif';
-  ctx.fillText(r.scores.warm>=50?'容易亲近':'安静克制',140,1220);
-  ctx.fillText(r.scores.lead>=50?'坚定有主见':'自在有节奏',570,1220);
-  ctx.fillStyle='#896f98';ctx.font='23px "PingFang SC","Microsoft YaHei",sans-serif';
-  ctx.fillText(r.scores.warm>=50?'看起来很好商量':'不急着展示热情',140,1270);
-  ctx.fillText(r.scores.lead>=50?'重要事情有自己的方向':'喜欢掌控自己的步调',570,1270);
-  // 四维倾向：给分享图更强信息量
-  ctx.fillStyle='#50345f';ctx.font='bold 29px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('你的四维选择倾向',115,1382);
-  ctx.fillStyle='#a48ba9';ctx.font='20px "PingFang SC","Microsoft YaHei",sans-serif';ctx.textAlign='right';ctx.fillText('根据本次答题趣味计算',966,1382);
-  const measures=[['对外亲和',r.scores.warm],['内在主导',r.scores.lead],['情绪感知',r.scores.feel],['边界意识',r.scores.bound]];
-  measures.forEach(([label,val],i)=>{
-    const y=1440+i*75;
-    ctx.textAlign='left';ctx.fillStyle='#725985';ctx.font='25px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(label,122,y);
-    rounded(ctx,332,y-20,515,20,10);ctx.fillStyle='#eee2f0';ctx.fill();
-    rounded(ctx,332,y-20,Math.max(25,515*val/100),20,10);ctx.fillStyle=i%2?'#cf95bb':'#9777c0';ctx.fill();
-    ctx.textAlign='right';ctx.fillStyle='#6b4e7e';ctx.font='700 25px Georgia,serif';ctx.fillText(val+'%',951,y);
+  const inner=ctx.createLinearGradient(0,0,W,0);inner.addColorStop(0,'#fffdf4d9');inner.addColorStop(1,'#fffaf2ed');
+  ctx.fillStyle=inner;rounded(ctx,45,43,990,1834,39);ctx.fill();
+  ctx.lineWidth=3;ctx.strokeStyle='#c6ab7c';ctx.stroke();
+  ctx.lineWidth=1.5;ctx.strokeStyle='#d4ded0';rounded(ctx,61,61,958,1799,30);ctx.stroke();
+  ctx.fillStyle='#a88657';ctx.textAlign='center';ctx.font='800 26px "Songti SC","PingFang SC",serif';
+  ctx.fillText('八 · 仙 · 反 · 差 · 人 · 格',540,124);
+  ctx.font='22px Georgia,serif';ctx.fillStyle='#8a9d89';
+  ctx.fillText('THE EIGHT IMMORTALS · PERSONALITY STORY',540,165);
+  ctx.beginPath();ctx.moveTo(124,199);ctx.lineTo(956,199);ctx.strokeStyle='#d3bc90';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#5f7c6f';ctx.font='700 28px "PingFang SC",sans-serif';ctx.fillText('测出来了，我的八仙人物原型是',540,259);
+  // 画出与网站一致的原创国风卡通人物头像，浏览器不支持 SVG 绘制时回退仙器章。
+  let portrait=false;
+  try{
+    const pic=new Image();
+    pic.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(immortalSvg(t));
+    await new Promise((resolve,reject)=>{
+      pic.onload=resolve;pic.onerror=()=>reject(Error('portrait'));
+      if(pic.complete && pic.naturalWidth>0)resolve();
+    });
+    ctx.drawImage(pic,330,292,420,453);portrait=true;
+  }catch{}
+  if(!portrait){
+    ctx.fillStyle='#ecf4e7';ctx.beginPath();ctx.arc(540,498,170,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=t.immortalInk;ctx.font='bold 154px "Songti SC",serif';ctx.fillText(t.seal,540,556);
+  }
+  ctx.fillStyle='#23584e';ctx.font='bold 79px "Songti SC","STSong","PingFang SC",serif';ctx.fillText(t.immortal,540,799);
+  ctx.fillStyle='#a88256';ctx.font='700 35px "Songti SC","PingFang SC",serif';ctx.fillText('「'+t.epithet+'」',540,849);
+  ctx.fillStyle='#688777';ctx.font='26px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('隐藏性格：'+t.name+'    ·    代表仙器：'+t.artifact,540,903);
+  rounded(ctx,192,932,696,67,32);ctx.fillStyle='#eaf2e7';ctx.fill();
+  ctx.fillStyle='#a27c4f';ctx.font='bold 36px Georgia,serif';ctx.fillText(r.confidence+'%',460,976);
+  ctx.fillStyle='#668574';ctx.font='24px "PingFang SC",sans-serif';ctx.fillText('趣味契合指数',652,976);
+  // 人格签名：一眼可分享的反差句
+  ctx.fillStyle='#f3f7ee';rounded(ctx,109,1042,860,171,23);ctx.fill();
+  ctx.strokeStyle='#d4dfcc';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle='#b18c57';ctx.font='22px Georgia,serif';ctx.fillText('✦  MY HIDDEN CHARACTER  ✦',540,1082);
+  ctx.fillStyle='#3f6657';ctx.font='600 33px "PingFang SC","Microsoft YaHei",sans-serif';
+  wrapped(ctx,'“'+t.quote+'”',540,1130,744,43,2);
+  ctx.textAlign='left';ctx.fillStyle='#2f6156';ctx.font='bold 29px "PingFang SC",sans-serif';ctx.fillText('你的一体两面',125,1277);
+  for(const [x,title,big,small] of [
+   [112,'别人可能看到',r.scores.warm>=50?'亲切好接近':'沉稳有距离',r.scores.warm>=50?'气氛里的友善回应':'熟悉前先看再说'],
+   [548,'真正的内在',r.scores.lead>=50?'自带主心骨':'享受自己的节奏',r.scores.lead>=50?'关键时刻有判断':'不把自由交出去']
+  ]){
+    ctx.fillStyle='#edf5e9';rounded(ctx,x,1303,420,173,17);ctx.fill();
+    ctx.fillStyle='#7e9881';ctx.font='22px "PingFang SC",sans-serif';ctx.fillText(title,x+25,1347);
+    ctx.fillStyle='#315e50';ctx.font='bold 31px "PingFang SC",sans-serif';ctx.fillText(big,x+25,1400);
+    ctx.fillStyle='#7c8e7d';ctx.font='21px "PingFang SC",sans-serif';ctx.fillText(small,x+25,1441);
+  }
+  ctx.fillStyle='#315e50';ctx.font='bold 28px "PingFang SC",sans-serif';ctx.fillText('四维选择倾向',125,1540);
+  const chart=[['对外亲和',r.scores.warm],['内在主导',r.scores.lead],['情绪感知',r.scores.feel],['边界意识',r.scores.bound]];
+  chart.forEach(([label,value],i)=>{
+    const y=1597+i*48;
+    ctx.textAlign='left';ctx.fillStyle='#5b7767';ctx.font='22px "PingFang SC",sans-serif';ctx.fillText(label,124,y);
+    rounded(ctx,300,y-17,553,17,9);ctx.fillStyle='#e2eadb';ctx.fill();
+    rounded(ctx,300,y-17,Math.max(28,553*value/100),17,9);ctx.fillStyle=i%2?'#ad996e':'#468a76';ctx.fill();
+    ctx.textAlign='right';ctx.fillStyle='#446f61';ctx.font='bold 22px Georgia,serif';ctx.fillText(value+'%',950,y);
   });
-  // 邀请文案：不需要截屏
-  ctx.strokeStyle='#ead5ee';ctx.beginPath();ctx.moveTo(125,1732);ctx.lineTo(955,1732);ctx.stroke();
-  ctx.fillStyle='#604275';ctx.textAlign='center';ctx.font='bold 32px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('你，又是哪一种反差人格？',540,1792);
-  ctx.fillStyle='#9b83a5';ctx.font='22px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('12 道题 · 8 种人格 · 发现你的隐藏面',540,1833);
-  ctx.font='18px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('原创趣味测试，仅供娱乐，不构成心理诊断',540,1867);
-  return await new Promise((resolve,reject)=>canvas.toBlob(b=>b?resolve(b):reject(Error('图片生成失败')),'image/png'));
+  ctx.textAlign='center';ctx.strokeStyle='#d3c097';ctx.beginPath();ctx.moveTo(124,1769);ctx.lineTo(956,1769);ctx.stroke();
+  ctx.fillStyle='#2f6354';ctx.font='bold 31px "PingFang SC",sans-serif';ctx.fillText('你，又是八仙中的哪一位？',540,1812);
+  ctx.fillStyle='#899580';ctx.font='20px "PingFang SC",sans-serif';ctx.fillText('12 道题 · 8 位仙人 · 每个人自有一面',540,1846);
+  ctx.font='16px "PingFang SC",sans-serif';ctx.fillText('灵感源于民间神话 · 仅供趣味探索 · 非心理诊断',540,1872);
+  return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(Error('图片生成失败')),'image/png'));
 }
 function imageDownload(blob,name){
  const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
@@ -570,15 +581,15 @@ function imageDownload(blob,name){
 async function openSharePreview(r){
  try{
   const btn=document.getElementById('shareBtn');if(btn){btn.disabled=true;btn.textContent='正在生成高清图片…'}
-  const blob=await makeShareImage(r);const filename='反差人格-'+r.type.name+'-专属结果卡.png';
+  const blob=await makeShareImage(r);const filename='八仙反差人格-'+r.type.immortal+'-'+r.type.name+'.png';
   if(shareImageUrl)URL.revokeObjectURL(shareImageUrl);
   shareImageUrl=URL.createObjectURL(blob);
-  document.getElementById('modalBody').innerHTML=`<div class="share-modal"><h2>✨ 你的专属分享图片</h2><p class="share-hint">已经生成高清 PNG（1080 × 1920），包含人格标签、反差模式、金句和四维倾向。</p><img id="sharePreview" alt="你的反差人格分享图片预览，可以长按保存" src="${shareImageUrl}"><div class="share-buttons"><button class="primary" id="downloadPng" type="button">⬇ 保存 PNG 图片</button><button class="ghost" id="systemShare" type="button">↗ 分享给朋友</button></div><p class="share-hint">iPhone：可长按上方图片选择“存储到照片”，也可点“分享给朋友”。如果在微信内打不开保存功能，可尝试用 Safari 打开。</p></div>`;
+  document.getElementById('modalBody').innerHTML=`<div class="share-modal"><h2>✨ 你的八仙人格 · 专属国风结果图</h2><p class="share-hint">已生成 1080 × 1920 原创国风结果图：八仙人物原型、对应仙器、反差金句和四维倾向。</p><img id="sharePreview" alt="你的反差人格分享图片预览，可以长按保存" src="${shareImageUrl}"><div class="share-buttons"><button class="primary" id="downloadPng" type="button">⬇ 保存 PNG 图片</button><button class="ghost" id="systemShare" type="button">↗ 分享给朋友</button></div><p class="share-hint">iPhone：可长按上方图片选择“存储到照片”，也可点“分享给朋友”。如果在微信内打不开保存功能，可尝试用 Safari 打开。</p></div>`;
   const modal=document.getElementById('modal');modal.showModal();
   document.getElementById('downloadPng').onclick=()=>{imageDownload(blob,filename);flash('已触发 PNG 保存；iPhone 也可以长按预览图保存 ✨')};
   document.getElementById('systemShare').onclick=async()=>{
    const f=new File([blob],filename,{type:'image/png'});
-   try{if(navigator.share && (!navigator.canShare||navigator.canShare({files:[f]}))){await navigator.share({files:[f],title:'隐藏反差人格测试',text:'来测测你的隐藏反差人格！'});}else{imageDownload(blob,filename);flash('当前浏览器不支持直接分享图片，已尝试保存 PNG');}}
+   try{if(navigator.share && (!navigator.canShare||navigator.canShare({files:[f]}))){await navigator.share({files:[f],title:'八仙反差人格测试',text:'来测测你的隐藏反差人格！'});}else{imageDownload(blob,filename);flash('当前浏览器不支持直接分享图片，已尝试保存 PNG');}}
    catch(e){if(e.name!=='AbortError')flash('无法调用系统分享，请长按预览图保存或点击保存 PNG')}
   };
  }catch(e){flash('图片生成失败：'+(e.message||'请重试'))}
