@@ -319,11 +319,11 @@ function immortalSvg(t){
   const wander=t.immortal==='铁拐李'||t.immortal==='张果老';
   const ornament=female?'<circle cx="214" cy="95" r="14" fill="#d09a65"/><path d="M200 95L230 95" stroke="#fff5cf" stroke-width="4"/>':official?'<path d="M110 85H212L203 63H116Z" fill="#29433f"/><path d="M101 84H221" stroke="#d7ad62" stroke-width="7"/>':wander?'<path d="M110 95Q159 66 211 95" stroke="#445a4b" stroke-width="16" fill="none"/>':'<path d="M147 63q12 -28 26 0" fill="#334342" stroke="#334342" stroke-width="8"/>';
   return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 345" role="img" aria-label="原创国风人物造型：'+t.immortal+'">'+
-    '<defs><linearGradient id="robe" x1="0" x2="1" y1="0" y2="1"><stop stop-color="'+robe+'"/><stop offset="1" stop-color="'+ink+'"/></linearGradient><linearGradient id="paper" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff8e8"/><stop offset="1" stop-color="#e9efe6"/></linearGradient></defs>'+
-    '<circle cx="160" cy="166" r="149" fill="url(#paper)" stroke="#e0d2b8" stroke-width="2"/>'+
+    '<defs><linearGradient id="robe-'+t.seal+'" x1="0" x2="1" y1="0" y2="1"><stop stop-color="'+robe+'"/><stop offset="1" stop-color="'+ink+'"/></linearGradient><linearGradient id="paper-'+t.seal+'" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff8e8"/><stop offset="1" stop-color="#e9efe6"/></linearGradient></defs>'+
+    '<circle cx="160" cy="166" r="149" fill="url(#paper-'+t.seal+')" stroke="#e0d2b8" stroke-width="2"/>'+
     '<path d="M22 273Q92 241 146 293T296 266" fill="none" stroke="#b7d3c8" stroke-width="13" opacity=".65"/>'+
     '<path d="M41 297Q107 266 153 312T287 291" fill="none" stroke="#d6b588" stroke-width="6" opacity=".55"/>'+
-    '<path d="M55 330Q78 231 131 222L189 222Q250 236 272 330Z" fill="url(#robe)" stroke="'+ink+'" stroke-width="3"/>'+
+    '<path d="M55 330Q78 231 131 222L189 222Q250 236 272 330Z" fill="url(#robe-'+t.seal+')" stroke="'+ink+'" stroke-width="3"/>'+
     '<path d="M148 226L170 226L204 330H122Z" fill="#f9e8ca" opacity=".88"/>'+
     '<path d="M98 249Q132 271 169 290Q200 269 236 243" fill="none" stroke="#fff8ef" stroke-width="8" opacity=".7"/>'+
     '<path d="M109 151Q98 89 142 73Q181 60 209 93Q232 112 210 159L212 188H108Z" fill="#344640"/>'+
@@ -481,7 +481,7 @@ function renderFull(r){
  blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 09 · YOUR SIGNATURE</span><h2>属于你的三句人格签名</h2>'+t.lines.map(x=>'<div class="quote">“'+x+'”</div>').join('')+'<div class="report-summary"><small>为你的人格故事收尾</small><p>“'+t.quote+'”</p></div><p class="notice">八仙人物原型借鉴传统神话，现代反差人格描述为原创趣味内容，不代表心理诊断或命运预测。</p></div>');
  document.getElementById('full').innerHTML=blocks.join('');
 }
-async function copyShare(){const r=calculate();const link=window.location.origin+window.location.pathname+'?from=share';const message=`我测出了「${r.type.name}」！\n“${r.type.quote}”\n你是哪一种隐藏反差人格？12道题来测测：${link}\n（原创趣味测试，仅供娱乐）`;try{await navigator.clipboard.writeText(message);flash('复制成功，可以发给朋友啦 ✨')}catch(e){const ta=document.createElement('textarea');ta.value=message;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');flash('已尝试复制分享文案')}catch(err){flash('无法复制，请使用浏览器的分享功能')}ta.remove();}}
+async function copyShare(){const r=calculate();const link=window.location.origin+window.location.pathname+'?from=share';const message=`我测出八仙人物原型「${r.type.immortal}」！对应性格是「${r.type.name}」。\n“${r.type.quote}”\n你像哪位八仙？12 道题来测测：${link}\n（原创文化趣味测试，非心理诊断）`;try{await navigator.clipboard.writeText(message);flash('复制成功，可以发给朋友啦 ✨')}catch(e){const ta=document.createElement('textarea');ta.value=message;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');flash('已尝试复制分享文案')}catch(err){flash('无法复制，请使用浏览器的分享功能')}ta.remove();}}
 function flash(message){const el=document.createElement('div');el.textContent=message;Object.assign(el.style,{position:'fixed',bottom:'28px',left:'50%',transform:'translateX(-50%)',padding:'10px 20px',background:'#473057',color:'#fff',borderRadius:'25px',fontSize:'13px',zIndex:'1000',boxShadow:'0 10px 20px #0002',maxWidth:'90%',textAlign:'center'});document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
 function wrapped(ctx,str,x,y,maxWidth,lineHeight,maxLines=3){let line='',count=0;for(const char of str){if(ctx.measureText(line+char).width>maxWidth&&line){ctx.fillText(line,x,y+count*lineHeight);count++;line=char;if(count>=maxLines)return y+count*lineHeight}else line+=char;}if(line){ctx.fillText(line,x,y+count*lineHeight);count++}return y+count*lineHeight}
 // 每位用户在自己的浏览器中生成独立 PNG；不上传任何答题记录或照片。
@@ -589,7 +589,7 @@ async function openSharePreview(r){
   document.getElementById('downloadPng').onclick=()=>{imageDownload(blob,filename);flash('已触发 PNG 保存；iPhone 也可以长按预览图保存 ✨')};
   document.getElementById('systemShare').onclick=async()=>{
    const f=new File([blob],filename,{type:'image/png'});
-   try{if(navigator.share && (!navigator.canShare||navigator.canShare({files:[f]}))){await navigator.share({files:[f],title:'八仙反差人格测试',text:'来测测你的隐藏反差人格！'});}else{imageDownload(blob,filename);flash('当前浏览器不支持直接分享图片，已尝试保存 PNG');}}
+   try{if(navigator.share && (!navigator.canShare||navigator.canShare({files:[f]}))){await navigator.share({files:[f],title:'八仙反差人格测试',text:'你像八仙中的哪一位？试试这份国风反差人格测评！'});}else{imageDownload(blob,filename);flash('当前浏览器不支持直接分享图片，已尝试保存 PNG');}}
    catch(e){if(e.name!=='AbortError')flash('无法调用系统分享，请长按预览图保存或点击保存 PNG')}
   };
  }catch(e){flash('图片生成失败：'+(e.message||'请重试'))}
