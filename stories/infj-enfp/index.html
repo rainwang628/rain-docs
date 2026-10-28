@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="theme-color" content="#211b3a">
-<meta name="description" content="INFJ × ENFP 的恋爱六幕：从好奇、暧昧、热恋，到磨合与长久相爱。一个像小老头，一个像快乐小狗。">
+<meta name="description" content="INFJ × ENFP 完整恋爱故事：初识、暧昧、确定关系、热恋、冲突、长期相处，包含双方心理活动、对话与关系风险。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="当快乐小狗，遇见小老头｜INFJ × ENFP 恋爱六幕">
-<meta property="og:description" content="一个负责奔向世界，一个负责读懂世界。INFJ × ENFP，从心动到相爱的六个瞬间。">
+<meta property="og:description" content="从初识、暧昧到争吵、相守，六幕长篇故事，读懂 INFJ 与 ENFP 截然不同的心动方式。">
 <meta property="og:url" content="https://rainwang628.github.io/rain-docs/stories/infj-enfp/">
 <title>当快乐小狗，遇见小老头｜INFJ × ENFP · rain 的文档</title>
 <style>
@@ -23,6 +23,46 @@ a{color:inherit}.top{background:#211b3a;color:#fff}.top-in{max-width:900px;margi
 .caution{background:#fff5ed;border:1px solid #f5dcc8;border-radius:20px;padding:25px 28px;margin:33px 0}.caution h2{font-size:18px;margin:0 0 8px;color:#9a533a}.caution p{margin:9px 0;color:#644e45}.end{margin-top:31px;background:linear-gradient(145deg,#382854,#5b3d78);border-radius:24px;color:white;text-align:center;padding:37px 30px}.end .symbol{font-size:32px}.end h2{font-size:25px;margin:7px 0 14px}.end p{margin:0;color:#f4eafb;line-height:2}.end strong{color:#ffe2bd}.takeaway{text-align:center;margin:25px 0 5px;color:#55486b;font-weight:700}.share-wrap{text-align:center;padding:25px 0 2px}.share{background:#5e438d;color:white;border:0;border-radius:100px;padding:13px 28px;font:700 15px inherit;cursor:pointer;box-shadow:0 8px 21px #5d3f8940;min-height:44px}.share:hover{background:#4e3777}.tip{font-size:12px;color:#8f869c;margin:11px 0}.disclaimer{text-align:center;color:#948da0;font-size:12px;line-height:1.7;padding:26px 12px 0}.footer{text-align:center;color:#9c94a9;font-size:12px;padding:10px 20px 30px}
 @media(max-width:600px){.top-in{padding:13px 16px}.hero{padding:56px 20px 61px}.hero p{font-size:14px}.emoji{font-size:42px}.container{padding:26px 13px 45px}.lead{font-size:15px;padding:0 10px 25px}.timeline:before{left:18px}.scene{padding-left:45px;margin-bottom:17px}.scene .number{width:38px;height:38px;top:19px;font-size:11px}.panel{padding:20px 19px;border-radius:16px}.panel h2{font-size:20px}.panel p,.dialogue{font-size:14px}.dialogue{padding:12px}.caution{padding:22px 20px}.end{padding:31px 21px}.end h2{font-size:22px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Expanded editorial story: retain six-act layout while restoring both inner worlds. */
+.story-index{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:-10px 0 32px}
+.story-index a{font-size:12px;border:1px solid #e8d8f2;background:#fff;color:#68478f;text-decoration:none;padding:6px 12px;border-radius:100px}
+.story-index a:hover{background:#f0e7fb}
+.panel .scene-intro{color:#4c3b67;font-weight:650;font-size:16px}
+.pov-grid{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin:19px 0}
+.pov{border-radius:13px;background:#f8f3fc;padding:14px 15px}
+.pov.sun{background:#fff7ef}
+.pov h3{font-size:13px;margin:0 0 7px;color:#764b9c}
+.pov.sun h3{color:#ac663c}
+.pov p{font-size:14px;line-height:1.8;margin:0;color:#50435c}
+.panel .scene-note{font-size:14px;color:#6c557d;background:#f6f0fa;padding:12px 15px;border-radius:11px;margin-top:16px}
+.panel.warm .scene-note{background:#fff6eb;color:#7d6046}
+.panel h3.mid{font-size:17px;margin:24px 0 10px;color:#503c6b}
+.panel .beats{margin:10px 0 3px;padding-left:21px;color:#554d61}
+.panel .beats li{margin:9px 0;font-size:14px;line-height:1.85}
+.inset{margin:15px 0;border-top:1px dashed #e5d9ec;padding-top:13px}
+.inset h3{font-size:15px;color:#6a4c90;margin:0 0 9px}
+.inset p{font-size:14px}
+.break-title{font-size:25px;text-align:center;line-height:1.4;margin:51px 0 10px}
+.break-subtitle{text-align:center;color:#746a84;font-size:14px;line-height:1.8;margin:0 0 24px}
+.analysis-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.analysis-card{background:#fff;border:1px solid #ece2f3;border-radius:18px;padding:19px 17px}
+.analysis-card h3{font-size:16px;margin:0 0 10px}
+.analysis-card p{font-size:14px;line-height:1.83;color:#5c526a;margin:8px 0}
+.analysis-card .solution{color:#5b3d83;background:#f6f1fa;border-radius:9px;padding:11px;margin-top:13px}
+.contrast-table{border:1px solid #ece2f3;border-radius:16px;overflow-x:auto;background:#fff;margin:22px 0}
+.contrast-table table{width:100%;border-collapse:collapse;font-size:13px;min-width:570px}
+.contrast-table th{background:#f4edf9;color:#5b417d;text-align:left}
+.contrast-table th,.contrast-table td{padding:12px 13px;border-bottom:1px solid #f1ebf4;vertical-align:top}
+.contrast-table tr:last-child td{border-bottom:0}
+.story-epilogue{background:#fff;border:1px solid #efe6f2;border-radius:19px;padding:24px 28px;margin:29px 0}
+.story-epilogue h2{font-size:21px;margin:0 0 11px}
+.story-epilogue p{font-size:15px;color:#60556c;margin:12px 0}
+.story-epilogue blockquote{font-size:15px;margin:15px 0;padding-left:17px;border-left:3px solid #c99de0;color:#674989}
+.advice{display:grid;gap:10px;margin:20px 0}
+.advice div{border-radius:13px;background:#faf6fd;padding:13px 16px;color:#554763;font-size:14px;line-height:1.75}
+.advice strong{color:#614389}
+@media(max-width:680px){.pov-grid,.analysis-grid{grid-template-columns:1fr}.pov-grid{gap:9px}.pov{padding:12px 14px}.panel .scene-intro{font-size:15px}.break-title{font-size:22px;margin-top:40px}.story-epilogue{padding:22px 20px}.analysis-card{padding:17px}}
 </style>
 </head>
 <body>
@@ -32,23 +72,116 @@ a{color:inherit}.top{background:#211b3a;color:#fff}.top-in{max-width:900px;margi
 <div class="emoji" aria-hidden="true">🐶 ♡ 🌙</div>
 <h1>当快乐小狗，<br>遇见小老头</h1>
 <p>INFJ × ENFP 的恋爱六幕。<br>一个把世界变得热闹，一个把心事听得明白。</p>
-<div class="chips"><span>INFJ · 温柔深沉</span><span>ENFP · 热情自由</span><span>约 3 分钟阅读</span></div>
+<div class="chips"><span>INFJ · 温柔深沉</span><span>ENFP · 热情自由</span><span>约 10 分钟阅读</span></div>
 </div></section>
+
 <main class="container">
-<p class="lead">他们的故事，可能始于一句<strong>“你怎么这么安静？”</strong><br>也可能在很久以后，变成一句<strong>“你慢慢说，我在听。”</strong></p>
+<p class="lead">INFJ，像个温柔又有点固执的<strong>小老头</strong>：不太爱热闹，心里却住着一整片宇宙。<br>ENFP，像只永远对世界充满兴趣的<strong>快乐小狗</strong>：笑着奔向人群，也渴望被一个人真正看懂。<br><br>他们可能一见如故，也可能相爱后才发现：<strong>最初迷恋的差异，竟也是最难跨过的关。</strong></p>
+<nav class="story-index" aria-label="故事章节">
+<a href="#act-1">01 初识</a><a href="#act-2">02 暧昧</a><a href="#act-3">03 确认</a><a href="#act-4">04 热恋</a><a href="#act-5">05 磨合</a><a href="#act-6">06 长久</a>
+</nav>
 <div class="timeline">
-<section class="scene"><span class="number">01</span><div class="panel"><div class="phase">初见 · 好奇</div><h2>热闹的人，偏偏注意到了安静的人</h2><p>聚会里，ENFP 和所有人聊得热火朝天，却发现角落里的 INFJ 一直安静地听。ENFP 好奇地靠近；INFJ 本来觉得对方有点吵，却被那份真诚和鲜活悄悄吸引。</p><div class="dialogue"><b>ENFP：</b>“你怎么不说话？”<br><b>INFJ：</b>“在听你说。”<br><b>ENFP：</b>“那我再给你讲个好玩的！”</div></div></section>
-<section class="scene"><span class="number">02</span><div class="panel warm"><div class="phase">暧昧 · 试探</div><h2>一个拼命靠近，一个偷偷心动</h2><p>ENFP 开始主动分享碎碎念，想把日常里有趣的事都塞给 INFJ；INFJ 记住了对方的喜好和情绪，却不敢轻易确认：这份热情，是不是只给自己的？</p><div class="dialogue"><b>ENFP：</b>“我是不是有点烦？”<br><b>INFJ：</b>“没有。”<br><b>INFJ 心里：</b>“你再多说一点也没关系。”</div></div></section>
-<section class="scene"><span class="number">03</span><div class="panel"><div class="phase">确定关系 · 双向奔赴</div><h2>一个想立刻出发，一个想好好走下去</h2><p>ENFP 想一起探索新地方、制造惊喜；INFJ 开始认真谈未来，计划每个值得纪念的日子。一个教另一个放松，一个教另一个安心。</p><div class="dialogue"><b>ENFP：</b>“明天突然去看海，好不好？”<br><b>INFJ：</b>“票买了吗？”<br><b>ENFP：</b>“你先说去不去嘛！”</div></div></section>
-<section class="scene"><span class="number">04</span><div class="panel warm"><div class="phase">热恋 · 反差</div><h2>小老头变幼稚了，快乐小狗变认真了</h2><p>INFJ 开始说只有亲近的人才能听见的傻话；ENFP 也愿意在某个疲惫的夜晚卸下热闹，安安静静地讲心事。他们发现，最特别的不是对方的性格，而是彼此面前不用表演。</p><div class="dialogue"><b>ENFP：</b>“原来你这么会撒娇啊？”<br><b>INFJ：</b>“只有你知道。”</div></div></section>
-<section class="scene"><span class="number">05</span><div class="panel"><div class="phase">磨合 · 第一次真正的难题</div><h2>自由和安全感，第一次撞了个满怀</h2><p>ENFP 临时改了周末约会，觉得改到周日没什么区别；INFJ 却觉得约定被轻轻放下。ENFP 想马上谈清楚，INFJ 需要先安静一会儿。一个越追问，一个越退缩。</p><div class="dialogue"><b>INFJ：</b>“我不是不想理你，我只是需要一点时间。”<br><b>ENFP：</b>“好，那我等你。我们今晚再聊。”</div></div></section>
-<section class="scene"><span class="number">06</span><div class="panel warm"><div class="phase">长久 · 学会相爱</div><h2>终于懂得：爱不是猜心，也不是束缚</h2><p>INFJ 学着直接说需求，不再让对方猜；ENFP 学着兑现约定，不再只用热情表达爱。他们保留各自的世界，也一起经营一个可以回去的地方。</p><div class="dialogue"><b>ENFP：</b>“我想去看看世界。”<br><b>INFJ：</b>“去吧。回来跟我讲。”<br><b>ENFP：</b>“那你要一直在哦。”</div></div></section>
+<section class="scene" id="act-1"><span class="number">01</span><div class="panel">
+<div class="phase">第一幕 · 初识｜好奇比心动先到</div><h2>热闹的人，偏偏注意到了安静的人</h2>
+<p class="scene-intro">一次朋友聚会，所有人都在抢着接话，INFJ 安静地坐在一旁。ENFP 聊到一半，忽然发现了这个不怎么说话的人。</p>
+<div class="dialogue"><b>ENFP：</b>“你怎么一直不说话呀？”<br><b>INFJ：</b>“我在听。”<br><b>ENFP：</b>“那你觉得我刚说的那个事怎么样？”<br><b>INFJ：</b>“你刚才其实不是在抱怨工作，是觉得自己的努力没有被看见吧。”<br><b>ENFP：</b>“……你怎么知道？”</div>
+<p>ENFP 原本只想逗逗这个安静的人，却突然发现，对方并不是没兴趣，而是一直在认真听；甚至一句话就说中了自己的心事。INFJ 则原本觉得对方太闹腾，却发现这份热闹背后并不是肤浅，而是真诚、敏锐和对生活的好奇。</p>
+<div class="pov-grid"><div class="pov sun"><h3>🐶 ENFP 心里想</h3><p>“这个人好难猜。别人跟着我笑，他却像把我看透了。好想知道，他平时到底在想什么。”</p></div><div class="pov"><h3>🌙 INFJ 心里想</h3><p>“好吵……但怎么又有点可爱？他看起来没心没肺，却能把周围的人照顾得挺好。”</p></div></div>
+<p>于是，ENFP 开始主动找话题，可能故意打趣，也可能分享稀奇古怪的见闻。INFJ 虽然不会立刻热情回应，却会默默观察：这个人对服务员客不客气？说话算不算数？开心和难过时是不是同一个样子？</p>
+<p class="scene-note"><strong>这一幕的误会：</strong>ENFP 的主动不一定是喜欢，因为他可能本来就热情；INFJ 的安静也不等于冷漠，他可能已经在认真记住你说过的一切。</p>
+</div></section>
+<section class="scene" id="act-2"><span class="number">02</span><div class="panel warm">
+<div class="phase">第二幕 · 暧昧｜一个疯狂试探，一个偷偷上头</div><h2>消息越聊越长，心事越藏越深</h2>
+<p class="scene-intro">认识一段时间后，ENFP 开始频繁分享日常：路上遇到的猫、离谱的同事、好吃的餐厅，还有凌晨突然冒出来的人生问题。</p>
+<p>INFJ 不见得每条都秒回，却常常记得对方随口说的细节。比如 ENFP 提过不爱吃香菜，下次一起吃饭，INFJ 已经顺手替他备注了。ENFP 觉得这种被注意的小事，比一句“我喜欢你”还让人心动。</p>
+<div class="dialogue"><b>ENFP：</b>“我是不是有点烦？每天都给你发这么多。”<br><b>INFJ：</b>“还好。”<br><b>ENFP：</b>“‘还好’是什么意思啊！”<br><b>INFJ：</b>“意思是，你可以继续发。”<br><b>ENFP：</b>“那我在你心里是不是特别的？”<br><b>INFJ：</b>“你觉得呢？”<br><b>ENFP：</b>“啊啊啊，你能不能直接说！”</div>
+<div class="pov-grid"><div class="pov sun"><h3>🐶 ENFP 心里想</h3><p>“他好像不太会表达，但只有我能逗出他这种反应。再靠近一点，说不定就知道答案了。”</p></div><div class="pov"><h3>🌙 INFJ 心里想</h3><p>“他今天又来找我了。可是，他对别人是不是也这样？我不想把普通的热情误会成特殊的喜欢。”</p></div></div>
+<p>ENFP 可能喜欢暧昧时的惊喜和互动，INFJ 却更倾向思考：“这个人是不是认真？我们是不是有未来？”一个在享受当下，一个已经开始检查关系里的安全感。</p>
+<h3 class="mid">最容易让彼此上头的细节</h3>
+<ul class="beats"><li><strong>ENFP 的特别待遇：</strong>平时对很多人都开朗，却愿意对 INFJ 讲自己不那么阳光的一面。</li><li><strong>INFJ 的特别待遇：</strong>平时不太分享隐私，却愿意在深夜讲童年、理想和不为人知的脆弱。</li><li><strong>两个人的共同体验：</strong>聊天不只是“在干嘛”，还会不知不觉聊到凌晨，觉得对方比想象中复杂得多。</li></ul>
+<p class="scene-note"><strong>这一幕的风险：</strong>如果 ENFP 只是享受亲密互动，还没想清楚感情方向，INFJ 却已经投入很多，就可能把双方带入不同步的期待。再甜的暧昧，也需要在合适的时候确认彼此的真实意图。</p>
+</div></section>
+<section class="scene" id="act-3"><span class="number">03</span><div class="panel">
+<div class="phase">第三幕 · 确定关系｜心动开始有了名字</div><h2>一个迫不及待去爱，一个想确认能走多远</h2>
+<p class="scene-intro">终于有一天，ENFP 不想再猜了，INFJ 也决定不再躲在“你觉得呢”后面。他们开始认真恋爱。</p>
+<p>这时差异会变得特别可爱。ENFP 想拉着对方去看演出、散步到陌生街区、临时决定一次旅行；INFJ 想知道对方的家庭、过往、价值观和未来，也会悄悄把重要的纪念日记进日历。</p>
+<div class="dialogue"><b>ENFP：</b>“明天我们去天津玩吧，现在出发也行！”<br><b>INFJ：</b>“住哪里？几点回来？票买了吗？”<br><b>ENFP：</b>“你先告诉我，你想不想和我去嘛。”<br><b>INFJ：</b>“想。但我今晚得先把路线看看。”<br><b>ENFP：</b>“成交！我负责惊喜，你负责别让我迷路。”</div>
+<div class="pov-grid"><div class="pov sun"><h3>🐶 ENFP 心里想</h3><p>“以前觉得计划很无聊，现在有人认真把我放进他的未来里，竟然挺浪漫的。可是我也希望生活别变得太死板。”</p></div><div class="pov"><h3>🌙 INFJ 心里想</h3><p>“跟他在一起，很多原本不会做的事突然变得有趣。只是我希望，我们的感情不只停留在今天很开心。”</p></div></div>
+<p>ENFP 更容易被“两个人能一起经历什么”点燃；INFJ 更容易被“我们之间正在建立怎样的理解与承诺”打动。两种心动方式都真诚，不能简单拿谁更主动、谁更会规划来衡量爱得多深。</p>
+<div class="inset"><h3>小小的成长</h3><p>INFJ 试着偶尔答应一场没有攻略的约会；ENFP 试着在重要安排前提前商量。双方都没有失去自己，却慢慢给对方留出了位置。</p></div>
+<p class="scene-note"><strong>这一幕的风险：</strong>把对方想得过于完美。新鲜和深度都很美好，但爱情不是“一个负责提供惊喜、一个负责把人生安排妥当”的永久分工。</p>
+</div></section>
+<section class="scene" id="act-4"><span class="number">04</span><div class="panel warm">
+<div class="phase">第四幕 · 热恋｜只有你知道的另一面</div><h2>快乐小狗学会安静，小老头开始撒娇</h2>
+<p class="scene-intro">真正亲近以后，最迷人的变化出现了：别人眼里成熟稳重的 INFJ，在 ENFP 面前可能忽然很幼稚；别人眼里永远开朗的 ENFP，也终于有了不用强撑开心的地方。</p>
+<p>INFJ 可能开始主动分享无聊的小事、故意斗嘴，甚至有点黏人。ENFP 也可能不再需要每场约会都轰轰烈烈，窝在沙发上一起刷电影，就觉得满足。</p>
+<div class="dialogue"><b>ENFP：</b>“他们都说你高冷，怎么你在我面前这么幼稚？”<br><b>INFJ：</b>“有吗？”<br><b>ENFP：</b>“有！还会故意逗我。”<br><b>INFJ：</b>“因为只有你看见。”<br><b>ENFP：</b>“那我可以一直看吗？”</div>
+<p>有一天 ENFP 心情很差，原本还想在朋友面前开玩笑，INFJ 却看出不对劲，轻轻问一句：“你今天是不是有点累？”那一刻，ENFP 可能觉得自己终于不用再扮演能量满满的人。</p>
+<div class="pov-grid"><div class="pov sun"><h3>🐶 ENFP 心里想</h3><p>“我以为他只是一个安静的人，后来发现他也有好多孩子气和小脾气。原来我能看到别人看不到的他。”</p></div><div class="pov"><h3>🌙 INFJ 心里想</h3><p>“以前觉得很多事没什么意思。现在一起买杯饮料、走一段路，都很开心。我好像终于能不那么小心翼翼了。”</p></div></div>
+<p>不过，热恋期也可能埋下伏笔。INFJ 越来越依赖这种被理解的感觉，开始希望对方始终如初地热情；ENFP 则可能开始担心，自己是不是需要永远负责让恋爱有趣。</p>
+<p class="scene-note"><strong>这一幕最好的状态：</strong>ENFP 不必永远负责逗人开心，INFJ 也不必永远负责成熟稳重。两个人既能热闹，也能一起安静；既能照顾对方，也能坦然说“我今天需要你照顾我”。</p>
+</div></section>
+<section class="scene" id="act-5"><span class="number">05</span><div class="panel">
+<div class="phase">第五幕 · 磨合｜最初的吸引，变成了摩擦</div><h2>一个想要自由，一个想要被坚定选择</h2>
+<p class="scene-intro">热恋慢慢融入日常，真正的考验来了。不是不喜欢了，而是双方开始看见：对方确实和自己不一样。</p>
+<h3 class="mid">冲突① 周六的约定，被改到了周日</h3>
+<div class="dialogue"><b>ENFP：</b>“朋友临时叫我出去，咱们改成周日约会行不行？”<br><b>INFJ：</b>“嗯，随你。”<br><b>ENFP：</b>“你是不是不高兴？”<br><b>INFJ：</b>“没有。”</div>
+<div class="pov-grid"><div class="pov sun"><h3>🐶 ENFP 心里想</h3><p>“又不是不见面了，只是换一天，为什么气氛突然不对？是不是我做什么都要先得到批准？”</p></div><div class="pov"><h3>🌙 INFJ 心里想</h3><p>“我们明明早就说好了。是不是别人的一个临时邀请，就能把我放到后面？我想要的不是控制，是被重视。”</p></div></div>
+<p>问题从来不只是周六还是周日，而是 ENFP 把调整视为灵活，INFJ 可能把约定视为承诺。双方只有把“这次安排对我意味着什么”讲出来，才不会把一件小事升级成“你根本不爱我”。</p>
+<h3 class="mid">冲突② 一个人追问，一个人沉默</h3>
+<div class="dialogue"><b>ENFP：</b>“你到底怎么了？你不说我怎么知道？”<br><b>INFJ：</b>“没事，我想自己待一会儿。”<br><b>ENFP：</b>“可你这样我会更慌啊！”<br><b>INFJ：</b>“能不能别一直问？”</div>
+<p>ENFP 可能想尽快把事情说开，INFJ 却需要先整理情绪。于是 ENFP 越靠近，INFJ 越退缩；INFJ 越沉默，ENFP 越没有安全感。久而久之，两个人都会觉得：明明自己在努力，为什么对方一点都不理解？</p>
+<div class="inset"><h3>如果这次吵架能够重新来过</h3><p><strong>INFJ：</strong>“我确实不开心，但不是想不理你。我需要一个小时整理情绪，今晚我们再聊。”</p><p><strong>ENFP：</strong>“好。那我们今晚聊，我不会一直追问。但你也别突然消失，好吗？”</p></div>
+<h3 class="mid">冲突③ 一个希望你懂，一个希望你别管</h3>
+<p>ENFP 可能怀念刚恋爱时的轻松，INFJ 可能怀念刚恋爱时的确定感。一个觉得“你现在总在限制我”，一个觉得“你以前明明很在乎我”。真正的分歧不是谁变了，而是热恋期被忽略的需求终于浮出水面。</p>
+<p class="scene-note"><strong>这一幕最大的风险：</strong>用读心测试代替沟通，用自由的名义逃避承诺。最有效的修复不是谁认输，而是一起回答：什么事可以临时变动？什么约定必须提前沟通？吵架时可以暂停多久、何时回来继续谈？</p>
+</div></section>
+<section class="scene" id="act-6"><span class="number">06</span><div class="panel warm">
+<div class="phase">第六幕 · 长久｜把浪漫写进普通日子</div><h2>真正的相爱，是终于不再逼对方变成自己</h2>
+<p class="scene-intro">如果他们走过了磨合，感情也许没有最初那么轰轰烈烈，却会变得更踏实。两个人终于懂得：深度不是事事猜中，自由也不是随时可以不顾对方。</p>
+<p>他们可能约定：重要日程提前确认，周末留一点即兴空间；各自都可以见朋友，也为彼此保留高质量的相处时间；在表达不满时讲具体行为，而不是一上来就质疑感情。</p>
+<div class="dialogue"><b>ENFP：</b>“周末我想去看一个突然发现的小展览。”<br><b>INFJ：</b>“周六可以，周日我们不是答应陪家人吗？”<br><b>ENFP：</b>“对哦，差点忘了。那周六去！”<br><b>INFJ：</b>“你负责找好玩的，我负责看交通。”<br><b>ENFP：</b>“成交！”</div>
+<div class="pov-grid"><div class="pov sun"><h3>🐶 ENFP 心里想</h3><p>“原来认真兑现约定，不等于失去自由。有人愿意和我一起规划未来，也不意味着生活会变无聊。”</p></div><div class="pov"><h3>🌙 INFJ 心里想</h3><p>“原来他想要自己的空间，不代表不在乎我。我可以把需求说出来，不必总靠猜测确认被爱。”</p></div></div>
+<p>同居、结婚以后，考验还会落到金钱、家务、社交和家庭责任上。INFJ 不能被默认承担所有计划和情绪劳动，ENFP 也不能被默认负责提供所有快乐。真正长久的关系，需要两个人都参与现实生活。</p>
+<p>更好的结局也许并不戏剧化：一个人忙完工作回家，另一个人随口说起今天遇到的趣事；一个人讲得眉飞色舞，一个人一边做饭一边听。说到一半，彼此相视而笑。</p>
+<div class="dialogue"><b>ENFP：</b>“我想去看看更大的世界。”<br><b>INFJ：</b>“好啊，我们可以一起安排。”<br><b>ENFP：</b>“你也想去？”<br><b>INFJ：</b>“以前未必。现在想和你去。”</div>
+<p class="scene-note"><strong>这一幕的答案：</strong>成熟的 INFJ × ENFP，不是 INFJ 放弃安全感，也不是 ENFP 放弃自由，而是把两种需求放进同一段值得经营的关系里。</p>
+</div></section>
 </div>
-<aside class="caution"><h2>⚡ 最容易错过彼此的地方</h2><p><strong>INFJ 想：</strong>“如果你真的在乎，就应该懂我的失落。”</p><p><strong>ENFP 想：</strong>“如果你真的爱我，就应该相信我的自由。”</p><p>关系真正需要的，不是一个人永远包容、另一个人永远改变，而是<strong>把需求说清楚，把承诺落到行动里。</strong></p></aside>
-<div class="end"><div class="symbol" aria-hidden="true">♡</div><h2>好的爱情，不是改变彼此</h2><p>不是把小老头变成快乐小狗，<br>也不是把快乐小狗关进笼子。<br><strong>是你敢奔向世界，我敢安心等你回来。</strong></p></div>
-<p class="takeaway">自由与承诺，不必二选一。</p>
-<div class="share-wrap"><button id="share" class="share" type="button">💌 分享给那个你想到的人</button><p class="tip" id="share-status" aria-live="polite">点一下，分享这六幕小故事</p></div>
-<p class="disclaimer">这是基于 MBTI 性格偏好的虚构故事，仅供娱乐与自我观察；每个人的沟通方式和亲密关系都不由四个字母决定。</p>
+<h2 class="break-title">⚡ 为什么相爱，也可能彼此受伤？</h2>
+<p class="break-subtitle">最甜的反差，有时也恰好是最容易产生误解的地方。</p>
+<div class="analysis-grid">
+<section class="analysis-card"><h3>① 承诺 vs 弹性</h3><p>INFJ 可能把固定安排理解成“你真的把我放在心上”；ENFP 则认为变通不影响感情。</p><p class="solution"><strong>更好的做法：</strong>区分必须守约的事和可以临时调整的小事，改变计划要提前告知并给出替代方案。</p></section>
+<section class="analysis-card"><h3>② 沉默 vs 追问</h3><p>INFJ 可能需要空间整理情绪；ENFP 可能因为得不到回应而焦虑，越急越容易形成追问—退缩循环。</p><p class="solution"><strong>更好的做法：</strong>可以暂停争吵，但要说明原因与恢复沟通的时间；另一方也要尊重边界。</p></section>
+<section class="analysis-card"><h3>③ 理想 vs 真实</h3><p>INFJ 可能期待始终被理解；ENFP 可能期待持续新鲜有趣。当激情褪去，两个人都可能产生失落。</p><p class="solution"><strong>更好的做法：</strong>接受伴侣会疲惫、会犯错，别把热恋时的表现当成终身考核标准。</p></section>
+</div>
+<h2 class="break-title">🏠 从恋爱走进生活，会变成什么样？</h2>
+<p class="break-subtitle">一段关系真正稳定，靠的不只是灵魂共鸣，还有具体的合作。</p>
+<div class="contrast-table"><table><thead><tr><th>生活场景</th><th>INFJ 常见偏好</th><th>ENFP 常见偏好</th><th>彼此舒服的办法</th></tr></thead><tbody>
+<tr><td>周末安排</td><td>希望提前规划</td><td>喜欢临时发现惊喜</td><td>重要行程提前定，留半天自由探索</td></tr>
+<tr><td>朋友社交</td><td>少而深、需要独处</td><td>丰富热闹、喜欢交流</td><td>不用强迫同进同出，保留两人的专属时间</td></tr>
+<tr><td>表达爱意</td><td>细节、理解与稳定</td><td>分享、热情与直接表达</td><td>问清楚对方最容易感受到爱的方式</td></tr>
+<tr><td>金钱与家务</td><td>重视长期计划</td><td>愿意花钱买体验</td><td>一起做预算、明确分工和自由支配额度</td></tr>
+<tr><td>发生争执</td><td>可能先冷静再谈</td><td>可能希望立刻说清</td><td>明确暂停与复谈时间，避免失联和逼问</td></tr>
+</tbody></table></div>
+<section class="story-epilogue">
+<h2>🌧 如果最后还是走散了呢？</h2>
+<p>还有一种让人难过的结局：INFJ 从反复解释，变成越来越沉默；ENFP 从拼命靠近，变成越来越疲惫。前者觉得自己的失落从没被认真对待，后者觉得无论怎么努力都无法让对方开心。</p>
+<blockquote>INFJ：“我需要的是稳定，可我总觉得自己被放在后面。”</blockquote>
+<blockquote>ENFP：“我已经很努力靠近你了，可你好像永远不满意。”</blockquote>
+<p>他们未必不曾认真相爱，只是没能及时把误会讲清楚。没有哪一种 MBTI 注定先放手，也没有哪一方因为更爱独处或更喜欢社交，就注定不适合长期关系。</p>
+<p>分手不是必然走向；能否修复冲突、尊重边界、承担责任，远比四个字母更重要。</p>
+</section>
+<h2 class="break-title">💌 写给这对情侣的三句话</h2>
+<div class="advice">
+<div><strong>写给 INFJ：</strong>不要把“懂我”变成读心考试。重要的委屈、期待和界限，直接告诉爱你的人。</div>
+<div><strong>写给 ENFP：</strong>不要只用热情证明爱。守时、兑现承诺、认真回应，是另一种非常浪漫的表达。</div>
+<div><strong>写给两个人：</strong>给自由留空间，也给承诺留重量。别为了相爱，把一个人变成另一个人。</div>
+</div>
+<div class="end"><div class="symbol" aria-hidden="true">♡</div><h2>好的爱情，不是改变彼此</h2><p>不是把小老头变成快乐小狗，<br>也不是把快乐小狗关进笼子。<br><strong>是你教我大胆生活，我教你安心去爱。</strong><br>后来我们才明白：<br><strong>自由与承诺，不必二选一。</strong></p></div>
+<p class="takeaway">那个让你心动的人，也值得被你认真理解。</p>
+<div class="share-wrap"><button id="share" class="share" type="button">💌 分享给那个你想到的人</button><p class="tip" id="share-status" aria-live="polite">把完整故事分享给 TA</p></div>
+<p class="disclaimer">这是一篇基于 MBTI 性格偏好创作的虚构恋爱故事，非科学配对结论。性格偏好不决定恋爱成败；真实关系更取决于个体差异、价值观、沟通与行为。</p>
 </main>
 <footer class="footer">rain 的文档 · 2026-10-28</footer>
 <script>
