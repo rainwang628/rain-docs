@@ -9,3 +9,5 @@
 GitHub Pages 若在仓库 Settings → Pages 中启用 `main` 分支的 `/(root)`，根目录提交后会自动发布。
 
 公开恋爱故事 **INFJ × ENFP** 位于 `_source/stories/infj-enfp.html`，对应公开地址 `/stories/infj-enfp/`。它是独立的分享页，不进入技术文章分类；`_source/build.py` 生成站点时会保留此页与首页推荐入口。发布时保持 `stories/infj-enfp/index.html` 与源文件同步。
+
+公开恋爱故事 **ENTP × INFP《贪恋他的脸，赔上了十年》** 位于 `_source/stories/entp-infp.html`，发布路径是 `stories/entp-infp/index.html`；首页有分享入口，重新运行 `_source/build.py` 会自动保留两个恋爱故事。
