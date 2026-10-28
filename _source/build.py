@@ -129,6 +129,8 @@ def build(out):
     count = len(articles)
     home = (f'<main class="wrap"><div class="intro"><div class="eyebrow">PERSONAL NOTES</div>'
             f'<h1>文档与笔记</h1><p>整理日常遇到的问题和已经验证的做法。</p></div>'
+            f'<section aria-label="公开趣味测评"><h2 class="section-title">🌿 八仙人格 · 专属体验</h2><div class="grid"><a class="tile" href="./tools/hidden-persona/"><span class="count">购买后凭专属链接体验</span><h2>🌿 八仙反差人格测试</h2><p>12 道题，寻找你最像的八仙人物原型。购买后凭专属体验链接查看国风人物报告和分享卡。</p></a></div></section>'
+            f'<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid"><a class="tile" href="./stories/infj-enfp/"><span class="count">公开分享 · 约 3 分钟</span><h2>🐶 当快乐小狗，遇见小老头</h2><p>INFJ × ENFP 的恋爱六幕：从初见、暧昧、热恋，到磨合与长久相爱。</p></a></div></section>'
             f'<h2 class="section-title">文章分类</h2><div class="grid">{category_tiles(0)}</div>'
             f'<section data-module="usd-purchases" hidden><h2 class="section-title">手工维护</h2><div class="grid"><a class="tile" href="{url("/tools/usd-cloud/", 0)}"><span class="count">个人记录</span><h2>美元购汇记录</h2><p>跨设备登记购买、修改明细，自动计算平均成本。</p></a></div></section>'
             f'<section data-module="article-categories" hidden><h2 class="section-title">分类管理</h2><p><a href="{url("/tools/article-categories/", 0)}">手动调整文章分类</a></p></section>'
@@ -249,6 +251,12 @@ def build(out):
     }.items():
         if (out / f'{slug}.md').exists() and previous != f'{slug}.md':
             shutil.copyfile(out / f'{slug}.md', out / previous)
+    # The short MBTI love story is a standalone, shareable page outside article categories.
+    story_source = root / 'stories' / 'infj-enfp.html'
+    if story_source.is_file():
+        story_dest = out / 'stories' / 'infj-enfp' / 'index.html'
+        story_dest.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(story_source, story_dest)
     for filename, markup in pages.items():
         filename.parent.mkdir(parents=True, exist_ok=True)
         filename.write_text(markup, encoding='utf-8')
