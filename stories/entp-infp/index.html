@@ -83,7 +83,16 @@ body{background:#f9f7f5;color:#2d3039}
 .end{background:linear-gradient(145deg,#293b4d,#232b3f)}.end strong{color:#f1c6b1}.share{background:#465d74}
 .ending-letter{background:#f6f0e9}
 @media(max-width:600px){.knife{font-size:15px;padding:11px 13px!important}}
-.ending-letter{background:#fffaf6;border:1px solid #eadfd7;border-radius:20px;padding:27px 29px;margin:28px 0;box-shadow:0 10px 30px #28190b07}.ending-letter h2{margin:0 0 11px;font-size:22px}.ending-letter p{color:#62565b;line-height:1.95;font-size:15px;margin:12px 0}@media(max-width:600px){.ending-letter{padding:22px 19px}.ending-letter p{font-size:14px}}</style>
+.ending-letter{background:#fffaf6;border:1px solid #eadfd7;border-radius:20px;padding:27px 29px;margin:28px 0;box-shadow:0 10px 30px #28190b07}.ending-letter h2{margin:0 0 11px;font-size:22px}.ending-letter p{color:#62565b;line-height:1.95;font-size:15px;margin:12px 0}@media(max-width:600px){.ending-letter{padding:22px 19px}.ending-letter p{font-size:14px}}
+/* Character profile uses the five supplied 16Personalities dimension scores. */
+.persona-card{background:#fff;border:1px solid #e9e0ef;border-radius:18px;padding:21px 25px;margin:0 0 28px;box-shadow:0 8px 25px #24183907}
+.persona-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:0 0 9px}.persona-head h2{font-size:19px;line-height:1.5;margin:0}.persona-head .personality{font-size:12px;font-weight:800;color:#77559b;background:#f2eaf8;border-radius:50px;padding:4px 11px;white-space:nowrap}
+.persona-card .persona-intro{font-size:14px;color:#736b7c;line-height:1.75;margin:0 0 17px}
+.trait-grid{display:grid;grid-template-columns:1fr 1fr;gap:13px 21px}.trait{min-width:0}.trait-label{display:flex;justify-content:space-between;gap:7px;font-size:13px;margin-bottom:5px;color:#62576e}.trait-label strong{color:var(--trait-color,#7c589a);font-weight:800}
+.trait-track{height:7px;width:100%;background:#eee9ee;border-radius:99px;overflow:hidden}.trait-track span{display:block;width:var(--percent);height:100%;background:var(--trait-color,#7c589a);border-radius:inherit}
+.persona-card .persona-takeaway{font-size:13px;color:#64556f;border-top:1px dashed #e6dce8;padding-top:13px;margin:15px 0 0;line-height:1.85}
+@media(max-width:640px){.persona-card{padding:18px 17px}.trait-grid{grid-template-columns:1fr}.trait-label{font-size:13px}.persona-head h2{font-size:17px}}
+</style>
 </head>
 <body>
 <header class="top"><div class="top-in"><a href="../../" class="brand">rain / 文档</a><a class="back" href="../../">← 返回首页</a></div></header>
@@ -91,7 +100,19 @@ body{background:#f9f7f5;color:#2d3039}
 <p>ENTP 女生 × INFP 男生｜九分虐，一分恋。<br>她擅长赢下所有争论，却输给一张好看的脸。<br>他是安静的小蝴蝶。<br>十年后，她终于不再追着他飞。</p>
 <div class="chips"><span>ENTP 女 · 许知遥</span><span>INFP 男 · 江叙</span><span>六幕长篇</span><span>BE · 永不复合</span></div></div></section>
 <main class="container">
-<p class="lead">许知遥十九岁遇见江叙，二十九岁离开他。<br>她是 ENTP，聪明、嘴硬、反应快，从来不怕与人争论。<br>江叙是 INFP，人们口中的<strong>“小蝴蝶”</strong>，敏感、安静，长着一张让她失去判断力的脸。<br><br>他们并非没有爱过。<br>只是<strong>她起初看中的是他的好看，后来却要为他的沉默、逃避和不回应支付整整十年的代价。</strong></p>
+<p class="lead">许知遥十九岁遇见江叙，二十九岁离开他。<br>她是 ENTP-T：68% 外向、88% 天马行空、77% 理性思考、69% 随机应变，情绪易波动倾向只有接近中间值的 51%。她能说会辩，也惯于自己解决问题。<br>江叙是 INFP，人们口中的<strong>“小蝴蝶”</strong>，敏感、安静，长着一张让她失去判断力的脸。<br><br>他们并非没有爱过。<br>只是<strong>她起初看中的是他的好看，后来却要为他的沉默、逃避和不回应支付整整十年的代价。</strong></p>
+<section class="persona-card" aria-label="女主性格设定">
+<div class="persona-head"><h2>⚡ 女主性格底色 · 许知遥</h2><span class="personality">ENTP-T</span></div>
+<p class="persona-intro">在人群里能接住所有话题，脑子快、点子多，遇到问题习惯先分析，而不是先哭。可在那张让她心动的脸面前，她的判断也有过例外。</p>
+<div class="trait-grid">
+<div class="trait" style="--percent:68%;--trait-color:#4595ad"><div class="trait-label"><span>外向</span><strong>68%</strong></div><div class="trait-track"><span></span></div></div>
+<div class="trait" style="--percent:88%;--trait-color:#e3ae36"><div class="trait-label"><span>天马行空</span><strong>88%</strong></div><div class="trait-track"><span></span></div></div>
+<div class="trait" style="--percent:77%;--trait-color:#36a277"><div class="trait-label"><span>理性思考</span><strong>77%</strong></div><div class="trait-track"><span></span></div></div>
+<div class="trait" style="--percent:69%;--trait-color:#8b63a4"><div class="trait-label"><span>随机应变</span><strong>69%</strong></div><div class="trait-track"><span></span></div></div>
+<div class="trait" style="--percent:51%;--trait-color:#eb6877"><div class="trait-label"><span>情绪易波动倾向</span><strong>51%</strong></div><div class="trait-track"><span></span></div></div>
+</div>
+<p class="persona-takeaway"><strong>她并不是动不动就崩溃的人。</strong>第五维只有 51%，几乎居中。更虐的是：她往往清楚自己在做什么，却始终舍不得割舍那份最初的外貌吸引。</p>
+</section>
 <nav class="story-index" aria-label="章节"><a href="#act-1">01 惊艳</a><a href="#act-2">02 一直追</a><a href="#act-3">03 等待</a><a href="#act-4">04 同居</a><a href="#act-5">05 熄灭</a><a href="#act-6">06 散场</a></nav>
 <div class="timeline">
 <section class="scene" id="act-1"><span class="number">01</span><div class="panel">
@@ -100,8 +121,8 @@ body{background:#f9f7f5;color:#2d3039}
 <p>江叙站在玻璃窗旁，正把一张画从墙上取下来。他穿着洗得很干净的白衬衫，睫毛很长，五官有种不太真实的漂亮。阳光落在侧脸上，让他像一张不该出现在学校走廊里的电影海报。他低头时有点害羞，没说话，耳朵先红了。</p>
 <p>朋友还在继续分析画，知遥已经拿起手机，假装拍展板，把他也拍进镜头。她不是第一次觉得男人帅，却第一次觉得好看这件事足够让人主动走过去，甚至不需要别的理由。</p>
 <div class="dialogue"><b>许知遥：</b>“这幅画是你画的？”<br><b>江叙：</b>“嗯。”<br><b>许知遥：</b>“画得挺好。不过我觉得你比画好看。”<br><b>江叙：</b>“……你平时也这么和陌生人说话？”<br><b>许知遥：</b>“不。我只跟好看的人这么说。”</div>
-<p>她主动要了联系方式，主动约饭，主动给他发有趣的段子。她擅长把一切变成轻松的游戏。江叙回得很慢，每个字却都像认真挑选过；有时会突然发来一首歌，或者凌晨两点拍的月亮。知遥看不懂他那些绕来绕去的小心思，但看他低头笑起来，又觉得不懂也没关系。</p>
-<p>朋友提醒：“他太敏感了，你说话这么冲，你俩可能不合适。”知遥满不在乎：“谈恋爱又不是做风险评估。我喜欢他的脸，够了。”</p>
+<p>她主动要了联系方式，主动约饭，主动给他发有趣的段子。她向来不喜欢按部就班，遇到好玩的人就靠近，想到有趣的点子就立刻行动。她擅长把一切变成轻松的游戏。江叙回得很慢，每个字却都像认真挑选过；有时会突然发来一首歌，或者凌晨两点拍的月亮。知遥看不懂他那些绕来绕去的小心思，但看他低头笑起来，又觉得不懂也没关系。</p>
+<p>朋友提醒：“他太敏感了，你说话这么冲，你俩可能不合适。”知遥甚至能列出两人不合适的五个理由，却还是满不在乎：“恋爱又不是考核性价比。我喜欢他的脸，够了。”她明明可以把关系里的问题分析得头头是道，却会在看见他一笑时，主动推翻自己的结论。</p>
 <div class="pov-grid"><div class="pov sun"><h3>⚡ 许知遥 · ENTP 女</h3><p>“他真的太好看了。安静、矜持，还有一点不愿被人看透的忧郁。就算他有点难相处，又能难到哪去？”</p></div><div class="pov"><h3>🦋 江叙 · INFP 男</h3><p>“她说话怎么这么直接。被她喜欢有点开心，也有点害怕。她像一阵风，我不知道自己能不能跟得上。”</p></div></div>
 <p>那年冬天，他终于答应和她在一起。她高兴得在宿舍楼下跑了两圈。后来她再想起这一晚，才明白自己真正庆祝的不是得到一个懂自己的人，而是终于牵到了那双好看的手。</p>
 <p class="knife">她凭着一眼惊艳走进去，花了十年才走出来。</p>
@@ -111,18 +132,18 @@ body{background:#f9f7f5;color:#2d3039}
 <p class="scene-intro">最开始，知遥觉得江叙的敏感很浪漫。雨天他会记得叶子落在窗上的声音，路过花店会为一束不太起眼的花驻足。他能从她随口提的一部电影里听出她情绪低落，却不一定会问她究竟为什么难过。</p>
 <p>他们第一次真正吵架，是因为知遥开了一句玩笑。她在朋友面前说江叙是“艺术系门面担当，脸比作品先出圈”。大家都笑了，江叙也勉强笑了。回去以后，他突然不愿理她。</p>
 <div class="dialogue"><b>许知遥：</b>“怎么了？我哪句话说过了，你告诉我。”<br><b>江叙：</b>“没什么。”<br><b>许知遥：</b>“你明明不开心。那我们聊聊。”<br><b>江叙：</b>“你总是觉得聊一聊就能解决所有事。”<br><b>许知遥：</b>“不然呢？总不能靠猜吧？”<br><b>江叙：</b>“我现在不想说。”</div>
-<p>知遥先道歉了。她认真反省自己的玩笑，改掉不少锋利的表达方式。可江叙不高兴的理由总在变化：有时觉得她说话太直接，有时觉得她在朋友面前太耀眼，有时又嫌她一有问题就要“分析关系”，像在给两个人开复盘会。</p>
-<p>她试着温柔一点，便被说“不像你”；试着让他自己冷静，却又被说“不在乎”。最折磨的不是他敏感，而是他不愿意告诉她，怎样才能在不伤害他的前提下靠近。</p>
+<p>知遥先道歉了。不是因为她辩不过，而是她知道那句玩笑确实越了界。她认真反省，试着收起部分锋利的表达方式。可道歉之后，她也需要一次清楚的交流：这件事究竟伤到了哪里？以后什么是边界？可江叙不高兴的理由总在变化：有时觉得她说话太直接，有时觉得她在朋友面前太耀眼，有时又嫌她一有问题就要“分析关系”，像在给两个人开复盘会。</p>
+<p>她可以把一场争执拆成事实、感受、需求和可执行的改进，可江叙不愿面对这个讨论。她试着温柔一点，便被说“不像你”；试着让他自己冷静，却又被说“不在乎”。最折磨的不是他敏感，而是他不愿意告诉她，怎样才能在不伤害他的前提下靠近。</p>
 <p>有个周五，他答应陪她过生日。知遥在餐厅等了一个多小时，才收到一句“今天情绪不好，想一个人待着”。她立刻去他宿舍楼下，隔着电话轻声说：“你不想吃饭没事，我陪你坐会儿。”他回复：“我说了想一个人。”</p>
 <p>她站在风里，第一次觉得自己像个没有收到邀请却硬要来赴约的人。</p>
 <p>后来他终于出现，穿着一件浅灰色毛衣，头发被风吹得有点乱，眼睛红红的。她看了一眼，就又不忍心追问了。甚至开始反过来安慰他：“好啦，没事，我生日又不是只过这一回。”</p>
-<div class="pov-grid"><div class="pov sun"><h3>⚡ 知遥心里想</h3><p>“我能解决复杂的问题，能在台上辩论赢所有人。为什么偏偏连让喜欢的人把话说完都做不到？是不是我真的太吵了？”</p></div><div class="pov"><h3>🦋 江叙心里想</h3><p>“她为什么一定要我立刻解释？我已经很难受了。她能不能别逼我？等我状态好了，一切自然就好了。”</p></div></div>
+<div class="pov-grid"><div class="pov sun"><h3>⚡ 知遥心里想</h3><p>“我能在十分钟里拆开别人一个逻辑漏洞，却找不到一句让他愿意回应的话。我知道沟通需要双方参与，可看见他那张脸，还是会想再试一次。”</p></div><div class="pov"><h3>🦋 江叙心里想</h3><p>“她为什么一定要我立刻解释？我已经很难受了。她能不能别逼我？等我状态好了，一切自然就好了。”</p></div></div>
 <p>那时她还觉得自己挺幸运。别人只能远远看一眼这么好看的男生，自己却能和他谈恋爱。她把等待、道歉、迁就都算进了这份幸运的成本。</p>
 <p class="knife">他一沉默，她就先低头。久而久之，他不用开口，她也知道该怪自己。</p>
 </div></section>
 <section class="scene" id="act-3"><span class="number">03</span><div class="panel">
 <span class="year">2019—2020 · 第四、五年</span><div class="phase">第三幕｜异地是一场没有终点的单向奔赴</div><h2>她赶了八百公里，他只回一句“我今天不想见人”</h2>
-<p class="scene-intro">毕业后，知遥去了北京工作，江叙留在杭州画画。她跑得越来越快，会议、项目、出差把日程排满，却总能从密密麻麻的安排里挤出一个周末给他。</p>
+<p class="scene-intro">毕业后，知遥去了北京工作，江叙留在杭州画画。她跑得越来越快，会议、项目、出差把日程排满。她明明是个喜欢随机应变、不愿被死板安排绑住的人，却总能为他提前挤出一个周末。</p>
 <p>她为了见他，坐最晚一班高铁，半夜拖着箱子到站。她会在朋友圈发“忙里偷闲”，从不说自己为这次见面改过多少计划。江叙不太喜欢计划，他说灵感来时不想被固定日程打断。她笑着说“艺术家嘛，我懂”。</p>
 <p>二〇一九年秋天，她提前一周订票去杭州，想给他一个惊喜。出发前他还说“这周我大概都在”。等她抵达车站，江叙却发来消息：</p>
 <div class="dialogue"><b>江叙：</b>“我今天状态不好，不想见人。”<br><b>许知遥：</b>“……我已经到杭州了。”<br><b>江叙：</b>“我知道你是好意，但你能不能尊重我的空间？”<br><b>许知遥：</b>“我从北京过来的。”<br><b>江叙：</b>“谁让你非要来呢？”</div>
@@ -138,7 +159,7 @@ body{background:#f9f7f5;color:#2d3039}
 <section class="scene" id="act-4"><span class="number">04</span><div class="panel warm">
 <span class="year">2021—2022 · 第六、七年</span><div class="phase">第四幕｜同居之后，等待只换了一个地方</div><h2>人终于在身边，心却还是隔着八百公里</h2>
 <p class="scene-intro">二〇二一年，江叙搬到北京。知遥以为距离是问题的根源，只要能每天回到同一个家，最难熬的日子就过去了。</p>
-<p>她找房、谈租金、搬家、买家具，像推进一个复杂项目一样，把所有事情安排得妥妥当当。江叙负责挑窗帘和灯，审美很好，房间被布置得漂亮极了。知遥觉得值，忙到半夜看一眼他睡着的侧脸，又能轻轻笑出来。</p>
+<p>她原本连旅行都喜欢落地后再决定去哪，却为了他们的家提前做预算、联系房东、安排搬家。她不是真的享受把每件事都规划妥当，只是如果她不做，这些事就没人接。江叙负责挑窗帘和灯，审美很好，房间被布置得漂亮极了。知遥觉得值，忙到半夜看一眼他睡着的侧脸，又能轻轻笑出来。</p>
 <p>但真正住到一起才知道，不是所有孤独都因为距离。</p>
 <p>他在家画画，灵感不好时便不想说话。她下班回来，兴冲冲讲一件工作上的趣事，他可能只“嗯”一声。她试图逗他开心，他说“你能不能别一直讲话”。她转身去做饭，他又不知为什么觉得她在生气。</p>
 <div class="dialogue"><b>许知遥：</b>“江叙，我们能不能好好聊十分钟？”<br><b>江叙：</b>“我今天没精力。”<br><b>许知遥：</b>“那明天？”<br><b>江叙：</b>“能不能不要提前预约我的情绪？”<br><b>许知遥：</b>“可是我们不约，你就永远没有空。”<br><b>江叙：</b>“你看，又开始辩论了。”</div>
@@ -152,11 +173,11 @@ body{background:#f9f7f5;color:#2d3039}
 </div></section>
 <section class="scene" id="act-5"><span class="number">05</span><div class="panel">
 <span class="year">2023—2025 · 第八、九、十年</span><div class="phase">第五幕｜她不再问了，他以为一切变好了</div><h2>她最后一次等他，他依然选择了不来</h2>
-<p class="scene-intro">到了第八年，许知遥越来越少吵架。她不再反复分析两个人为什么不合适，不再追着他问未来，也不再拿出聊天记录证明自己说得对。</p>
+<p class="scene-intro">到了第八年，许知遥越来越少吵架。她不再反复分析两个人为什么不合适，不再追着他问未来，也不再拿出聊天记录证明自己说得对。她心里早有清晰的判断：投入越多，不代表未来值得继续。只是过去，她总不愿意承认这个结论。</p>
 <p>她学会一个人看电影，一个人出差顺便旅行，一个人过生日。她的生活变得很忙，演讲时仍然口齿伶俐，朋友聚会上依然是最会接梗的那个。没人发现，她已经很久不再在别人面前提起江叙。</p>
 <p>二〇二三年她升职，兴奋地跑回家，想告诉他。江叙正在画一幅人物肖像，抬头说：“那挺好的。”随后又低下头去。她站在门口两分钟，没有等到第二句话。后来她一个人买了块小蛋糕，蜡烛都没点。</p>
 <p>二〇二四年，她母亲做手术。她守在手术室门口，给江叙发了一句“我有点害怕”。江叙过了几个小时才回：“对不起，我刚才状态不好，没看手机。现在怎么样？”她答：“已经出来了，没事。”</p>
-<p>他发来一个拥抱表情，她没有再回复。那天她第一次发现，原来一个人可以不哭，不争辩，也不愤怒。只是突然没有想分享的欲望了。</p>
+<p>他发来一个拥抱表情，她没有再回复。那天她并没有歇斯底里，甚至仍能和同事开玩笑、冷静处理手续。她只是突然发现，自己再也没有想跟他分享消息的欲望。这不是一个情绪失控的人放了狠话，而是一个曾经不断尝试解决问题的人，终于停止投入。</p>
 <p>二〇二五年，他们即将一起走过第十个年头。知遥订了间以前常去的小餐厅，想给这十年一个最后的机会。她穿了浅蓝色裙子，桌上放一束小花。七点、八点、八点半，她看着门一次次被推开，每次都不是他。</p>
 <p>九点零七分，手机终于亮了。</p>
 <div class="dialogue"><b>江叙：</b>“我今天情绪有点低，不想出门。”<br><b>许知遥：</b>“今天什么日子，你知道吧？”<br><b>江叙：</b>“知道。我也不想这样，可我真的没状态。”<br><b>许知遥：</b>“我已经等了两个小时。”<br><b>江叙：</b>“你明知道我不喜欢被逼，为什么还要说这个？”<br><b>许知遥：</b>“……好。”</div>
@@ -165,14 +186,14 @@ body{background:#f9f7f5;color:#2d3039}
 <p>她看了一会儿，忽然把照片放大，仔细看清那张脸。好看。还是好看。甚至这么多年过去，依然好看到让她想起十九岁的心跳。</p>
 <p>只是这一次，她想起的已经不只是心跳。还有车站的雨、病房的灯、关上的房门、母亲手术室外那条冰冷的长椅，以及无数句“我现在没状态”。</p>
 <div class="pov-grid"><div class="pov sun"><h3>⚡ 知遥心里想</h3><p>“我可以接受你敏感，接受你需要空间。但我不能接受我的需要永远被排在后面。以前我一直觉得你的脸值这些委屈，现在我不觉得了。”</p></div><div class="pov"><h3>🦋 江叙心里想</h3><p>“她最近真的不闹了。也许我们终于找到了舒服的相处方式。等我状态好些，再补她一次就行。”</p></div></div>
-<p>知遥独自结账，取消了下个月两个人的旅行预约。她没有发长篇消息，没有威胁分手，也没有试图讲明白这件事为什么重要。</p>
+<p>知遥独自结账，取消了下个月两个人的旅行预约。她没有发长篇消息，没有威胁分手，也没有试图讲明白这件事为什么重要。她已经分析过太多次了，而这次决定不需要再拿给他审阅。</p>
 <p class="knife">那天她把等人的习惯留在了餐厅。江叙不知道，因为她这次连告别都没提醒。</p>
 </div></section>
 <section class="scene" id="act-6"><span class="number">06</span><div class="panel warm">
 <span class="year">2026 · 第十年 · 二十九岁</span><div class="phase">第六幕｜她终于在最漂亮的脸面前，选择转身</div><h2>“我还是觉得你好看。但我不想再要你了。”</h2>
 <p class="scene-intro">分手没有发生在暴雨里，没有第三个人，也没有大吵大闹。只是一个普通的周末，许知遥把行李箱推到门边，把钥匙放在玄关柜上。</p>
 <p>江叙从房间里出来，穿着浅色毛衣，头发有一点凌乱，眼睛像十九岁时一样干净。他看着行李箱，愣了好一会儿，似乎以为知遥又临时要去出差。</p>
-<div class="dialogue"><b>江叙：</b>“你要去哪？”<br><b>许知遥：</b>“我租了新房子，今天搬走。”<br><b>江叙：</b>“我们最近不是挺好的吗？”<br><b>许知遥：</b>“是啊。因为我已经不再等你回应我了。”<br><b>江叙：</b>“你怎么可以突然做决定？”<br><b>许知遥：</b>“我不是突然。只是这些年我说了太多次，你都没当回事。”</div>
+<div class="dialogue"><b>江叙：</b>“你要去哪？”<br><b>许知遥：</b>“我租了新房子，今天搬走。”<br><b>江叙：</b>“我们最近不是挺好的吗？”<br><b>许知遥：</b>“是啊。因为我已经不再等你回应我了。”<br><b>江叙：</b>“你怎么可以突然做决定？”<br><b>许知遥：</b>“我不是突然。我反复评估过这段关系，最后发现只有一件事一直在帮你加分。”<br><b>江叙：</b>“什么？”<br><b>许知遥：</b>“你长得好看。十年了，我竟然还拿这一条抵掉所有问题。”</div>
 <p>江叙终于着急了。他说自己没有背叛过她，也一直认真对待这段关系；如果需要，他可以试着改变。他声音很轻，讲到最后眼圈发红，好像在努力忍住情绪。</p>
 <p>知遥看着他，心里突然有一点疼。十年前，她第一次见到他就是这副模样：眉眼漂亮，情绪藏得很深，像一只不肯落在掌心的蝴蝶。她承认自己仍然会被他的好看打动，甚至很想伸手替他理一理额前的头发。</p>
 <p>但她没有。</p>
@@ -181,7 +202,7 @@ body{background:#f9f7f5;color:#2d3039}
 <p>江叙低声问：“以后还有可能吗？”</p>
 <p>知遥摇头：“没有了。”</p>
 <p>门关上的时候，她没有回头。楼道里只有行李箱的滚轮声。江叙站在门内，想起她第一次搭讪时那句“我只跟好看的人这么说”。那时他觉得这个女生太有趣了，像一道解不开的题。他以为她会一直想解下去。</p>
-<div class="pov-grid"><div class="pov sun"><h3>⚡ 许知遥 · 最后的心声</h3><p>“我真的喜欢过你的样子。也真的因为这张脸，替你原谅了很多次。可是以后我的人生，不想再用来证明我能等你多久。”</p></div><div class="pov"><h3>🦋 江叙 · 后知后觉</h3><p>“原来她那些看起来尖锐的追问，不是故意和我争输赢。她只是在求一个回应。而等她不再追问，我连最后一次解释的机会也没有了。”</p></div></div>
+<div class="pov-grid"><div class="pov sun"><h3>⚡ 许知遥 · 最后的心声</h3><p>“我不是不清醒。我知道不合适，也知道你每次回避意味着什么。最可笑的是，我一次次用你的脸说服自己再等等。可这次，我不想再做亏本的选择了。”</p></div><div class="pov"><h3>🦋 江叙 · 后知后觉</h3><p>“原来她那些看起来尖锐的追问，不是故意和我争输赢。她只是在求一个回应。而等她不再追问，我连最后一次解释的机会也没有了。”</p></div></div>
 <p>路边叫的车到了。知遥回头看了一眼那栋楼，想起自己第一年追江叙时，曾经无比骄傲地跟朋友说：“你看，这么帅的人是我男朋友。”</p>
 <p>她笑了一下，坐进车里。</p>
 <p class="knife">她一辈子最擅长赢辩论。唯独这一次，不反驳，不证明，不争取。她只是走了。</p>
@@ -190,7 +211,7 @@ body{background:#f9f7f5;color:#2d3039}
 <section class="ending-letter"><h2>后记｜最好的结局，就是他们再没见过</h2>
 <p>分开三个月后，江叙办了一个小画展。画廊里挂着一幅新画，是一个穿浅蓝色裙子的女孩背影。有人问他画里的女人是谁，他说“一个以前认识的人”。他没再提起她的名字。</p>
 <p>他想发照片给知遥，点开聊天框，看到最后一条消息还停在去年。那晚她问“今天什么日子，你知道吧”，他回了“我今天没状态”。他把照片收回相册，始终没有按下发送。</p>
-<p>知遥在另一个城市继续工作。她还是话多，还是爱开玩笑，还是能在会议里几句话拆穿别人绕了半天的问题。朋友有一次问她：“江叙那张脸你都舍得？他可是你喜欢了十年的人。”</p>
+<p>知遥在另一个城市继续工作。她还是爱聊天、爱争论、爱那些说走就走的新鲜事，还是能在会议里几句话拆穿别人绕了半天的问题。没有因为一段失败的关系，就把自己变成只会沉默的人。朋友有一次问她：“江叙那张脸你都舍得？他可是你喜欢了十年的人。”</p>
 <p>她笑了笑：“舍不得啊。可我不想再给他当观众了。”</p>
 <p>朋友又问：“那你们真的没可能了？”</p>
 <p>“没有。”她答得很快。这次不是嘴硬，是真的不想了。</p>
