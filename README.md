@@ -7,3 +7,5 @@
 新增文章时，在 `_source/content/` 放入 Markdown，并向 `_source/articles.json` 增加一项。运行 `python3 _source/build.py --output site-build` 可生成完整静态站点，再将生成文件发布到仓库根目录。`_source/PUBLISHING.md` 记录原网站与 GitHub 的双站发布流程。
 
 GitHub Pages 若在仓库 Settings → Pages 中启用 `main` 分支的 `/(root)`，根目录提交后会自动发布。
+
+公开恋爱故事 **INFJ × ENFP** 位于 `_source/stories/infj-enfp.html`，对应公开地址 `/stories/infj-enfp/`。它是独立的分享页，不进入技术文章分类；`_source/build.py` 生成站点时会保留此页与首页推荐入口。发布时保持 `stories/infj-enfp/index.html` 与源文件同步。
