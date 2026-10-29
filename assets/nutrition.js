@@ -219,7 +219,7 @@ function readComponents() {
     out.weight_basis=out.amount_g===null?'unknown':value('weight_basis');
     for(const f of fields){out[f]=numeric(value(f));if(out[f]!==null&&(!Number.isFinite(out[f])||out[f]<0))throw Error(out.food_name+'的营养值不能为负数')}
     out.energy_basis=out.kcal===null?'unknown':value('energy_basis');
-    out.source_note=value('source_note')||'用户在网站手动填写，具体来源尚未补充。';
+    out.source_note=value('source_note')||(out.id?'':'用户在网站手动填写，具体来源尚未补充。');
     return out;
   });
 }
