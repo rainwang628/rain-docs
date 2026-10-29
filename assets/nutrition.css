@@ -11,3 +11,42 @@
 .week-day span,.week-day strong{display:block}.week-day strong{font-size:12px;white-space:nowrap}
 .n-week-summary{font-weight:650;font-size:14px;margin:14px 0 4px}
 @media(max-width:650px){.n-weekly{padding:12px}.n-week-details{grid-template-columns:repeat(4,minmax(0,1fr))}.n-week-controls{width:100%}.n-week-head h2{font-size:18px}.n-week-chart{overflow:hidden;min-width:0}.n-week-chart svg{width:100%;max-width:100%;min-width:0}}
+
+/* Meal-level totals and the foods that make them up. */
+.n-meal-record + .n-meal-record{border-top:1px solid var(--line)}
+.n-meal-record>.n-item{border-top:0;align-items:flex-start}
+.n-record-head{min-width:0;flex:1}
+.n-note,.n-component-extra details{margin-top:5px;color:var(--muted);font-size:12px}
+.n-note summary,.n-component-extra summary{cursor:pointer;color:#357b6c}
+.n-note p,.n-component-extra p{margin:6px 0;white-space:pre-wrap;overflow-wrap:anywhere}
+.n-component-list{margin:0 14px 13px;padding:10px 12px;border-radius:9px;background:#f5faf8;border:1px solid #deece7}
+.n-component-heading{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;color:#205a50;font-weight:700;font-size:13px}
+.n-component-heading small{color:var(--muted);font-weight:400}
+.n-component{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:5px 10px;padding:10px 0;border-top:1px solid #dcebe6;font-size:14px}
+.n-component:first-of-type{margin-top:6px}
+.n-component-main{min-width:0;overflow-wrap:anywhere}
+.n-component-main span{color:var(--muted);font-size:12px}
+.n-component small,.n-component-energy small{display:block;color:var(--muted);font-size:12px}
+.n-component-energy{text-align:right;font-weight:700;color:#245b50;white-space:nowrap}
+.n-component-energy small{font-weight:400}
+.n-component-extra{grid-column:1 / -1;color:var(--muted);font-size:12px}
+.nutrition dialog.details-dialog{max-width:760px}
+.n-editor-card{margin:15px 0;padding:14px;border:1px solid #dbe9e4;border-radius:10px;background:#f9fcfb}
+.n-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.n-card-head button{padding:5px 10px;font-size:13px}
+.n-editor-card .n-fields{margin-bottom:8px}
+.n-wide{grid-column:1 / -1}
+.nutrition label.n-complete{display:flex;align-items:flex-start;gap:9px;margin:16px 0 3px;line-height:1.5}
+.nutrition label.n-complete input{width:auto;margin:4px 0 0}
+.nutrition label.n-review{display:flex;align-items:flex-start;gap:8px;margin:8px 0;color:#865d24;font-size:13px}
+.nutrition label.n-review[hidden]{display:none}
+.nutrition label.n-review input{width:auto;margin:4px 0 0}
+.n-form-error{color:#a6332e;font-size:13px;font-weight:600}
+.details-total{padding:10px 12px;border-radius:8px;background:#e9f4ef;color:#1b5f4e;font-size:14px;font-weight:700}
+@media(max-width:650px){
+  .n-wide{grid-column:auto}
+  .n-component-list{margin-left:10px;margin-right:10px;padding:10px}
+  .nutrition dialog.details-dialog{padding:17px;width:calc(100% - 18px);max-height:92vh}
+  .n-editor-card{padding:12px}
+}
+

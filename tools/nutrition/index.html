@@ -2,11 +2,11 @@
 <html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>饮食管理 · rain 的文档</title>
 <link rel="stylesheet" href="../../assets/site.css">
-<link rel="stylesheet" href="../../assets/nutrition.css?v=3">
+<link rel="stylesheet" href="../../assets/nutrition.css?v=20261029-detail">
 <script src="../../assets/usd-cloud-config.js" defer></script>
 <script src="../../assets/site-nav.js" defer></script>
 <script src="../../assets/site-access.js?v=20261024-session-stable" defer></script>
-<script src="../../assets/nutrition.js?v=3" defer></script>
+<script src="../../assets/nutrition.js?v=20261029-detail" defer></script>
 <script src="../../assets/nutrition-weekly.js?v=1" defer></script></head>
 <body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><a href="../account/" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">☰ 菜单</button><nav class="nav" id="site-navigation"><a href="../../">首页</a><a href="../../categories/">文章分类</a><a href="../" aria-current="page">我的模块</a></nav></div></header>
 <main id="module-gate" data-owner-gate class="wrap"><h1>饮食管理</h1><p data-gate-message>正在验证访问权限…</p><p><a href="../account/">登录 / 查看权限</a></p></main>
@@ -16,7 +16,7 @@
 <p id="nutrition-status" role="status" aria-live="polite">准备连接…</p>
 <div class="n-tabs"><button type="button" class="active" data-tab="journal">每日饮食</button><button type="button" data-tab="foods">常用食物库</button><button type="button" data-tab="import">ChatGPT 快速导入</button></div>
 <section id="tab-journal" class="n-section">
-<div class="n-toolbar"><label>日期 <input type="date" id="meal-date"></label><button type="button" id="new-meal" class="n-secondary">＋ 新增食物</button></div>
+<div class="n-toolbar"><label>日期 <input type="date" id="meal-date"></label><button type="button" id="new-meal">＋ 记录一餐</button></div>
 <div class="n-stats" id="daily-stats"></div><p class="n-hint">未填写的营养值表示未知，不按 0 估算。当天未记录的餐次不等于没吃。</p>
 <section class="n-weekly" aria-labelledby="weekly-heading">
 <div class="n-week-head"><div><h2 id="weekly-heading">每周能量趋势</h2><p class="n-hint">按周一至周日汇总已记录热量（kcal）</p></div><div class="n-week-controls"><button type="button" id="week-prev" class="n-secondary" aria-label="上一周">‹</button><span id="week-label" aria-live="polite"></span><button type="button" id="week-next" class="n-secondary" aria-label="下一周">›</button><button type="button" id="week-today" class="n-secondary">本周</button></div></div>
@@ -40,8 +40,28 @@
 <div id="meal-fields"><div class="n-fields"><label>日期<input id="edit-date" type="date"></label><label>餐次<select id="edit-type"><option value="breakfast">早餐</option><option value="lunch">午餐</option><option value="dinner">晚餐</option><option value="snack">加餐</option></select></label></div>
 <label>从食物库选择（可选）<select id="edit-food-id"><option value="">手动输入</option></select></label>
 </div>
-<div class="n-fields"><label>食物名称<input id="edit-name" maxlength="120" required></label><label>品牌<input id="edit-brand" maxlength="120"></label><label id="amount-label">食用重量（克）<input id="edit-amount" type="number" min=".001" step="any" required></label></div>
+<div class="n-fields"><label>食物名称<input id="edit-name" maxlength="120" required></label><label>品牌<input id="edit-brand" maxlength="120"></label><label id="amount-label">食用重量（克）<input id="edit-amount" type="number" min=".001" step="any"></label></div>
 <div class="n-fields"><label>热量 kcal<input id="edit-kcal" type="number" min="0" step="any"></label><label>蛋白质 g<input id="edit-protein" type="number" min="0" step="any"></label><label>脂肪 g<input id="edit-fat" type="number" min="0" step="any"></label><label>碳水 g<input id="edit-carbs" type="number" min="0" step="any"></label><label>钠 mg<input id="edit-sodium" type="number" min="0" step="any"></label></div>
 <label id="note-label">备注 / 来源<textarea id="edit-note" rows="2"></textarea></label>
+<p id="legacy-form-error" class="n-form-error" role="alert"></p>
 <div class="n-actions"><button type="submit" id="submit-edit">保存</button><button type="button" id="cancel-edit" class="n-secondary">取消</button></div></form></dialog>
+<dialog id="details-dialog" class="details-dialog">
+<form id="details-form">
+  <h2 id="details-heading">记录一餐</h2>
+  <p class="n-hint">把实际吃过的食物逐项添加；不知道的重量或营养值可以留空。保存前会检查已有餐次，修改时会保留原始记录。</p>
+  <div class="n-fields">
+    <label>日期<input id="details-date" type="date" required></label>
+    <label>餐次<select id="details-type"><option value="breakfast">早餐</option><option value="lunch">午餐</option><option value="dinner">晚餐</option><option value="snack">加餐</option></select></label>
+    <label class="n-wide">餐次名称<input id="details-title" maxlength="120" placeholder="如：豆腐牛肉面"></label>
+  </div>
+  <div id="details-items"></div>
+  <button type="button" id="add-component" class="n-secondary">＋ 添加食物</button>
+  <label class="n-complete"><input type="checkbox" id="details-complete"> 这一餐的食物已经全部列出，按明细计算整餐</label>
+  <p id="details-complete-hint" class="n-hint">只补录了部分食物时请不要勾选，原整餐估值会保留。</p>
+  <p id="details-total" class="details-total" aria-live="polite"></p>
+  <label>整餐备注（可选）<textarea id="details-note" rows="2" placeholder="例如：少油、没喝汤；只有新增餐次时可填写"></textarea></label>
+  <p class="n-hint">食物或份量变化后，缺少明细的营养项目会显示为未知；此前记录会保留在修改历史中。</p>
+  <p id="details-error" class="n-form-error" role="alert"></p>
+  <div class="n-actions"><button type="submit" id="save-details">保存整餐</button><button type="button" id="cancel-details" class="n-secondary">取消</button></div>
+</form></dialog>
 </main></div><footer class="footer">rain 的文档 · 饮食记录</footer></body></html>
