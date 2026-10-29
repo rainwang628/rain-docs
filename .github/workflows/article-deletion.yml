@@ -1,7 +1,7 @@
 name: Story deletion
 on:
   push:
-    branches: [codex/article-deletion]
+    branches: [main, codex/article-deletion]
   workflow_dispatch:
   schedule:
     - cron: '3-59/5 * * * *'

@@ -9,6 +9,7 @@ import subprocess
 import sys
 import time
 import urllib.parse
+import urllib.error
 import urllib.request
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -104,6 +105,18 @@ def request_build(commit: str) -> None:
 
 def main() -> None:
     if os.environ.get("GITHUB_REF") == "refs/heads/codex/article-deletion":
+        try:
+            http_json(ENDPOINT, {"Content-Type": "application/json"}, {"action":"pending"})
+            raise RuntimeError("Unauthenticated worker request unexpectedly succeeded")
+        except urllib.error.HTTPError as error:
+            if error.code != 401:
+                raise
+        try:
+            worker_call({"action":"pending"})
+            raise RuntimeError("Development branch unexpectedly accessed the queue")
+        except urllib.error.HTTPError as error:
+            if error.code != 403:
+                raise
         if not worker_call({"action": "ping"}).get("ok"):
             raise RuntimeError("Worker authentication check failed")
         main_sha = run_git("ls-remote", "origin", "refs/heads/main").split()[0]
