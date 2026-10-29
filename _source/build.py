@@ -92,6 +92,10 @@ def page(title, description, current, body, depth, structured=None):
 def build(out):
     articles = json.loads((root / 'articles.json').read_text(encoding='utf-8'))
     categories = json.loads((root / 'categories.json').read_text(encoding='utf-8'))
+    stories = json.loads((root / 'stories.json').read_text(encoding='utf-8'))
+    story_slugs = [item['slug'] for item in stories]
+    if len(story_slugs) != len(set(story_slugs)) or any(not re.fullmatch(r'[a-z0-9]+(?:-[a-z0-9]+)*', slug) for slug in story_slugs):
+        raise ValueError('Invalid or duplicate story slug')
     for item in articles:
         category = categories[item['category']]
         subcategory = category['subcategories'][item['subcategory']]
@@ -127,13 +131,22 @@ def build(out):
 
     cards_home = ''.join(card(item, 0) for item in articles)
     count = len(articles)
+    story_cards = ''.join(
+        f'<a class="tile" href="./stories/{html.escape(story["slug"], quote=True)}/">'
+        f'<span class="count">{html.escape(story["badge"])}</span><h2>{html.escape(story["title"])}</h2>'
+        f'<p>{html.escape(story["description"])}</p></a>'
+        for story in stories
+    )
+    stories_section = ('<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid">'
+                       + story_cards + '</div></section>') if stories else ''
     home = (f'<main class="wrap"><div class="intro"><div class="eyebrow">PERSONAL NOTES</div>'
             f'<h1>文档与笔记</h1><p>整理日常遇到的问题和已经验证的做法。</p></div>'
             f'<section aria-label="公开趣味测评"><h2 class="section-title">🌿 八仙人格 · 专属体验</h2><div class="grid"><a class="tile" href="./tools/hidden-persona/"><span class="count">购买后凭专属链接体验</span><h2>🌿 八仙反差人格测试</h2><p>12 道题，寻找你最像的八仙人物原型。购买后凭专属体验链接查看国风人物报告和分享卡。</p></a></div></section>'
-            f'<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid"><a class="tile" href="./stories/infj-enfp/"><span class="count">公开分享 · 约 10 分钟</span><h2>🐶 当快乐小狗，遇见小老头</h2><p>INFJ × ENFP 完整恋爱六幕：双视角心理活动、暧昧对话、热恋日常、磨合冲突与长久相处。</p></a><a class="tile" href="./stories/entp-infp/"><span class="count">ENTP女 × INFP男 · 十年BE</span><h2>🦋 贪恋他的脸，赔上了十年</h2><p>她是锋利聪明的ENTP，他是漂亮敏感的INFP小蝴蝶。九分虐、一分恋，十年里她追着他走，最后彻底分手。</p></a></div></section>'
+            f'{stories_section}'
             f'<h2 class="section-title">文章分类</h2><div class="grid">{category_tiles(0)}</div>'
             f'<section data-module="usd-purchases" hidden><h2 class="section-title">手工维护</h2><div class="grid"><a class="tile" href="{url("/tools/usd-cloud/", 0)}"><span class="count">个人记录</span><h2>美元购汇记录</h2><p>跨设备登记购买、修改明细，自动计算平均成本。</p></a></div></section>'
             f'<section data-module="article-categories" hidden><h2 class="section-title">分类管理</h2><p><a href="{url("/tools/article-categories/", 0)}">手动调整文章分类</a></p></section>'
+            f'<section data-owner hidden><h2 class="section-title">故事管理</h2><p><a href="{url("/tools/story-management/", 0)}">管理和删除故事</a></p></section>'
             f'<h2 class="section-title">最近发布</h2><div class="grid">{cards_home}</div></main>')
     overview = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 1)}">首页</a> / 文章分类</div>'
                 f'<div class="intro"><div class="eyebrow">CATEGORIES</div><h1>文章分类</h1>'
@@ -212,6 +225,12 @@ def build(out):
     for filename in ('usd-cloud-schema.sql', 'usd-cloud-setup.md'):
         shutil.copyfile(root / 'tools' / filename, out / filename)
     (out / 'assets/article-catalog.json').write_text(json.dumps({'categories': categories, 'articles': articles}, ensure_ascii=False), encoding='utf-8')
+    (out / 'assets/story-catalog.json').write_text(json.dumps(stories, ensure_ascii=False), encoding='utf-8')
+    story_management = out / 'tools/story-management/index.html'
+    story_management.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(root / 'tools/story-management.html', story_management)
+    for filename in ('story-management.js', 'story-management.css'):
+        shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     management_body = protect((root / 'tools/article-categories.html').read_text(encoding='utf-8'), 'article-categories')
     management_page = page('文章分类管理', '手工调整网站文章分类', 'tools', management_body, 2)
     management_page = management_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/article-categories.js" defer></script></head>')
@@ -252,7 +271,7 @@ def build(out):
         if (out / f'{slug}.md').exists() and previous != f'{slug}.md':
             shutil.copyfile(out / f'{slug}.md', out / previous)
     # Standalone public romance stories; preserve them on future full rebuilds.
-    for story_slug in ('infj-enfp', 'entp-infp'):
+    for story_slug in story_slugs:
         story_source = root / 'stories' / (story_slug + '.html')
         if story_source.is_file():
             story_dest = out / 'stories' / story_slug / 'index.html'
@@ -269,4 +288,5 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, default=root / 'dist')
     args = parser.parse_args()
     build(args.output.resolve())
+
 

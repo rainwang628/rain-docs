@@ -1,0 +1,15 @@
+.story-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:18px}
+.story-toolbar p{margin:0;color:#637784;font-size:14px}
+.story-toolbar button,.story-delete{font:inherit;border:1px solid #c7dad6;background:#eaf4f0;color:#185f50;border-radius:9px;padding:8px 13px;cursor:pointer;white-space:nowrap}
+.story-delete{border-color:#e7c4c2;background:#fff5f4;color:#a03c35}
+.story-delete:disabled{opacity:.55;cursor:not-allowed}
+.story-list{display:grid;gap:12px}
+.story-card{background:#fff;border:1px solid #d9e4e7;border-radius:13px;padding:18px;display:flex;gap:16px;align-items:flex-start;justify-content:space-between}
+.story-card h2{font-size:19px;margin:0 0 4px;line-height:1.4}
+.story-card p{color:#637784;font-size:14px;margin:4px 0}
+.story-card a{font-size:14px}
+.story-progress{color:#9a6630!important}
+#story-status{min-height:24px;color:#637784;font-size:14px}
+#story-pending{margin-top:24px}
+.story-pending-row{padding:10px 0;border-bottom:1px solid #d9e4e7;color:#637784}
+@media(max-width:650px){.story-toolbar{align-items:flex-start;flex-direction:column}.story-card{gap:10px;flex-direction:column}.story-delete{align-self:flex-start}}

@@ -1,0 +1,24 @@
+name: Story deletion
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: '3-59/5 * * * *'
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: story-deletion
+  cancel-in-progress: false
+jobs:
+  process:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - name: Process owner-authorized story deletions
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 _source/scripts/story_delete_worker.py

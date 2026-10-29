@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>故事管理 · rain 的文档</title>
+  <link rel="stylesheet" href="../../assets/site.css?v=20260930-1930">
+  <link rel="stylesheet" href="../../assets/story-management.css?v=1">
+  <script src="../../assets/usd-cloud-config.js" defer></script>
+  <script src="../../assets/site-nav.js?v=20260930-1930" defer></script>
+  <script src="../../assets/site-access.js?v=20261024-session-stable" defer></script>
+  <script src="../../assets/story-management.js?v=1" defer></script>
+</head>
+<body>
+<header class="top"><div class="top-inner">
+  <a class="brand" href="../../">rain / 文档</a><a href="../account/" id="account-link" class="account-status">账号</a>
+  <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation">☰ 菜单</button>
+  <nav class="nav" id="site-navigation"><a href="../../">首页</a><a href="../../categories/">文章分类</a><a href="../" aria-current="page">我的模块</a></nav>
+</div></header>
+<main id="module-gate" data-owner-gate class="wrap"><h1>故事管理</h1><p data-gate-message>正在验证访问权限…</p><p><a href="../account/">登录 / 查看权限</a></p></main>
+<div data-owner hidden><main class="wrap">
+  <div class="crumb"><a href="../../">首页</a> / <a href="../">我的模块</a> / 故事管理</div>
+  <div class="intro"><div class="eyebrow">STORY MANAGEMENT</div><h1>故事管理</h1><p>管理已发布的故事。此页面仅网站主人可用。</p></div>
+  <div class="story-toolbar"><p>删除会同步移除故事网页和 GitHub 上的 HTML 源文件。通常几分钟内完成，GitHub 历史版本仍可恢复。</p><button id="story-refresh" type="button">刷新状态</button></div>
+  <p id="story-status" role="status" aria-live="polite">正在加载…</p>
+  <div id="story-list" class="story-list"></div>
+  <section id="story-pending" hidden><h2>正在处理</h2><div id="story-pending-list"></div></section>
+</main></div>
+<footer class="footer">rain 的文档 · 故事管理</footer>
+</body></html>
