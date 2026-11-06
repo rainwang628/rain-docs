@@ -4,7 +4,10 @@ const grid = document.getElementById('module-grid');
 const toggle = document.getElementById('module-sort-toggle');
 const message = document.getElementById('module-sort-message');
 if (!grid || !toggle || !message) return;
-const cards = () => [...grid.querySelectorAll(':scope > .module-card')];
+const groups = [...grid.querySelectorAll('.grid[data-module-group]')];
+const cards = group => group
+  ? [...group.querySelectorAll(':scope > .module-card')]
+  : groups.flatMap(group => cards(group));
 const cardId = card => card.dataset.sortId;
 const knownIds = new Set(cards().map(cardId));
 const localKey = 'rain.module-order.v1';
@@ -13,26 +16,43 @@ const say = value => { message.textContent = value; };
 const order = () => cards().map(cardId);
 function applyOrder(ids) {
   if (!Array.isArray(ids)) return;
-  const map = new Map(cards().map(c => [cardId(c),c]));
-  const ordered = [];
-  for (const id of ids) if (map.has(id) && !ordered.includes(id)) ordered.push(id);
-  for (const id of map.keys()) if (!ordered.includes(id)) ordered.push(id);
-  for (const id of ordered) grid.append(map.get(id));
+  for (const group of groups) {
+    const map = new Map(cards(group).map(c => [cardId(c),c]));
+    const ordered = [];
+    for (const id of ids) if (map.has(id) && !ordered.includes(id)) ordered.push(id);
+    for (const id of map.keys()) if (!ordered.includes(id)) ordered.push(id);
+    for (const id of ordered) group.append(map.get(id));
+  }
   refreshControls();
 }
 function refreshControls() {
-  const visible = cards().filter(c => !c.hidden);
-  visible.forEach((card,i)=>{
-    const up=card.querySelector('[data-move="up"]'),down=card.querySelector('[data-move="down"]');
-    if(up)up.disabled=i===0;
-    if(down)down.disabled=i===visible.length-1;
-  });
+  for (const group of groups) {
+    const visible = cards(group).filter(c => !c.hidden);
+    visible.forEach((card,i)=>{
+      const up=card.querySelector('[data-move="up"]'),down=card.querySelector('[data-move="down"]');
+      if(up)up.disabled=i===0;
+      if(down)down.disabled=i===visible.length-1;
+    });
+  }
+}
+function updateAccessHint() {
+  const empty = document.getElementById('module-access-empty');
+  const text = document.getElementById('module-access-message');
+  const authorized = groups.find(group => group.dataset.moduleGroup === 'authorized');
+  if (!empty || !text || !authorized) return;
+  empty.hidden = cards(authorized).some(card => !card.hidden);
+  const state = window.RAIN_SITE_ACCESS;
+  text.textContent = !state?.ready ? '正在确认访问权限…'
+    : state.error ? '暂时无法确认访问权限，请在账号页面重试。'
+    : !state.user ? '登录后查看已授权模块。'
+    : '暂无已授权模块，可在账号页面申请访问。';
 }
 function move(card,dir) {
-  const visible = cards().filter(c=>!c.hidden), pos=visible.indexOf(card), target=visible[pos+dir];
+  const group = card.parentElement;
+  const visible = cards(group).filter(c=>!c.hidden), pos=visible.indexOf(card), target=visible[pos+dir];
   if(!target)return;
-  if(dir<0)grid.insertBefore(card,target);
-  else grid.insertBefore(card,target.nextSibling);
+  if(dir<0)group.insertBefore(card,target);
+  else group.insertBefore(card,target.nextSibling);
   refreshControls();
   saveCloud();
 }
@@ -68,12 +88,12 @@ function makeControls(card) {
   });
   handle.addEventListener('dragend',()=>{card.classList.remove('dragging');dragCard=null;});
   container.append(handle);
-  card.addEventListener('dragover',e=>{if(editing&&dragCard&&dragCard!==card&&!card.hidden)e.preventDefault();});
+  card.addEventListener('dragover',e=>{if(editing&&dragCard&&dragCard!==card&&dragCard.parentElement===card.parentElement&&!card.hidden)e.preventDefault();});
   card.addEventListener('drop',e=>{
-    if(!editing||!dragCard||dragCard===card||card.hidden)return;
+    if(!editing||!dragCard||dragCard===card||dragCard.parentElement!==card.parentElement||card.hidden)return;
     e.preventDefault();
     const mid=card.getBoundingClientRect().top+card.getBoundingClientRect().height/2;
-    grid.insertBefore(dragCard,e.clientY<mid?card:card.nextSibling);
+    card.parentElement.insertBefore(dragCard,e.clientY<mid?card:card.nextSibling);
     dragCard.classList.remove('dragging');dragCard=null;
     refreshControls();saveCloud();
   });
@@ -83,9 +103,21 @@ toggle.addEventListener('click',()=>{
   grid.classList.toggle('sorting',editing);
   toggle.textContent=editing?'完成调整':'调整顺序';
   toggle.setAttribute('aria-pressed',String(editing));
-  say(editing?'点击卡片右上角的 ↑ ↓ 调整顺序，修改后自动同步云端。':'模块排序已退出编辑模式。');
+  say(editing?'点击卡片右上角的 ↑ ↓ 在每组内排序，修改后自动同步云端。':'模块排序已退出编辑模式。');
   refreshControls();
 });
+window.addEventListener('rain:access',()=>{
+  updateAccessHint();
+  refreshControls();
+  if (!window.RAIN_SITE_ACCESS?.owner) {
+    editing=false;
+    grid.classList.remove('sorting');
+    toggle.disabled=true;
+    toggle.textContent='调整顺序';
+    toggle.setAttribute('aria-pressed','false');
+  }
+});
+updateAccessHint();
 (async()=>{
   try{
     db=await window.RAIN_SITE_AUTH;

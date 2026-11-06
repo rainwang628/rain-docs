@@ -330,7 +330,9 @@ def build(out):
     hub_body = (root / 'tools/module-hub.html').read_text(encoding='utf-8')
     hub_body = hub_body.replace('__STORY_CARDS__', story_links)
     hub_page = page('我的模块', '访问已授权的网站模块', 'tools', hub_body, 1, path='/tools/')
-    hub_page = hub_page.replace('</head>', (root / 'tools/module-hub.head.html').read_text(encoding='utf-8') + '</head>')
+    hub_head = (root / 'tools/module-hub.head.html').read_text(encoding='utf-8')
+    hub_head = hub_head.replace('__MODULE_SORT_VERSION__', hashlib.sha256((root / 'static/assets/module-sort.js').read_bytes()).hexdigest()[:10])
+    hub_page = hub_page.replace('</head>', hub_head + '</head>')
     pages[out / 'tools/index.html'] = hub_page
     party_body = protect((root / 'tools/truth-or-dare.html').read_text(encoding='utf-8'), 'games', 3)
     party_page = page('今晚有点不对劲 · 真心话大冒险', '与朋友一起玩的小工具', 'tools', party_body, 3, footer='rain 的文档 · 今晚有点不对劲', path='/tools/games/truth-or-dare/', robots='noindex,follow')

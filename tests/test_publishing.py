@@ -97,6 +97,15 @@ class PublishingTests(unittest.TestCase):
         for card in ('data-sort-id="hidden-persona"', 'data-sort-id="story-infj-enfp"',
                      'data-sort-id="games" data-module="games" hidden'):
             self.assertIn(card, grid)
+        public, authorized = grid.split('data-module-group="authorized">', 1)
+        self.assertIn('>访客可见</h2>', public)
+        self.assertIn('data-module-group="public"', public)
+        self.assertIn('data-sort-id="hidden-persona"', public)
+        self.assertIn('data-sort-id="story-infj-enfp"', public)
+        self.assertNotIn('data-module="games"', public)
+        self.assertIn('data-module="games" hidden', authorized)
+        self.assertIn('id="module-access-empty"', public)
+        self.assertIn('>授权可见</h2>', public)
         self.assertNotIn('aria-label="轻松一下"', hub)
         self.assertIn('data-protected-module="games"', (self.root / 'tools/games/index.html').read_text(encoding='utf-8'))
         self.assertIn('href="../" style="font-size:12px;color:#78618c;text-decoration:underline">← 我的模块', (self.root / 'tools/hidden-persona/index.html').read_text(encoding='utf-8'))

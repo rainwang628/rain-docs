@@ -1,7 +1,9 @@
 <style>
 .sort-hint{color:#637784;font-size:14px;margin:0 0 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap}
 .sort-hint button{font:inherit;color:#146e5d;border:1px solid #b9d8ce;border-radius:8px;padding:6px 12px;background:#e5f0ed;cursor:pointer}
-#module-grid>.module-card{position:relative;min-width:0}
+.module-group-note{color:#637784;margin:-6px 0 20px}
+.module-empty{padding:20px 24px;border:1px dashed #c8d8dc;border-radius:12px;color:#637784}
+#module-grid .module-card{position:relative;min-width:0}
 #module-grid .module-card>.tile{height:100%;padding-right:24px}
 #module-grid .module-controls{display:none;align-items:center;gap:8px;position:absolute;right:12px;top:10px;background:#fff;border-radius:9px;padding:4px;box-shadow:0 1px 6px #0002}
 #module-grid.sorting .module-controls{display:flex}
@@ -12,4 +14,4 @@
 #module-grid .module-card.dragging{opacity:.55}
 #module-grid .module-controls .drag-handle{cursor:grab;touch-action:pan-y}
 @media(max-width:750px){#module-grid .module-controls .drag-handle{display:none}}
-</style><script src="../assets/module-sort.js?v=20261018-cloud2" defer></script>
+</style><script src="../assets/module-sort.js?v=__MODULE_SORT_VERSION__" defer></script>
