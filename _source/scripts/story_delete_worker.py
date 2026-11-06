@@ -29,7 +29,7 @@ def delete_story(root: Path, slug: str) -> bool:
         raise ValueError("Invalid story identifier")
     manifest = root / "_source/stories.json"
     catalog = root / "assets/story-catalog.json"
-    homepage = root / "fun/index.html"
+    homepage = root / "tools/index.html"
     source = root / "_source/stories" / (slug + ".html")
     published = root / "stories" / slug / "index.html"
     records = json.loads(manifest.read_text(encoding="utf-8"))
@@ -75,7 +75,7 @@ def delete_story(root: Path, slug: str) -> bool:
             raise ValueError("Invalid generated file manifest")
         files = generated["files"].copy()
         files.pop(f"stories/{slug}/index.html", None)
-        modified = {"fun/index.html": updated, "assets/story-catalog.json": catalog_text}
+        modified = {"tools/index.html": updated, "assets/story-catalog.json": catalog_text}
         if sitemap_text is not None:
             modified["sitemap.xml"] = sitemap_text
         for name, text in modified.items():

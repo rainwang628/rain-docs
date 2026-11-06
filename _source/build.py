@@ -107,7 +107,7 @@ def page(title, description, current, body, depth, structured=None, footer='rain
     favicon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"
     nav = ''.join(
         f'<a href="{url(target, depth)}"' + (' id="account-link"' if key == 'account' else '') + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
-        for key, target, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块'), ('fun', '/fun/', '轻松一下')]
+        for key, target, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块')]
     )
     data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c') + '</script>' if structured else ''
     full_title = f'{title} · {SITE["name"]}'
@@ -211,27 +211,19 @@ def build(out):
     )
     stories_section = ('<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid">'
                        + story_links + '</div></section>') if stories else ''
-    fun_body = ('<main class="wrap"><div class="crumb"><a href="../">首页</a> / 轻松一下</div>'
-                '<div class="intro"><div class="eyebrow">SIDE NOTES</div><h1>轻松一下</h1>'
-                '<p>和技术无关的内容收在这里，不占首页的位置。</p></div>'
-                '<section aria-label="八仙人格"><h2 class="section-title">🌿 八仙人格</h2><div class="grid">'
-                '<a class="tile" href="../tools/hidden-persona/"><span class="count">凭体验码进入</span>'
-                '<h2>八仙反差人格测试</h2><p>12 道题，寻找你最像的八仙人物原型，生成国风报告与分享卡。</p>'
-                '</a></div></section>' + stories_section + '</main>')
     home = (f'<main class="wrap"><div class="intro"><div class="eyebrow">PERSONAL NOTES</div>'
             f'<h1>文档与笔记</h1><p>整理日常遇到的问题和已经验证的做法。</p></div>'
             f'<h2 class="section-title">文章分类</h2><div class="grid">{category_tiles(0)}</div>'
             f'<h2 class="section-title">最近发布</h2><div class="grid">{cards_home}</div></main>')
     overview = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 1)}">首页</a> / 文章分类</div>'
                 f'<div class="intro"><div class="eyebrow">CATEGORIES</div><h1>文章分类</h1>'
-                f'<p>{count} 篇文章，按主题浏览。</p></div><div class="grid">{category_tiles(1)}</div><p data-module="article-categories" hidden><a href="{url("/tools/article-categories/", 1)}">管理文章分类</a></p></main>')
+                f'<p>{count} 篇文章，按主题浏览。</p></div><div class="grid">{category_tiles(1)}</div></main>')
     pages = {
         out / 'index.html': page('文档与笔记', '个人笔记与文档分类', 'home', home, 0, path='/', structured={
             '@context': 'https://schema.org', '@type': 'WebSite',
             'name': 'rain 的文档', 'inLanguage': 'zh-CN',
             'url': absolute('/')}),
         out / 'categories/index.html': page('文章分类', '按主题浏览 AI 与技术笔记', 'category', overview, 1, path='/categories/'),
-        out / 'fun/index.html': page('轻松一下', '八仙人格测试与恋爱小故事', 'fun', fun_body, 1, path='/fun/'),
     }
     for key, category in categories.items():
         selected = [a for a in articles if a['category'] == key]
@@ -333,7 +325,9 @@ def build(out):
     game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2, path='/tools/games/', robots='noindex,follow')
     game_page = game_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"></head>')
     pages[out / 'tools/games/index.html'] = game_page
-    hub_page = page('我的模块', '访问已授权的网站模块', 'tools', (root / 'tools/module-hub.html').read_text(encoding='utf-8'), 1, path='/tools/')
+    hub_body = (root / 'tools/module-hub.html').read_text(encoding='utf-8')
+    hub_body = hub_body.replace('__STORY_SECTION__', stories_section)
+    hub_page = page('我的模块', '访问已授权的网站模块', 'tools', hub_body, 1, path='/tools/')
     hub_page = hub_page.replace('</head>', (root / 'tools/module-hub.head.html').read_text(encoding='utf-8') + '</head>')
     pages[out / 'tools/index.html'] = hub_page
     party_body = protect((root / 'tools/truth-or-dare.html').read_text(encoding='utf-8'), 'games', 3)
@@ -371,7 +365,7 @@ def build(out):
         filename.write_text(markup, encoding='utf-8')
     # Only explicitly public pages belong in the sitemap; new private tools
     # must not become discoverable simply because they have an index.html.
-    public = {'/', '/categories/', '/tools/', '/fun/', '/tools/hidden-persona/'}
+    public = {'/', '/categories/', '/tools/', '/tools/hidden-persona/'}
     for key, category in categories.items():
         public.add(f'/categories/{key}/')
         public.update(f'/categories/{key}/{subkey}/' for subkey in category['subcategories'])
