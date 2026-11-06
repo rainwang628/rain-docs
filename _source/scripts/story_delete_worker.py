@@ -29,7 +29,7 @@ def delete_story(root: Path, slug: str) -> bool:
         raise ValueError("Invalid story identifier")
     manifest = root / "_source/stories.json"
     catalog = root / "assets/story-catalog.json"
-    homepage = root / "index.html"
+    homepage = root / "fun/index.html"
     source = root / "_source/stories" / (slug + ".html")
     published = root / "stories" / slug / "index.html"
     records = json.loads(manifest.read_text(encoding="utf-8"))
@@ -45,7 +45,7 @@ def delete_story(root: Path, slug: str) -> bool:
     if len(matches) != 1 or len(visible) != 1:
         raise ValueError("Story catalogs do not match; no files were deleted")
     page = homepage.read_text(encoding="utf-8")
-    pattern = r'<a class="tile" href="\./stories/' + re.escape(slug) + r'/">.*?</a>'
+    pattern = r'<a class="tile" href="\.\./stories/' + re.escape(slug) + r'/">.*?</a>'
     updated, removed = re.subn(pattern, "", page, flags=re.DOTALL)
     if removed != 1:
         raise ValueError("Story home link not found uniquely; no files were deleted")
@@ -75,7 +75,7 @@ def delete_story(root: Path, slug: str) -> bool:
             raise ValueError("Invalid generated file manifest")
         files = generated["files"].copy()
         files.pop(f"stories/{slug}/index.html", None)
-        modified = {"index.html": updated, "assets/story-catalog.json": catalog_text}
+        modified = {"fun/index.html": updated, "assets/story-catalog.json": catalog_text}
         if sitemap_text is not None:
             modified["sitemap.xml"] = sitemap_text
         for name, text in modified.items():

@@ -203,12 +203,23 @@ def build(out):
         f'<p>{html.escape(story["description"])}</p></a>'
         for story in stories
     )
+    story_links = ''.join(
+        f'<a class="tile" href="{url("/stories/" + story["slug"] + "/", 1)}">'
+        f'<span class="count">{html.escape(story["badge"])}</span><h2>{html.escape(story["title"])}</h2>'
+        f'<p>{html.escape(story["description"])}</p></a>'
+        for story in stories
+    )
     stories_section = ('<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid">'
-                       + story_cards + '</div></section>') if stories else ''
+                       + story_links + '</div></section>') if stories else ''
+    fun_body = ('<main class="wrap"><div class="crumb"><a href="../">首页</a> / 轻松一下</div>'
+                '<div class="intro"><div class="eyebrow">SIDE NOTES</div><h1>轻松一下</h1>'
+                '<p>和技术无关的内容收在这里，不占首页的位置。</p></div>'
+                '<section aria-label="八仙人格"><h2 class="section-title">🌿 八仙人格</h2><div class="grid">'
+                '<a class="tile" href="../tools/hidden-persona/"><span class="count">凭体验码进入</span>'
+                '<h2>八仙反差人格测试</h2><p>12 道题，寻找你最像的八仙人物原型，生成国风报告与分享卡。</p>'
+                '</a></div></section>' + stories_section + '</main>')
     home = (f'<main class="wrap"><div class="intro"><div class="eyebrow">PERSONAL NOTES</div>'
             f'<h1>文档与笔记</h1><p>整理日常遇到的问题和已经验证的做法。</p></div>'
-            f'<section aria-label="公开趣味测评"><h2 class="section-title">🌿 八仙人格 · 专属体验</h2><div class="grid"><a class="tile" href="./tools/hidden-persona/"><span class="count">购买后凭专属链接体验</span><h2>🌿 八仙反差人格测试</h2><p>12 道题，寻找你最像的八仙人物原型。购买后凭专属体验链接查看国风人物报告和分享卡。</p></a></div></section>'
-            f'{stories_section}'
             f'<h2 class="section-title">文章分类</h2><div class="grid">{category_tiles(0)}</div>'
             f'<section data-module="usd-purchases" hidden><h2 class="section-title">手工维护</h2><div class="grid"><a class="tile" href="{url("/tools/usd-cloud/", 0)}"><span class="count">个人记录</span><h2>美元购汇记录</h2><p>跨设备登记购买、修改明细，自动计算平均成本。</p></a></div></section>'
             f'<section data-module="article-categories" hidden><h2 class="section-title">分类管理</h2><p><a href="{url("/tools/article-categories/", 0)}">手动调整文章分类</a></p></section>'
@@ -223,6 +234,7 @@ def build(out):
             'name': 'rain 的文档', 'inLanguage': 'zh-CN',
             'url': absolute('/')}),
         out / 'categories/index.html': page('文章分类', '按主题浏览 AI 与技术笔记', 'category', overview, 1, path='/categories/'),
+        out / 'fun/index.html': page('轻松一下', '八仙人格测试与恋爱小故事', 'fun', fun_body, 1, path='/fun/'),
     }
     for key, category in categories.items():
         selected = [a for a in articles if a['category'] == key]
@@ -362,7 +374,7 @@ def build(out):
         filename.write_text(markup, encoding='utf-8')
     # Only explicitly public pages belong in the sitemap; new private tools
     # must not become discoverable simply because they have an index.html.
-    public = {'/', '/categories/', '/tools/', '/tools/hidden-persona/'}
+    public = {'/', '/categories/', '/tools/', '/fun/', '/tools/hidden-persona/'}
     for key, category in categories.items():
         public.add(f'/categories/{key}/')
         public.update(f'/categories/{key}/{subkey}/' for subkey in category['subcategories'])
