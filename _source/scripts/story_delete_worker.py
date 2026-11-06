@@ -45,15 +45,12 @@ def delete_story(root: Path, slug: str) -> bool:
     if len(matches) != 1 or len(visible) != 1:
         raise ValueError("Story catalogs do not match; no files were deleted")
     page = homepage.read_text(encoding="utf-8")
-    pattern = r'<a class="tile" href="\.\./stories/' + re.escape(slug) + r'/">.*?</a>'
+    pattern = (r'<div class="module-card" data-sort-id="story-' + re.escape(slug) +
+               r'"><a class="tile" href="\.\./stories/' + re.escape(slug) +
+               r'/">(?:(?!</a>).)*</a><div class="module-controls" aria-label="调整模块顺序"></div></div>')
     updated, removed = re.subn(pattern, "", page, flags=re.DOTALL)
     if removed != 1:
         raise ValueError("Story home link not found uniquely; no files were deleted")
-    if len(records) == 1:
-        empty = '<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid"></div></section>'
-        if empty not in updated:
-            raise ValueError("Story section layout changed; no files were deleted")
-        updated = updated.replace(empty, "", 1)
     new_records = [item for item in records if item.get("slug") != slug]
     new_catalog = [item for item in public_records if item.get("slug") != slug]
     catalog_text = json.dumps(new_catalog, ensure_ascii=False, indent=2) + "\n"
@@ -145,7 +142,7 @@ def main() -> None:
         print("No story deletion requests")
         return
     accepted, failed = [], []
-    allowed_paths = {"index.html", "_source/stories.json", "assets/story-catalog.json",
+    allowed_paths = {"tools/index.html", "_source/stories.json", "assets/story-catalog.json",
                      "sitemap.xml", "_source/generated-files.json"}
     for request in requests:
         try:

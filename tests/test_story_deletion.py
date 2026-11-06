@@ -14,15 +14,15 @@ class StoryDeletionTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         self.root = Path(self.temp.name)
-        for folder in ("_source/stories", "assets", "stories/one", "stories/two", "_source/content"):
+        for folder in ("_source/stories", "assets", "stories/one", "stories/two", "_source/content", "tools"):
             (self.root / folder).mkdir(parents=True, exist_ok=True)
         stories = [{"slug":"one","title":"One"},{"slug":"two","title":"Two"}]
         for path in ("_source/stories.json", "assets/story-catalog.json"):
             (self.root / path).write_text(json.dumps(stories), encoding="utf-8")
-        (self.root / "index.html").write_text(
-            '<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid">'
-            '<a class="tile" href="./stories/one/">One</a>'
-            '<a class="tile" href="./stories/two/">Two</a></div></section>',
+        (self.root / "tools/index.html").write_text(
+            '<div class="grid" id="module-grid">'
+            '<div class="module-card" data-sort-id="story-one"><a class="tile" href="../stories/one/">One</a><div class="module-controls" aria-label="调整模块顺序"></div></div>'
+            '<div class="module-card" data-sort-id="story-two"><a class="tile" href="../stories/two/">Two</a><div class="module-controls" aria-label="调整模块顺序"></div></div></div>',
             encoding="utf-8")
         for slug in ("one","two"):
             (self.root / "_source/stories" / (slug+".html")).write_text(slug,encoding="utf-8")
@@ -38,24 +38,25 @@ class StoryDeletionTests(unittest.TestCase):
         self.assertFalse((self.root/"stories/one/index.html").exists())
         self.assertTrue((self.root/"stories/two/index.html").exists())
         self.assertEqual((self.root/"_source/content/technical.md").read_text(),"keep")
-        self.assertNotIn("./stories/one/",(self.root/"index.html").read_text())
-        self.assertIn("./stories/two/",(self.root/"index.html").read_text())
+        self.assertNotIn("../stories/one/",(self.root/"tools/index.html").read_text())
+        self.assertIn("../stories/two/",(self.root/"tools/index.html").read_text())
         self.assertEqual([x["slug"] for x in json.loads((self.root/"_source/stories.json").read_text())],["two"])
         self.assertFalse(module.delete_story(self.root,"one"))
 
     def test_delete_last_story_removes_empty_section(self):
         module.delete_story(self.root,"one")
         module.delete_story(self.root,"two")
-        self.assertNotIn('aria-label="恋爱故事"',(self.root/"index.html").read_text())
+        self.assertNotIn('data-sort-id="story-',(self.root/"tools/index.html").read_text())
+        self.assertIn('id="module-grid"',(self.root/"tools/index.html").read_text())
 
     def test_invalid_or_unregistered_story_cannot_delete_files(self):
-        before=(self.root/"index.html").read_text()
+        before=(self.root/"tools/index.html").read_text()
         with self.assertRaises(ValueError):
             module.delete_story(self.root,"../technical")
         (self.root/"_source/stories/unknown.html").write_text("unregistered")
         with self.assertRaises(ValueError):
             module.delete_story(self.root,"unknown")
-        self.assertEqual((self.root/"index.html").read_text(),before)
+        self.assertEqual((self.root/"tools/index.html").read_text(),before)
         self.assertEqual((self.root/"_source/content/technical.md").read_text(),"keep")
 
     def test_mismatched_catalog_aborts_before_mutation(self):

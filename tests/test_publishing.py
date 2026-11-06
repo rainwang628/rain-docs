@@ -81,6 +81,27 @@ class PublishingTests(unittest.TestCase):
         self.assertIn('/rain-docs/tools/hidden-persona/</loc>', sitemap)
         self.assertIn('/rain-docs/articles/mac-usage-notes/</loc>', sitemap)
 
+    def test_navigation_and_module_hub_are_consistent(self):
+        for name in ('index.html', 'categories/index.html',
+                     'articles/mac-usage-notes/index.html', 'tools/index.html',
+                     'tools/nutrition/index.html', 'tools/story-management/index.html',
+                     'tools/games/index.html', 'tools/games/uno-costume/index.html'):
+            page = (self.root / name).read_text(encoding='utf-8')
+            nav = re.search(r'<nav class="nav"[^>]*>(.*?)</nav>', page, re.DOTALL)
+            self.assertIsNotNone(nav, name)
+            self.assertIn('首页</a>', nav.group(1), name)
+            self.assertIn('我的模块</a>', nav.group(1), name)
+            self.assertNotIn('文章分类</a>', nav.group(1), name)
+        hub = (self.root / 'tools/index.html').read_text(encoding='utf-8')
+        grid = hub.split('id="module-grid">', 1)[1].split('</main>', 1)[0]
+        for card in ('data-sort-id="hidden-persona"', 'data-sort-id="story-infj-enfp"',
+                     'data-sort-id="games" data-module="games" hidden'):
+            self.assertIn(card, grid)
+        self.assertNotIn('aria-label="轻松一下"', hub)
+        self.assertIn('data-protected-module="games"', (self.root / 'tools/games/index.html').read_text(encoding='utf-8'))
+        self.assertIn('href="../" style="font-size:12px;color:#78618c;text-decoration:underline">← 我的模块', (self.root / 'tools/hidden-persona/index.html').read_text(encoding='utf-8'))
+        self.assertIn('href="../../tools/">← 我的模块', (self.root / 'stories/infj-enfp/index.html').read_text(encoding='utf-8'))
+
     def test_domain_change_updates_standalone_metadata_and_json_ld(self):
         config = self.root / '_source/site.json'
         site = json.loads(config.read_text(encoding='utf-8'))

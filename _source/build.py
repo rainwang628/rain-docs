@@ -108,7 +108,7 @@ def page(title, description, current, body, depth, structured=None, footer='rain
     favicon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"
     nav = ''.join(
         f'<a href="{url(target, depth)}"' + (' id="account-link"' if key == 'account' else '') + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
-        for key, target, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块')]
+        for key, target, label in [('home', '/', '首页'), ('tools', '/tools/', '我的模块')]
     )
     data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c') + '</script>' if structured else ''
     full_title = f'{title} · {SITE["name"]}'
@@ -205,20 +205,14 @@ def build(out):
 
     rows_home = ''.join(post_row(item, 0) for item in articles)
     count = len(articles)
-    story_cards = ''.join(
-        f'<a class="tile" href="./stories/{html.escape(story["slug"], quote=True)}/">'
-        f'<span class="count">{html.escape(story["badge"])}</span><h2>{html.escape(story["title"])}</h2>'
-        f'<p>{html.escape(story["description"])}</p></a>'
-        for story in stories
-    )
     story_links = ''.join(
+        f'<div class="module-card" data-sort-id="story-{html.escape(story["slug"], quote=True)}">'
         f'<a class="tile" href="{url("/stories/" + story["slug"] + "/", 1)}">'
         f'<span class="count">{html.escape(story["badge"])}</span><h2>{html.escape(story["title"])}</h2>'
         f'<p>{html.escape(story["description"])}</p></a>'
+        f'<div class="module-controls" aria-label="调整模块顺序"></div></div>'
         for story in stories
     )
-    stories_section = ('<section aria-label="恋爱故事"><h2 class="section-title">💜 恋爱小故事</h2><div class="grid">'
-                       + story_links + '</div></section>') if stories else ''
     home = (f'<main class="wrap"><div class="intro"><div class="eyebrow">PERSONAL NOTES</div>'
             f'<h1>文档与笔记</h1><p>整理日常遇到的问题和已经验证的做法。</p></div>'
             f'<h2 class="section-title">文章分类</h2><div class="grid">{category_tiles(0)}</div>'
@@ -334,7 +328,7 @@ def build(out):
     game_page = game_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"></head>')
     pages[out / 'tools/games/index.html'] = game_page
     hub_body = (root / 'tools/module-hub.html').read_text(encoding='utf-8')
-    hub_body = hub_body.replace('__STORY_SECTION__', stories_section)
+    hub_body = hub_body.replace('__STORY_CARDS__', story_links)
     hub_page = page('我的模块', '访问已授权的网站模块', 'tools', hub_body, 1, path='/tools/')
     hub_page = hub_page.replace('</head>', (root / 'tools/module-hub.head.html').read_text(encoding='utf-8') + '</head>')
     pages[out / 'tools/index.html'] = hub_page
