@@ -28,6 +28,10 @@
       "cloud-database": {
         "title": "云端数据库",
         "description": "数据库接入、账号与数据维护"
+      },
+      "mac": {
+        "title": "Mac 使用经验",
+        "description": "macOS 日常操作、快捷键、触控板与效率设置"
       }
     }
   }

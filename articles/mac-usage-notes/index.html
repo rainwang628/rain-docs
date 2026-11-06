@@ -1,0 +1,57 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="持续整理 macOS 截图、触控板、Terminal、窗口管理和常用快捷键。"><title>Mac 使用经验（持续更新） · rain 的文档</title><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="../../assets/site.css?v=20260930-1930"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Mac 使用经验（持续更新）","dateModified":"2026-11-06","inLanguage":"zh-CN"}</script><script src="../../assets/usd-cloud-config.js" defer></script><script src="../../assets/site-categories.js" defer></script><script src="../../assets/site-nav.js?v=20260930-1930" defer></script><script src="../../assets/site-access.js?v=20261024-session-stable" defer></script></head><body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><a href="../../tools/account/" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航"><a href="../../">首页</a><a href="../../categories/">文章分类</a><a href="../../tools/">我的模块</a></nav></div></header><main class="wrap"><div class="crumb"><a href="../../">首页</a> / <a href="../../categories/technical/">技术笔记</a> / <a href="../../categories/technical/mac/">Mac 使用经验</a> / Mac 使用经验（持续更新）</div><div class="document"><div class="doc-head"><span class="tag">技术笔记 · Mac 使用经验</span><h1>Mac 使用经验（持续更新）</h1><div class="meta"><span>更新于 2026-11-06</span><a class="download" href="../../mac-usage-notes.md" download="mac-usage-notes.md">下载 Markdown 原文</a></div></div><article class="article"><h1>Mac 使用经验（持续更新）</h1>
+<p class="note">本文作为 Mac 日常使用经验的长期记录。以后遇到新的 macOS 操作、快捷键、触控板或 Terminal 问题，统一追加到本文，不另建零散的 Mac 技巧文章。</p>
+<p>&gt;</p>
+<p class="note">当前记录环境：Apple M4、macOS Sequoia 15.6.1、English 系统界面、zsh；本次主要使用 MacBook 触控板，没有外接鼠标。系统升级完成后，再补充升级后的版本和界面差异。</p>
+<h2>一、Mac 与 Windows 常用快捷键对照</h2>
+<p>Mac 的很多常用快捷键使用 <strong>Command（⌘）</strong>，不要把它和 Windows 的 Ctrl 直接等同。</p>
+<div class="table-wrap"><table><thead><tr><th>操作</th><th>macOS 快捷键</th><th>说明</th></tr></thead><tbody><tr><td>复制</td><td><code>⌘ + C</code></td><td>复制当前选中内容</td></tr><tr><td>粘贴</td><td><code>⌘ + V</code></td><td>粘贴</td></tr><tr><td>全选</td><td><code>⌘ + A</code></td><td>全选</td></tr><tr><td>保存</td><td><code>⌘ + S</code></td><td>保存</td></tr><tr><td>关闭当前窗口</td><td><code>⌘ + W</code></td><td>Window</td></tr><tr><td>退出当前应用</td><td><code>⌘ + Q</code></td><td>Quit</td></tr><tr><td>新建窗口</td><td><code>⌘ + N</code></td><td>New</td></tr><tr><td>新建标签页</td><td><code>⌘ + T</code></td><td>Tab</td></tr></tbody></table></div>
+<p><strong>Terminal 里的特殊区别：</strong></p>
+<ul><li><code>Command + C</code>：复制选中的终端文字。</li><li><code>Control + C</code>：向正在运行的命令发送中断信号，常用于停止程序。</li><li><code>exit</code>：退出当前 Shell，不等于退出 Terminal 应用。</li><li><code>quit</code>：不是 zsh 内置退出命令，通常会提示 <code>command not found</code>。</li></ul>
+<h2>二、Terminal：Shell、退出与提示符</h2>
+<h3>1. 确认当前 Shell</h3>
+<p>macOS Terminal 默认使用 zsh。查看当前 Shell：</p>
+<div class="code-head">zsh</div><pre><code>echo $0</code></pre>
+<p>本次输出为：</p>
+<div class="code-head">text</div><pre><code>-zsh</code></pre>
+<h3>2. 理解 exit 与 Process completed</h3>
+<p>在 Terminal 输入：</p>
+<div class="code-head">zsh</div><pre><code>exit</code></pre>
+<p>会结束当前 Shell 会话。Terminal 窗口可能仍然保留，并显示类似 <code>Process completed</code> 的状态，这通常表示 Shell 进程已经结束，不是报错。</p>
+<ul><li><code>⌘ + W</code>：关闭当前 Terminal 窗口。</li><li><code>⌘ + Q</code>：退出 Terminal 应用。</li><li><code>⌘ + N</code>：新建终端窗口。</li></ul>
+<p>如果希望 Shell 退出后窗口自动关闭，可在 Terminal 的 Settings → Profiles → Shell 中查看 <strong>When the shell exits</strong> 选项。</p>
+<h3>3. 自定义终端提示符</h3>
+<p>本次使用下面的 zsh 命令，把当前终端提示符临时改为更简洁的形式：</p>
+<div class="code-head">zsh</div><pre><code>PROMPT='rain@MacBook %1~ %# '</code></pre>
+<p>效果类似：</p>
+<div class="code-head">text</div><pre><code>rain@MacBook ~ %</code></pre>
+<p>这条命令只改变当前 Shell 会话的提示符；如果希望每次打开终端都生效，需要把设置写入 zsh 配置文件（通常是 <code>~/.zshrc</code>）。本次只验证了当前会话效果，没有把它记录为已完成的永久配置。</p>
+<h2>三、Mac 截图</h2>
+<div class="table-wrap"><table><thead><tr><th>快捷键</th><th>功能</th></tr></thead><tbody><tr><td><code>⌘ + ⇧ + 3</code></td><td>截取整个屏幕</td></tr><tr><td><code>⌘ + ⇧ + 4</code></td><td>用鼠标或触控板框选区域</td></tr><tr><td><code>⌘ + ⇧ + 4</code> 后按空格</td><td>截取指定窗口</td></tr><tr><td><code>⌘ + ⇧ + 5</code></td><td>打开截图与屏幕录制工具栏</td></tr></tbody></table></div>
+<p>截图默认保存到桌面。截图时同时按住 <strong>Control</strong>，可以将截图复制到剪贴板，而不是只保存为文件。</p>
+<h2>四、没有鼠标时使用触控板</h2>
+<h3>1. 选择 Terminal 里的文字</h3>
+<p>可以用触控板完成文字选择：</p>
+<ol><li>将指针移动到文字起点。</li><li>按下触控板并保持按下状态。</li><li>拖动到文字终点。</li><li>松开触控板，完成选择。</li></ol>
+<p>也可以在系统辅助功能中开启三指拖移，减少持续按压触控板的需要。</p>
+<h3>2. 开启三指拖移</h3>
+<p>macOS Sequoia 英文界面中的设置路径：</p>
+<p><strong>System Settings → Accessibility → Pointer Control → Trackpad Options</strong></p>
+<p>在弹出的选项中：</p>
+<ol><li>开启 <strong>Use trackpad for dragging</strong>。</li><li>在拖移方式中选择 <strong>Three Finger Drag</strong>。</li></ol>
+<p>这样可以用三根手指在触控板上移动来拖动窗口、文件或选择文字。该设置在本次对话中作为操作指引提供，是否已开启需要在 Mac 上实际确认。</p>
+<h2>五、调整双指滚动方向</h2>
+<p>macOS 默认的 <strong>Natural scrolling</strong> 与很多 Windows 用户习惯的方向相反。</p>
+<p>在触控板上调整的预期路径：</p>
+<p><strong>System Settings → Trackpad → Scroll &amp; Zoom → Natural scrolling</strong></p>
+<p>关闭 <strong>Natural scrolling</strong> 后，双指向上滑动时，页面会向下移动，更接近常见的 Windows 触控板习惯。</p>
+<p>本次使用 macOS Sequoia 15.6.1 时，尚未在实际设置页面确认该开关的位置。如果页面中没有看到，可在 System Settings 左侧搜索框输入 <strong>Natural scrolling</strong>；不要把 Trackpad 与 Mouse 的设置入口混淆。</p>
+<h2>六、Xcode 与 Command Line Tools 的区别</h2>
+<p>安装 Homebrew 时，macOS 可能提示安装 <strong>Command Line Tools for Xcode</strong>：</p>
+<ul><li><strong>Command Line Tools</strong>：提供 Git、Clang、编译工具和相关 SDK，是很多开发工具的基础依赖。</li><li><strong>Xcode</strong>：苹果完整的集成开发环境，包含代码编辑器、模拟器和更完整的开发工具链。</li></ul>
+<p>本次安装的是 Command Line Tools，不是完整 Xcode。仅为了安装 Homebrew 和 Claude Code，通常不需要额外下载完整 Xcode。</p>
+<h2>七、系统版本记录</h2>
+<p>本次操作时系统为 <strong>macOS Sequoia 15.6.1</strong>，系统界面语言为 English。后续如果完成系统升级，再把升级后的 macOS 版本、设置入口变化和兼容性检查补充到这里；未实际完成的升级不作为已验证经验记录。</p>
+<p>---</p>
+<h2>后续追加记录</h2>
+<p>后续新的 Mac 使用经验按主题追加到对应章节，必要时增加新章节，并同步更新网站上的 Markdown 原文和文章页面。尽量记录：</p>
+<ul><li>适用的 macOS 版本和设备；</li><li>英文系统菜单的准确名称与路径；</li><li>可复用的快捷键或命令；</li><li>已验证的结果，以及尚未验证的部分。</li></ul></article></div></main><footer class="footer">rain 的文档 · 记录可复用的经验</footer></body></html>
