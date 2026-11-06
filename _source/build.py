@@ -272,7 +272,7 @@ def build(out):
     for filename in ('usd-cloud.js', 'usd-cloud-config.js'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     for filename in ('usd-cloud-schema.sql', 'usd-cloud-setup.md'):
-        shutil.copyfile(root / 'tools' / filename, out / filename)
+        shutil.copyfile(root / 'database' / 'usd' / filename, out / filename)
     (out / 'assets/article-catalog.json').write_text(json.dumps({'categories': categories, 'articles': articles}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     (out / 'assets/story-catalog.json').write_text(json.dumps(stories, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     story_management = out / 'tools/story-management/index.html'
@@ -288,7 +288,7 @@ def build(out):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     for filename in ('site-nav.js', 'site-access.js', 'site-account.js'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
-    shutil.copyfile(root / 'tools/website-access-schema.sql', out / 'website-access-schema.sql')
+    shutil.copyfile(root / 'database/website/website-access-schema.sql', out / 'website-access-schema.sql')
     account_body = (root / 'tools/site-account.html').read_text(encoding='utf-8')
     account_page = page('账号与权限', '申请与管理网站模块访问', 'account', account_body, 2, path='/tools/account/', robots='noindex,follow')
     account_page = account_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/site-account.js?v=20261011-access2h" defer></script></head>')
@@ -312,7 +312,7 @@ def build(out):
     pages[out / 'tools/surveys/index.html'] = survey_page
     for filename in ('surveys.js', 'surveys-model.js', 'surveys.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
-    shutil.copyfile(root / 'tools/surveys-schema.sql', out / 'surveys-schema.sql')
+    shutil.copyfile(root / 'database/surveys/surveys-schema.sql', out / 'surveys-schema.sql')
     # Preserve download URLs from the first two published articles.
     for slug, previous in {
         'claude-code-proxy': 'claude-code-install-proxy.md',

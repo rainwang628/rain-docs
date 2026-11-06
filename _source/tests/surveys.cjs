@@ -1,5 +1,5 @@
 const {PGlite}=require(process.env.RAIN_PGLITE_MODULE||'@electric-sql/pglite'),fs=require('fs'),path=require('path'),assert=require('assert');
-const M=require('../tools/surveys-model.js'),sql=fs.readFileSync(path.join(__dirname,'../tools/surveys-schema.sql'),'utf8');
+const M=require('../tools/surveys-model.js'),sql=fs.readFileSync(path.join(__dirname,'../database/surveys/surveys-schema.sql'),'utf8');
 const OWNER='11111111-1111-4111-8111-111111111111',FRIEND='22222222-2222-4222-8222-222222222222',SID='a8c24d1e-074c-4d90-86a0-dc5d94cfb58b',RID='33333333-3333-4333-8333-333333333333';
 const stored=new Map(),storage={getItem:k=>stored.get(k),setItem:(k,v)=>stored.set(k,v)};
 let generated=0;const generate=()=>{generated++;return RID;};

@@ -118,6 +118,15 @@ class PublishingTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(marker.read_text(), 'safe')
 
+    def test_published_database_scripts_match_organized_sources(self):
+        for source, published in (
+            ('_source/database/usd/usd-cloud-schema.sql', 'usd-cloud-schema.sql'),
+            ('_source/database/usd/usd-cloud-setup.md', 'usd-cloud-setup.md'),
+            ('_source/database/website/website-access-schema.sql', 'website-access-schema.sql'),
+            ('_source/database/surveys/surveys-schema.sql', 'surveys-schema.sql'),
+        ):
+            self.assertEqual((self.root / source).read_bytes(), (self.root / published).read_bytes())
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -8,6 +8,19 @@
 
 `_source/tools/*.html` 是嵌进站点框架的工具页正文，同目录的 `.js` / `.css` 是它们的资源。`_source/static/` 下的文件按相同相对路径发布，用于自带完整 HTML 的独立页面和外部资源；独立 HTML 中的 `__SITE_BASE_URL__` 会在构建时替换成配置地址。
 
+## 目录结构
+
+| 目录 | 内容 |
+| --- | --- |
+| `_source/content/` | 文章 Markdown 原文 |
+| `_source/tools/`、`_source/static/` | 工具页面、脚本、样式和独立页面源码 |
+| `_source/database/` | 按饮食、问卷、故事、网站权限和购汇分类的 SQL 与配置说明 |
+| `articles/`、`categories/`、`tools/`、`stories/`、`assets/` | 网站生成的页面与资源 |
+| `source/` | 无 BOM 的文章原文下载件 |
+| `supabase/`、`tests/`、`.github/` | 云端函数、测试及自动化工作流 |
+
+根目录仍保留现有 Markdown 下载件及网站使用的 SQL 公开副本，以兼容现有链接；修改时请编辑 `_source/` 中的原文件，再重新生成发布。
+
 新增文章时，在 `_source/content/` 放入 Markdown，并向 `_source/articles.json` 增加一项。改完后运行：
 
 ```bash

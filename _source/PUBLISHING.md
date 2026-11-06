@@ -47,7 +47,7 @@ GitHub Actions 使用短期 OIDC 身份验证访问仅限主人的请求队列�
 
 `categories.json` 定义可选大类与子类，`articles.json` 保存发布时的默认归类。云端 `site_article_categories` 的 `main` 行保存文章 slug 对应的归类覆盖。公开页面读取这些公开分类，管理页面使用同一 Supabase 网站账号登录；修改权限在初始化 SQL 中绑定当前维护用户 UUID。
 
-首次登录 `/tools/account/`，复制当前账号的初始化 SQL，再在 SQL Editor 执行；公开模板 `tools/website-access-schema.sql` 的 `__OWNER_EMAIL__` 需替换为本人邮箱，然后打开 `/tools/article-categories/`。初始化不会重建 Auth 用户或修改购买记录。删除并重建维护账号后，需重新执行该脚本绑定新 UUID；脚本会保留已保存的分类。
+首次登录 `/tools/account/`，复制当前账号的初始化 SQL，再在 SQL Editor 执行；模板 `database/website/website-access-schema.sql` 的 `__OWNER_EMAIL__` 需替换为本人邮箱，然后打开 `/tools/article-categories/`。初始化不会重建 Auth 用户或修改购买记录。删除并重建维护账号后，需重新执行该脚本绑定新 UUID；脚本会保留已保存的分类。
 
 分类保存用 revision 防止设备间覆盖，成功后刷新页面生效。云端不可达时访客页回退到发布时的默认分类。新增文章默认使用清单中的归类；已有 slug 的云端归类优先，不随重新发布被清空。新增可选分类仍需更新 categories.json 并重新发布。
 
@@ -61,7 +61,7 @@ GitHub Pages 上的 HTML、JS 和静态小游戏代码依然公开可下载；�
 
 ## 问卷调研
 
-源码在 tools/surveys.* 与 surveys-model.js。执行一次生成站点根目录的 surveys-schema.sql 后，活动模板问卷会自动创建。管理入口 /tools/surveys/ 仅网站主人可管理；分享地址参数 id 是问卷 UUID，朋友可免登录填写。数据库不保存答卷者账号、姓名或邮箱。
+页面源码在 tools/surveys.* 与 surveys-model.js，初始化 SQL 原文在 database/surveys/surveys-schema.sql。执行一次生成在站点根目录的 surveys-schema.sql 后，活动模板问卷会自动创建。管理入口 /tools/surveys/ 仅网站主人可管理；分享地址参数 id 是问卷 UUID，朋友可免登录填写。数据库不保存答卷者账号、姓名或邮箱。
 
 列表、答卷和统计数据通过 RLS 限定网站主人；公开 RPC 只读取指定问卷及校验后提交答卷。评分 0 表示未参加，不进入均值。单个浏览器按固定提交 UUID 幂等重试；清除浏览器存储或换设备可再次提交，此机制不是每人限填一次。草稿仅存当前设备。数据库不删除历史答卷，结束收集可重新开放。模板和新问卷创建后题目不再修改，避免已有答卷失去含义。
 

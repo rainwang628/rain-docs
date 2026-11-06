@@ -1,7 +1,7 @@
 // Run with @electric-sql/pglite installed, or RAIN_PGLITE_MODULE pointing to its CJS entry.
 const {PGlite}=require(process.env.RAIN_PGLITE_MODULE||'@electric-sql/pglite');
 const fs=require('fs'),path=require('path'),assert=require('assert');
-const source=name=>fs.readFileSync(path.join(__dirname,'../tools',name),'utf8').replaceAll('__OWNER_EMAIL__','owner@example.com');
+const source=name=>fs.readFileSync(path.join(__dirname,'../database',name),'utf8').replaceAll('__OWNER_EMAIL__','owner@example.com');
 const OWNER='11111111-1111-4111-8111-111111111111',FRIEND='22222222-2222-4222-8222-222222222222';
 (async()=>{
  const db=new PGlite();
@@ -11,7 +11,7 @@ const OWNER='11111111-1111-4111-8111-111111111111',FRIEND='22222222-2222-4222-82
  create function auth.uid() returns uuid language sql stable as $$select nullif(current_setting('request.jwt.claim.sub',true),'')::uuid$$;
  create function auth.jwt() returns jsonb language sql stable as $$select coalesce(nullif(current_setting('request.jwt.claims',true),''),'{}')::jsonb$$;
  grant usage on schema auth to anon,authenticated;grant execute on function auth.uid(),auth.jwt() to anon,authenticated;`);
- await db.exec(source('usd-cloud-schema.sql'));await db.exec(source('website-access-schema.sql'));
+ await db.exec(source('usd/usd-cloud-schema.sql'));await db.exec(source('website/website-access-schema.sql'));
  async function identity(role,id='',email=''){await db.exec('reset role');await db.query("select set_config('request.jwt.claim.sub',$1,false),set_config('request.jwt.claims',$2,false)",[id,JSON.stringify({sub:id,email})]);await db.exec('set role '+role);}
  async function denied(sql){try{await db.exec(sql);}catch(e){assert.equal(e.code,'42501');return;}throw Error('Expected denied query: '+sql);}
  async function forbiddenRpc(){try{await db.query('select public.site_set_permissions($1,true,$2::text[])',[FRIEND,['games']]);}catch(e){assert.match(e.message,/Only the website owner/);return;}throw Error('Expected rejected non-owner RPC');}
@@ -35,6 +35,6 @@ const OWNER='11111111-1111-4111-8111-111111111111',FRIEND='22222222-2222-4222-82
  assert.equal((await db.query("update public.site_article_categories set assignments='{}' where revision=$1 returning id",[revision])).rows.length,0);
  await identity('authenticated',OWNER,'owner@example.com');await db.query('select public.site_set_permissions($1,false,$2::text[])',[FRIEND,[]]);
  await identity('authenticated',FRIEND,'friend@example.com');assert.equal(await access('games'),false);assert.equal((await db.query('select * from public.usd_purchases')).rows.length,0);assert.equal((await db.query("update public.site_article_categories set assignments='{}' returning id")).rows.length,0);
- await db.exec('reset role');await db.exec(source('website-access-schema.sql'));assert.equal((await db.query('select count(*)::int n from public.usd_purchases')).rows[0].n,2);assert.equal((await db.query('select assignments from public.site_article_categories')).rows[0].assignments['github-app-access'].subcategory,'chatgpt');
+ await db.exec('reset role');await db.exec(source('website/website-access-schema.sql'));assert.equal((await db.query('select count(*)::int n from public.usd_purchases')).rows[0].n,2);assert.equal((await db.query('select assignments from public.site_article_categories')).rows[0].assignments['github-app-access'].subcategory,'chatgpt');
  await db.close();console.log('PASS: public blog taxonomy read, anonymous write denial, no self-approval, owner-only authorization, module gates, per-user purchases, classification authorization, revision conflict, revocation, idempotent setup preserving records');
 })().catch(error=>{console.error(error);process.exitCode=1;});
