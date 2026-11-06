@@ -304,7 +304,7 @@ def build(out):
     (out / 'assets/story-catalog.json').write_text(json.dumps(stories, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     story_management = out / 'tools/story-management/index.html'
     story_management.parent.mkdir(parents=True, exist_ok=True)
-    shutil.copyfile(root / 'tools/story-management.html', story_management)
+    write_standalone_html(root / 'tools/story-management.html', story_management)
     for filename in ('story-management.js', 'story-management.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     management_body = protect((root / 'tools/article-categories.html').read_text(encoding='utf-8'), 'article-categories')
