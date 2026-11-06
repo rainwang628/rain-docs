@@ -4,6 +4,7 @@ Usage: python3 build.py [--output dist]
 """
 from pathlib import Path
 import argparse
+import hashlib
 import html
 import json
 import re
@@ -65,6 +66,16 @@ css = """
 css += '@media(min-width:751px){.account-status{order:3;min-width:0;padding:7px 14px}}' 
 
 
+def asset_version(name):
+    """Short content hash, so a changed asset always gets a new URL."""
+    return hashlib.sha256((root / 'tools' / name).read_bytes()).hexdigest()[:10]
+
+
+CSS_VERSION = hashlib.sha256(css.encode('utf-8')).hexdigest()[:10]
+ASSET_VERSION = {name: asset_version(name) for name in (
+    'usd-cloud-config.js', 'site-categories.js', 'site-nav.js', 'site-access.js')}
+
+
 
 def url(path, depth):
     prefix = '../' * depth or './'
@@ -86,7 +97,9 @@ def absolute(path):
 def write_standalone_html(source, target):
     """Render the configured site address in standalone page metadata."""
     markup = source.read_text(encoding='utf-8')
-    target.write_text(markup.replace('__SITE_BASE_URL__', SITE['base_url'].rstrip('/')), encoding='utf-8')
+    markup = markup.replace('__SITE_BASE_URL__', SITE['base_url'].rstrip('/'))
+    markup = markup.replace('__ASSET_VERSION__', CSS_VERSION)
+    target.write_text(markup, encoding='utf-8')
 
 
 def page(title, description, current, body, depth, structured=None, footer='rain 的文档 · 记录可复用的经验',
@@ -118,17 +131,22 @@ def page(title, description, current, body, depth, structured=None, footer='rain
     ]
     if robots:
         seo.insert(0, f'<meta name="robots" content="{esc(robots)}">')
+    css_url = url(f'/assets/site.css?v={CSS_VERSION}', depth)
+    config_url = url('/assets/usd-cloud-config.js?v=' + ASSET_VERSION['usd-cloud-config.js'], depth)
+    categories_url = url('/assets/site-categories.js?v=' + ASSET_VERSION['site-categories.js'], depth)
+    nav_url = url('/assets/site-nav.js?v=' + ASSET_VERSION['site-nav.js'], depth)
+    access_url = url('/assets/site-access.js?v=' + ASSET_VERSION['site-access.js'], depth)
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
             f'<title>{html.escape(full_title)}</title>'
             f'<meta name="description" content="{html.escape(description, quote=True)}">'
             + ''.join(seo) + (
             f'<link rel="icon" type="image/svg+xml" href="{favicon}">'
-            f'<link rel="stylesheet" href="{url("/assets/site.css?v=20261107-header", depth)}">{data}'
-            f'<script src="{url("/assets/usd-cloud-config.js", depth)}" defer></script>'
-            f'<script src="{url("/assets/site-categories.js", depth)}" defer></script>'
-            f'<script src="{url("/assets/site-nav.js?v=20260930-1930", depth)}" defer></script>'
-            f'<script src="{url("/assets/site-access.js?v=20261024-session-stable", depth)}" defer></script>'
+            f'<link rel="stylesheet" href="{css_url}">{data}'
+            f'<script src="{config_url}" defer></script>'
+            f'<script src="{categories_url}" defer></script>'
+            f'<script src="{nav_url}" defer></script>'
+            f'<script src="{access_url}" defer></script>'
             f'</head><body><header class="top"><div class="top-inner">'
             f'<a class="brand" href="{url("/", depth)}">rain / 文档</a>'
             f'<a href="{url("/tools/account/", depth)}" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航">{nav}</nav></div></header>'

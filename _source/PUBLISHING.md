@@ -22,6 +22,8 @@
 
 当前站点位于 GitHub Pages 的 `/rain-docs/` 子目录，生成的 `/rain-docs/robots.txt` 不是整个域名根目录的 `/robots.txt`，不能依赖它控制搜索引擎。可在搜索平台提交 `/rain-docs/sitemap.xml`；如将来配置了域名根站点，可在根站点的 `robots.txt` 中登记该站点地图。`noindex` 只能请求支持该规则的搜索引擎不收录，不能阻止他人访问公开仓库和页面源码，也不替代数据库权限控制。
 
+页面引用的 `site.css` 和站点脚本用内容哈希作为 `?v=` 版本号，构建时自动计算，改了就变、没改就不变，不需要手工维护版本字符串。`_source/static/` 里的独立页面在引用处写 `__ASSET_VERSION__` 占位符即可，构建会替换成当前哈希。
+
 分享封面由 `_source/make_covers.py` 用 Pillow 渲染，输出到 `_source/static/assets/og/`，再由构建复制到 `/assets/og/`。新增文章后执行一次 `python3 -m pip install pillow && python3 _source/make_covers.py` 即可；不执行也能正常发布，只是新文章会使用默认封面。
 
 ## 故事管理与删除
