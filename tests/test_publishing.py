@@ -41,7 +41,7 @@ class PublishingTests(unittest.TestCase):
         self.assertTrue((self.root / 'articles/mac-usage-notes/index.html').exists())
         published = self.run_publish()
         self.assertEqual(published.returncode, 0, published.stderr)
-        for path in ('articles/mac-usage-notes/index.html', 'mac-usage-notes.md',
+        for path in ('articles/mac-usage-notes/index.html', 'assets/downloads/technical/mac/mac-usage-notes.md',
                      'source/mac-usage-notes.md'):
             self.assertFalse((self.root / path).exists(), path)
         self.assertTrue((self.root / '_source/content/mac-usage-notes.md').exists())
@@ -117,6 +117,18 @@ class PublishingTests(unittest.TestCase):
                                 cwd=self.root, text=True, capture_output=True)
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(marker.read_text(), 'safe')
+
+    def test_article_downloads_are_categorized_and_linked(self):
+        articles = json.loads((self.root / '_source/articles.json').read_text(encoding='utf-8'))
+        for article in articles:
+            path = f'assets/downloads/{article["category"]}/{article["subcategory"]}/{article["slug"]}.md'
+            download = self.root / path
+            source = self.root / '_source' / article['source']
+            self.assertEqual(download.read_text(encoding='utf-8-sig'), source.read_text(encoding='utf-8-sig'))
+            self.assertTrue(download.read_bytes().startswith(b'\xef\xbb\xbf'))
+            page = (self.root / 'articles' / article['slug'] / 'index.html').read_text(encoding='utf-8')
+            self.assertIn('../../' + path, page)
+        self.assertEqual([p.name for p in self.root.glob('*.md')], ['README.md'])
 
     def test_published_database_scripts_match_organized_sources(self):
         for source, published in (

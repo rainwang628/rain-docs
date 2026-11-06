@@ -9,7 +9,7 @@
 3. 运行 `python3 _source/publish.py --check` 查看会改动哪些文件，确认后运行 `python3 _source/publish.py` 构建并覆盖到仓库根目录。
 4. 检查页面和下载件后，分别发布到原网站与 GitHub 仓库。GitHub Pages 若已在仓库设置中启用，提交到 `main` 后由 GitHub 自动部署。
 
-下载链接的 `.md` 文件带 UTF-8 BOM，方便部分 Windows 编辑器识别中文。`content/` 原文及生成的 `source/` 副本是标准无 BOM UTF-8，适合 AI、脚本和版本管理。旧文章的下载地址在生成时保留。
+下载链接的 `.md` 文件带 UTF-8 BOM，方便部分 Windows 编辑器识别中文。`content/` 原文及生成的 `source/` 副本是标准无 BOM UTF-8，适合 AI、脚本和版本管理。下载文件按默认分类生成到 `assets/downloads/<分类>/<子分类>/`，文章页面链接到对应文件。旧的根目录下载地址不再提供；更改文章分类也会改变下载地址。
 
 生成器会清空并重建 `--output` 指向的目录，不能指向仓库或源码目录；发布脚本只在临时目录构建。`generated-files.json` 记录上次生成的文件及校验值，发布时只清理清单中已不再生成的文件，不会删除 `README.md`、`_source/` 等非生成文件。若待清理的生成文件被手工改过，脚本会停止并提示，避免覆盖或删除修改。
 

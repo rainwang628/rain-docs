@@ -233,7 +233,10 @@ def build(out):
         original = source.read_text(encoding='utf-8-sig')
         slug = item['slug']
         # Windows Notepad and other legacy readers detect this download as UTF-8.
-        (out / f'{slug}.md').write_text('\ufeff' + original, encoding='utf-8')
+        download_path = f'assets/downloads/{item["category"]}/{item["subcategory"]}/{slug}.md'
+        download = out / download_path
+        download.parent.mkdir(parents=True, exist_ok=True)
+        download.write_text('\ufeff' + original, encoding='utf-8')
         clean_source = out / 'source' / f'{slug}.md'
         clean_source.parent.mkdir(exist_ok=True)
         clean_source.write_text(original, encoding='utf-8')
@@ -247,7 +250,7 @@ def build(out):
                 f'<span class="tag">{html.escape(item["tag"])}</span>'
                 f'<h1>{html.escape(item["title"])}</h1><div class="meta">'
                 f'<span>更新于 {html.escape(item["date"])}</span>'
-                f'<a class="download" href="{url("/" + slug + ".md", depth)}" download="{slug}.md">'
+                f'<a class="download" href="{url("/" + download_path, depth)}" download="{slug}.md">'
                 f'下载 Markdown 原文</a></div></div>'
                 f'<article class="article">{render_markdown(original.splitlines())}</article></div></main>')
         structured = {'@context': 'https://schema.org', '@type': 'TechArticle',
@@ -315,13 +318,6 @@ def build(out):
     for filename in ('surveys.js', 'surveys-model.js', 'surveys.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     shutil.copyfile(root / 'database/surveys/surveys-schema.sql', sql_assets / 'surveys-schema.sql')
-    # Preserve download URLs from the first two published articles.
-    for slug, previous in {
-        'claude-code-proxy': 'claude-code-install-proxy.md',
-        'chrome-bookmarks-sync': 'chrome-bookmarks-sync.md',
-    }.items():
-        if (out / f'{slug}.md').exists() and previous != f'{slug}.md':
-            shutil.copyfile(out / f'{slug}.md', out / previous)
     # Standalone public romance stories; preserve them on future full rebuilds.
     for story_slug in story_slugs:
         story_source = root / 'stories' / (story_slug + '.html')
