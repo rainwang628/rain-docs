@@ -1,4 +1,4 @@
-# Claude Code + DeepSeek 增加截图视觉能力：Windows 自动读取微信截图
+﻿# Claude Code + DeepSeek 增加截图视觉能力：Windows 自动读取微信截图
 
 > 适用环境：Windows + Claude Code + CC Switch，主模型使用 DeepSeek。通过 Vision Bridge MCP 调用 Gemini 视觉模型，实现“截图 → Claude Code 直接理解 → 继续处理代码”。
 
@@ -201,3 +201,4 @@ taskschd.msc
 ```
 
 Claude Code 会自动读取 `latest.png`，调用 Vision Bridge，由 Gemini 理解图片，再把视觉结果交给当前 DeepSeek 主模型继续分析和修改代码。
+

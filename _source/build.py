@@ -38,7 +38,8 @@ def render_markdown(lines):
         if re.match(r'^\d+\. ',line) or line.startswith('- '):
             ordered=bool(re.match(r'^\d+\. ',line)); tag='ol' if ordered else 'ul'; items=[]
             while i<len(lines) and (re.match(r'^\d+\. ',lines[i]) if ordered else lines[i].startswith('- ')):
-                items.append(f'<li>{inline(re.sub(r"^\d+\. |^- ","",lines[i]))}</li>'); i+=1
+                item_text=re.sub(r'^\d+\. |^- ', '', lines[i])
+                items.append(f'<li>{inline(item_text)}</li>'); i+=1
             parts.append(f'<{tag}>'+''.join(items)+f'</{tag}>'); continue
         buf=[line]; i+=1
         while i<len(lines) and lines[i].strip() and not re.match(r'^(#|>|```|\||- |\d+\. )',lines[i]): buf.append(lines[i]); i+=1
@@ -57,8 +58,7 @@ css = """
 .menu-toggle{display:none}
 @media(max-width:750px){.nav-ready .menu-toggle{display:inline-flex}}
 """
-css += ".menu-toggle{display:none;background:transparent;border:1px solid #ffffff50;border-radius:8px;color:#fff;font:inherit;font-size:14px;line-height:1.4;padding:8px 12px;cursor:pointer}.menu-toggle:focus-visible{outline:2px solid #b1decf;outline-offset:3px}[hidden]{display:none!important}"
-css += ".table-wrap{overflow-x:auto;margin:22px 0}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border:1px solid var(--line);padding:11px 13px;text-align:left;vertical-align:top}th{background:#eaf2f0}tr:nth-child(even) td{background:#f7fafb}"
+
 
 
 def url(path, depth):
@@ -66,17 +66,47 @@ def url(path, depth):
     return prefix + path.lstrip('/') if path != '/' else prefix
 
 
-def page(title, description, current, body, depth, structured=None):
+SITE = json.loads((root / 'site.json').read_text(encoding='utf-8'))
+
+
+def absolute(path):
+    return SITE['base_url'].rstrip('/') + path
+
+
+def page(title, description, current, body, depth, structured=None, footer='rain 的文档 · 记录可复用的经验',
+         path='/', og_type='website', og_image=None, robots=None):
     favicon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"
     nav = ''.join(
-        f'<a href="{url(path, depth)}"' + (' id="account-link"' if key == 'account' else '') + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
-        for key, path, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块')]
+        f'<a href="{url(target, depth)}"' + (' id="account-link"' if key == 'account' else '') + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
+        for key, target, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块')]
     )
-    data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False).replace('<', '\\u003c') + '</script>' if structured else ''
+    data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c') + '</script>' if structured else ''
+    full_title = f'{title} · {SITE["name"]}'
+    esc = lambda value: html.escape(value, quote=True)
+    canonical = absolute(path)
+    image = absolute(og_image or SITE['og_image'])
+    seo = [
+        f'<link rel="canonical" href="{esc(canonical)}">',
+        f'<meta property="og:site_name" content="{esc(SITE["name"])}">',
+        f'<meta property="og:locale" content="{esc(SITE["locale"])}">',
+        f'<meta property="og:type" content="{esc(og_type)}">',
+        f'<meta property="og:title" content="{esc(full_title)}">',
+        f'<meta property="og:description" content="{esc(description)}">',
+        f'<meta property="og:url" content="{esc(canonical)}">',
+        f'<meta property="og:image" content="{esc(image)}">',
+        '<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">',
+        f'<meta name="twitter:card" content="{esc(SITE["twitter_card"])}">',
+        f'<meta name="twitter:title" content="{esc(full_title)}">',
+        f'<meta name="twitter:description" content="{esc(description)}">',
+        f'<meta name="twitter:image" content="{esc(image)}">',
+    ]
+    if robots:
+        seo.insert(0, f'<meta name="robots" content="{esc(robots)}">')
     return (f'<!doctype html><html lang="zh-CN"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width,initial-scale=1">'
+            f'<title>{html.escape(full_title)}</title>'
             f'<meta name="description" content="{html.escape(description, quote=True)}">'
-            f'<title>{html.escape(title)} · rain 的文档</title>'
+            + ''.join(seo) + (
             f'<link rel="icon" type="image/svg+xml" href="{favicon}">'
             f'<link rel="stylesheet" href="{url("/assets/site.css?v=20260930-1930", depth)}">{data}'
             f'<script src="{url("/assets/usd-cloud-config.js", depth)}" defer></script>'
@@ -86,7 +116,7 @@ def page(title, description, current, body, depth, structured=None):
             f'</head><body><header class="top"><div class="top-inner">'
             f'<a class="brand" href="{url("/", depth)}">rain / 文档</a>'
             f'<a href="{url("/tools/account/", depth)}" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航">{nav}</nav></div></header>'
-            f'{body}<footer class="footer">rain 的文档 · 记录可复用的经验</footer></body></html>')
+            f'{body}<footer class="footer">{footer}</footer></body></html>'))
 
 
 def build(out):
@@ -152,8 +182,11 @@ def build(out):
                 f'<div class="intro"><div class="eyebrow">CATEGORIES</div><h1>文章分类</h1>'
                 f'<p>{count} 篇文章，按主题浏览。</p></div><div class="grid">{category_tiles(1)}</div><p data-module="article-categories" hidden><a href="{url("/tools/article-categories/", 1)}">管理文章分类</a></p></main>')
     pages = {
-        out / 'index.html': page('首页', '个人笔记与文档分类', 'home', home, 0),
-        out / 'categories/index.html': page('文章分类', '按主题浏览 AI 与技术笔记', 'category', overview, 1),
+        out / 'index.html': page('文档与笔记', '个人笔记与文档分类', 'home', home, 0, path='/', structured={
+            '@context': 'https://schema.org', '@type': 'WebSite',
+            'name': 'rain 的文档', 'inLanguage': 'zh-CN',
+            'url': 'https://rainwang628.github.io/rain-docs/'}),
+        out / 'categories/index.html': page('文章分类', '按主题浏览 AI 与技术笔记', 'category', overview, 1, path='/categories/'),
     }
     for key, category in categories.items():
         selected = [a for a in articles if a['category'] == key]
@@ -167,7 +200,7 @@ def build(out):
                 f'<p>{html.escape(category["description"])} · {len(selected)} 篇</p></div>'
                 f'<h2 class="section-title">子分类</h2><div class="grid">{tiles}</div>'
                 f'<h2 class="section-title">全部文章</h2><div class="grid" id="category-articles">{cards}</div></main>')
-        pages[out / 'categories' / key / 'index.html'] = page(category['title'], category['description'], 'category', body, 2)
+        pages[out / 'categories' / key / 'index.html'] = page(category['title'], category['description'], 'category', body, 2, path=f'/categories/{key}/')
         for subkey, sub in category['subcategories'].items():
             subset = [a for a in selected if a['subcategory'] == subkey]
             cards = ''.join(card(a, 3) for a in subset)
@@ -177,7 +210,7 @@ def build(out):
                     f'{html.escape(sub["title"])}</div><div class="intro"><div class="eyebrow">SUBCATEGORY</div>'
                     f'<h1>{html.escape(sub["title"])}</h1><p>{html.escape(sub["description"])} · {len(subset)} 篇</p></div>'
                     f'<div class="grid" id="category-articles">{cards}</div></main>')
-            pages[out / 'categories' / key / subkey / 'index.html'] = page(sub['title'], sub['description'], 'category', body, 3)
+            pages[out / 'categories' / key / subkey / 'index.html'] = page(sub['title'], sub['description'], 'category', body, 3, path=f'/categories/{key}/{subkey}/')
     for item in articles:
         depth = 2
         source = root / item['source']
@@ -205,34 +238,38 @@ def build(out):
                 f'<article class="article">{render_markdown(original.splitlines())}</article></div></main>')
         structured = {'@context': 'https://schema.org', '@type': 'TechArticle',
                       'headline': item['title'], 'dateModified': item['date'], 'inLanguage': 'zh-CN'}
-        pages[out / 'articles' / slug / 'index.html'] = page(item['title'], item['description'], 'article', body, depth, structured)
-    def protect(body, module):
+        cover = f'/assets/og/{slug}.png'
+        if not (root / 'static' / 'assets' / 'og' / f'{slug}.png').exists():
+            cover = None
+        pages[out / 'articles' / slug / 'index.html'] = page(item['title'], item['description'], 'article', body, depth, structured,
+                                                              path=f'/articles/{slug}/', og_type='article', og_image=cover)
+    def protect(body, module, depth=2):
         gate = (f'<main id="module-gate" class="wrap"><h1>模块访问</h1><p data-gate-message>正在验证访问权限…</p>'
-                f'<p><a href="{url("/tools/account/", 2)}">登录 / 查看权限</a> · <a href="{url("/", 2)}">返回博客</a></p></main>')
+                f'<p><a href="{url("/tools/account/", depth)}">登录 / 查看权限</a> · <a href="{url("/", depth)}">返回博客</a></p></main>')
         return gate + f'<div data-protected-module="{module}" hidden>' + body + '</div>'
     tool_body = protect((root / 'tools/usd-purchases.html').read_text(encoding='utf-8'), 'usd-purchases')
-    tool_page = page('美元购汇记录', '手工登记美元购买与人民币成本', 'tools', tool_body, 2)
+    tool_page = page('美元购汇记录', '手工登记美元购买与人民币成本', 'tools', tool_body, 2, path='/tools/usd-purchases/', robots='noindex,follow')
     tool_page = tool_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><script src="../../assets/usd-purchases.js" defer></script></head>')
     pages[out / 'tools/usd-purchases/index.html'] = tool_page
     for ext in ('css', 'js'):
         shutil.copyfile(root / f'tools/usd-purchases.{ext}', out / f'assets/usd-purchases.{ext}')
     cloud_body = protect((root / 'tools/usd-cloud.html').read_text(encoding='utf-8'), 'usd-purchases')
-    cloud_page = page('美元购汇记录 · 云端版', '跨设备维护美元购买记录', 'tools', cloud_body, 2)
+    cloud_page = page('美元购汇记录 · 云端版', '跨设备维护美元购买记录', 'tools', cloud_body, 2, path='/tools/usd-cloud/', robots='noindex,follow')
     cloud_page = cloud_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><script src="../../assets/usd-cloud.js?v=20261024-session-stable" defer></script></head>')
     pages[out / 'tools/usd-cloud/index.html'] = cloud_page
     for filename in ('usd-cloud.js', 'usd-cloud-config.js'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     for filename in ('usd-cloud-schema.sql', 'usd-cloud-setup.md'):
         shutil.copyfile(root / 'tools' / filename, out / filename)
-    (out / 'assets/article-catalog.json').write_text(json.dumps({'categories': categories, 'articles': articles}, ensure_ascii=False), encoding='utf-8')
-    (out / 'assets/story-catalog.json').write_text(json.dumps(stories, ensure_ascii=False), encoding='utf-8')
+    (out / 'assets/article-catalog.json').write_text(json.dumps({'categories': categories, 'articles': articles}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    (out / 'assets/story-catalog.json').write_text(json.dumps(stories, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     story_management = out / 'tools/story-management/index.html'
     story_management.parent.mkdir(parents=True, exist_ok=True)
     shutil.copyfile(root / 'tools/story-management.html', story_management)
     for filename in ('story-management.js', 'story-management.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     management_body = protect((root / 'tools/article-categories.html').read_text(encoding='utf-8'), 'article-categories')
-    management_page = page('文章分类管理', '手工调整网站文章分类', 'tools', management_body, 2)
+    management_page = page('文章分类管理', '手工调整网站文章分类', 'tools', management_body, 2, path='/tools/article-categories/', robots='noindex,follow')
     management_page = management_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/article-categories.js" defer></script></head>')
     pages[out / 'tools/article-categories/index.html'] = management_page
     for filename in ('site-categories.js', 'article-categories.js', 'article-categories.css'):
@@ -241,24 +278,25 @@ def build(out):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     shutil.copyfile(root / 'tools/website-access-schema.sql', out / 'website-access-schema.sql')
     account_body = (root / 'tools/site-account.html').read_text(encoding='utf-8')
-    account_page = page('账号与权限', '申请与管理网站模块访问', 'account', account_body, 2)
+    account_page = page('账号与权限', '申请与管理网站模块访问', 'account', account_body, 2, path='/tools/account/', robots='noindex,follow')
     account_page = account_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/site-account.js?v=20261011-access2h" defer></script></head>')
     pages[out / 'tools/account/index.html'] = account_page
     game_body = protect((root / 'tools/games.html').read_text(encoding='utf-8'), 'games')
-    game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2)
+    game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2, path='/tools/games/')
     game_page = game_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"></head>')
     pages[out / 'tools/games/index.html'] = game_page
-    pages[out / 'tools/index.html'] = page('我的模块', '访问已授权的网站模块', 'tools', (root / 'tools/module-hub.html').read_text(encoding='utf-8'), 1)
-    party_body = protect((root / 'tools/truth-or-dare.html').read_text(encoding='utf-8'), 'games')
-    party_page = page('今晚有点不对劲 · 真心话大冒险', '四人聚会真心话与大冒险', 'tools', party_body, 3)
-    party_page = party_page.replace('../../tools/account/', '../../../tools/account/').replace('href="../../"', 'href="../../../"')
-    party_page = party_page.replace('</head>', '<link rel="stylesheet" href="../../../assets/truth-or-dare.css?v=20261011"><script src="../../../assets/truth-or-dare.js?v=20261011" defer></script></head>')
+    hub_page = page('我的模块', '访问已授权的网站模块', 'tools', (root / 'tools/module-hub.html').read_text(encoding='utf-8'), 1, path='/tools/')
+    hub_page = hub_page.replace('</head>', (root / 'tools/module-hub.head.html').read_text(encoding='utf-8') + '</head>')
+    pages[out / 'tools/index.html'] = hub_page
+    party_body = protect((root / 'tools/truth-or-dare.html').read_text(encoding='utf-8'), 'games', 3)
+    party_page = page('今晚有点不对劲 · 真心话大冒险', '与朋友一起玩的小工具', 'tools', party_body, 3, footer='rain 的文档 · 今晚有点不对劲', path='/tools/games/truth-or-dare/')
+    party_page = party_page.replace('</head>', '<link rel="stylesheet" href="../../../assets/usd-purchases.css"><link rel="stylesheet" href="../../../assets/truth-or-dare.css?v=20261011-longplay"><script src="../../../assets/truth-or-dare.js?v=20261011-longplay" defer></script></head>')
     pages[out / 'tools/games/truth-or-dare/index.html'] = party_page
     for ext in ('css', 'js'):
         shutil.copyfile(root / f'tools/truth-or-dare.{ext}', out / f'assets/truth-or-dare.{ext}')
     survey_body = (root / 'tools/surveys.html').read_text(encoding='utf-8')
-    survey_page = page('问卷调研', '创建问卷、收集答卷与查询活动反馈', 'tools', survey_body, 2)
-    survey_page = survey_page.replace('</head>', '<link rel="stylesheet" href="../../assets/surveys.css?v=20261024-survey-draft-fix"><script src="../../assets/surveys-model.js?v=20261024-survey-draft-fix" defer></script><script src="../../assets/surveys.js?v=20261024-survey-draft-fix" defer></script></head>')
+    survey_page = page('问卷调研', '创建问卷、收集答卷与查询活动反馈', 'tools', survey_body, 2, path='/tools/surveys/', robots='noindex,follow')
+    survey_page = survey_page.replace('</head>', '<link rel="stylesheet" href="../../assets/surveys.css?v=20261025-dad-edit"><script src="../../assets/surveys-model.js?v=20261025-dad-edit" defer></script><script src="../../assets/couple-pdf.js?v=20261024" defer></script><script src="../../assets/surveys.js?v=20261025-dad-edit" defer></script></head>')
     pages[out / 'tools/surveys/index.html'] = survey_page
     for filename in ('surveys.js', 'surveys-model.js', 'surveys.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
@@ -277,9 +315,36 @@ def build(out):
             story_dest = out / 'stories' / story_slug / 'index.html'
             story_dest.parent.mkdir(parents=True, exist_ok=True)
             shutil.copyfile(story_source, story_dest)
+    static = root / 'static'
+    if static.is_dir():
+        for source in sorted(static.rglob('*')):
+            if source.is_file():
+                target = out / source.relative_to(static)
+                target.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(source, target)
     for filename, markup in pages.items():
         filename.parent.mkdir(parents=True, exist_ok=True)
         filename.write_text(markup, encoding='utf-8')
+    private = {'/tools/account/', '/tools/article-categories/', '/tools/story-management/',
+               '/tools/surveys/', '/tools/usd-purchases/', '/tools/usd-cloud/'}
+    dated = {f'/articles/{item["slug"]}/': item['date'] for item in articles}
+    entries = []
+    for filename in out.rglob('index.html'):
+        parent = filename.parent.relative_to(out).as_posix()
+        location = '/' if parent == '.' else f'/{parent}/'
+        if location in private:
+            continue
+        entries.append(location)
+    entries.sort(key=lambda value: (value.count('/'), value))
+    sitemap = ['<?xml version="1.0" encoding="UTF-8"?>',
+               '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
+    for location in entries:
+        lastmod = f'<lastmod>{dated[location]}</lastmod>' if location in dated else ''
+        sitemap.append(f'  <url><loc>{html.escape(absolute(location))}</loc>{lastmod}</url>')
+    sitemap.append('</urlset>')
+    (out / 'sitemap.xml').write_text('\n'.join(sitemap) + '\n', encoding='utf-8')
+    (out / 'robots.txt').write_text(
+        'User-agent: *\nAllow: /\n\nSitemap: ' + absolute('/sitemap.xml') + '\n', encoding='utf-8')
     print(f'Built {count} articles in {out}')
 
 

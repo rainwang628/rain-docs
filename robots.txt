@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://rainwang628.github.io/rain-docs/sitemap.xml

@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f4f2e9">
+  <meta name="description" content="八仙反差人格测试：12道情境题，找到你最像的八仙人物原型，生成专属国风分享卡。凭专属体验码参与。">
+  <meta property="og:title" content="八仙反差人格测试｜你的性格最像哪位仙人？">
+  <meta property="og:description" content="12道题·8位八仙人物原型·专属国风分享卡·趣味测评">
+  <title>八仙反差人格测试｜反差实验室</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='85'%3E🌙%3C/text%3E%3C/svg%3E">
+  <style>
+:root{--ink:#352747;--text:#4e435b;--muted:#857991;--accent:#8c54bd;--accent2:#d68fac;--line:#e9dff2;--bg:#faf6fc;--card:#fff;--light:#f7eef9;--shadow:0 20px 54px rgba(106,71,146,.11)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;min-height:100vh;background:linear-gradient(160deg,#fcf8ff 0%,#fbf4f8 45%,#f6f5ff 100%);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",system-ui,sans-serif;color:var(--ink);line-height:1.65}button{font:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid #be8fdb;outline-offset:3px}h1,h2,h3,p{margin:0}button[disabled]{cursor:not-allowed;opacity:.5}a{color:var(--accent)}.ambient{position:fixed;pointer-events:none;z-index:-1;border-radius:100%}.ambient-one{width:48vw;height:48vw;left:-18vw;top:12vh;background:#e8d8fa;filter:blur(100px);opacity:.5}.ambient-two{width:35vw;height:35vw;right:-15vw;top:45vh;background:#fae1ec;filter:blur(100px);opacity:.75}.shell{max-width:760px;padding:0 22px;margin:auto}.topbar{height:83px;display:flex;justify-content:space-between;align-items:center;gap:10px}.logo{display:flex;align-items:center;gap:10px;border:0;padding:0;background:none;font-size:18px;color:var(--ink);font-weight:800;text-align:left;line-height:1.15}.logo-icon{height:37px;width:37px;border-radius:12px;background:#4f3868;color:#fff;display:grid;place-items:center;font-size:20px}.logo small{display:block;font-size:9px;letter-spacing:2.3px;color:var(--muted);margin-top:4px}.corner-tag{font-size:11px;color:#8b6e9f;border:1px solid #e4d7ef;border-radius:20px;padding:5px 10px;white-space:nowrap}.footer{display:flex;align-items:center;gap:4px;flex-direction:column;padding:33px 0 36px;font-size:11px;color:#a298aa;text-align:center}.privacy-link{border:0;background:none;color:#88739d;text-decoration:underline;padding:6px}.panel{background:rgba(255,255,255,.89);border:1px solid rgba(227,208,238,.9);border-radius:24px;box-shadow:var(--shadow)}.hero{padding-bottom:20px}.hero-label{text-align:center;letter-spacing:2px;font-size:11px;font-weight:800;color:var(--accent);margin:10px 0 12px}.hero-cover{display:block;max-width:540px;width:100%;height:auto;aspect-ratio:1086/1105;object-fit:cover;object-position:center top;border:1px solid #e9d3ec;border-radius:25px;box-shadow:0 25px 70px rgba(93,51,119,.17);margin:auto}.hero-bottom{text-align:center;max-width:580px;margin:19px auto 0}.hero-bottom h1{font-size:26px;letter-spacing:.5px;line-height:1.5;margin:6px 0}.hero-bottom .subtitle{font-size:14px;color:var(--muted);margin-bottom:18px}.launch{display:inline-flex;align-items:center;gap:7px;background:#f5eafb;border:1px solid #ecd7f4;border-radius:30px;padding:5px 12px;font-size:12px;color:#794fa0;margin-bottom:7px}.launch strong{color:#be5676}.launch-note{color:#96869c;font-size:11px;margin-top:8px}.primary{background:linear-gradient(105deg,#6a428f,#a567ae 60%,#bb82ad);border:0;color:white;font-weight:750;box-shadow:0 10px 25px rgba(130,77,166,.25);padding:15px 26px;border-radius:16px;min-height:54px;transition:transform .15s,box-shadow .15s}.primary:hover{transform:translateY(-1px);box-shadow:0 13px 29px rgba(130,77,166,.33)}.wide{width:100%}.ghost{background:#fff;border:1px solid #ded0e7;border-radius:14px;min-height:46px;padding:10px 17px;color:#76538e;font-weight:650}.ghost:hover{background:#faf5fd}.home-actions{display:grid;gap:9px;max-width:470px;margin:auto}.help-strip{display:flex;align-items:center;justify-content:center;gap:17px;color:#8d8196;font-size:12px;flex-wrap:wrap;margin:14px auto 12px}.explainer{margin:16px auto;max-width:570px;padding:17px 20px}.explainer h3{font-size:15px}.explainer p{margin-top:5px;color:#8b8093;font-size:13px}.chip-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:12px auto}.chip{background:#f5eff9;color:#805b9f;padding:4px 12px;border:1px solid #e9d9ed;border-radius:20px;font-size:12px}.quiz{padding-top:17px;max-width:620px;margin:0 auto}.quiz-top{display:flex;align-items:center;justify-content:space-between;color:#857593;font-size:13px;margin-bottom:11px}.progress{height:8px;width:100%;border-radius:100px;background:#e9dfee;overflow:hidden}.progress > div{height:100%;background:linear-gradient(90deg,#a16bc7,#e4a0be);border-radius:inherit;transition:width .2s}.question-card{padding:30px 22px 24px;margin-top:20px;min-height:400px}.q-icon{text-align:center;font-size:30px;padding:12px 0 18px}.q-text{text-align:center;font-size:21px;line-height:1.55;font-weight:800;letter-spacing:.3px;max-width:480px;margin:0 auto 8px}.q-hint{text-align:center;font-size:12px;color:#9b8fa4;margin-bottom:23px}.answers{display:grid;gap:10px}.answer{display:flex;align-items:center;text-align:left;gap:11px;background:linear-gradient(90deg,#fff,#fdfaff);border:1.5px solid #e9e0f0;color:#554763;border-radius:15px;padding:14px 15px;min-height:55px;font-weight:520;font-size:14px}.answer:hover{border-color:#b58bcf}.answer.selected{border-color:#a878c6;background:#f5edfb;box-shadow:0 0 0 2px #ecddf6 inset}.answer .letter{border-radius:9px;flex:0 0 26px;height:26px;display:grid;place-items:center;background:#f0e7f6;color:#9870b3;font-size:12px;font-weight:750}.answer.selected .letter{background:#9666ba;color:white}.quiz-nav{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:18px}.quiz-nav .primary{min-width:156px}.quiz-tip{text-align:center;color:#988c9e;font-size:12px;margin:17px 0}.result{padding-top:18px;max-width:650px;margin:auto}.result-tag{text-align:center;color:#ac7ac0;letter-spacing:2.5px;font-size:11px;font-weight:900}.result-hero{margin-top:13px;background:linear-gradient(160deg,#faf4fc,#fff,#f6eefa);border:1px solid #e9d4ed;border-radius:25px;padding:26px 22px 23px;text-align:center;position:relative;overflow:hidden;box-shadow:var(--shadow)}.result-hero:before{content:'✦';position:absolute;right:15px;top:4px;font-size:120px;color:#e4cee9;opacity:.4}.match{font-family:Georgia,serif;font-weight:800;color:#9d6ab9;font-size:55px;line-height:1.1;margin:5px 0}.match small{font-size:23px}.match-caption{font-size:11px;color:#ac93af;letter-spacing:1px}.result-name{font-size:35px;font-weight:900;letter-spacing:2px;line-height:1.5;margin:8px 0}.result-motto{font-size:15px;color:#705c82;margin:13px auto 8px;max-width:430px}.section{padding:22px 21px;margin-top:13px}.section h2{font-size:17px;margin-bottom:9px}.section p{color:#6f6279;font-size:14px;line-height:1.92}.measure{display:grid;grid-template-columns:94px 1fr 36px;align-items:center;gap:10px;margin:13px 0;font-size:12px;color:#766785}.measure .track{height:9px;background:#f0e6f1;border-radius:20px;overflow:hidden}.measure .fill{height:100%;border-radius:20px;background:linear-gradient(90deg,#9b76c7,#e0a2c9)}.measure b{font-variant-numeric:tabular-nums;color:#7b588b}.btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}.locked{border:1px dashed #c8a8d5;background:linear-gradient(130deg,#f9f1fc,#fcf8ff);border-radius:18px;padding:24px 19px;text-align:center}.locked-icon{font-size:28px}.locked h2{font-size:19px;margin:5px 0 7px}.locked p{font-size:13px;color:#8a7a95}.price{font-size:34px;color:#a45d8e;font-weight:900;margin:12px 0 7px}.price del{font-size:14px;color:#b1a1b9;font-weight:400;margin-left:8px}.offer-explainer{margin-top:7px;font-size:11px!important}.full-report{margin-top:14px}.full-report .section{margin-top:10px}.mini-title{font-size:12px;letter-spacing:2px;color:#ab88b7;font-weight:900;margin:17px 0 7px}.highlights{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}.highlight{padding:13px 10px;background:#f8f2fa;border-radius:13px;border:1px solid #eedff2}.highlight strong{font-size:13px;display:block}.highlight p{font-size:11px;line-height:1.65;margin-top:6px}.quote{padding:14px;border-left:3px solid #b88ccc;background:#f8f1fb;color:#6f5182;border-radius:3px 12px 12px 3px;font-size:15px;margin-top:12px}.privacy-body{font-size:14px;color:#665773}.privacy-body p{margin:10px 0}.privacy-body h3{margin:10px 0}.modal{border:0;padding:0;background:transparent;width:min(540px,calc(100% - 34px));max-height:calc(100vh - 50px);border-radius:21px;box-shadow:0 20px 90px rgba(30,19,39,.28)}.modal::backdrop{background:rgba(40,25,51,.48);backdrop-filter:blur(3px)}.modal-box{position:relative;background:#fff;padding:28px 23px}.modal-close{position:absolute;right:15px;top:9px;font-size:26px;border:0;background:none;color:#867491}.notice{font-size:12px;color:#84758d;margin-top:10px;text-align:center}.hidden{display:none!important}
+@media(min-width:650px){.shell{padding:0 35px}.hero-cover{max-width:500px}.question-card{padding:39px 42px}.result-hero{padding:37px 35px}.result-name{font-size:40px}}
+@media(max-width:420px){.shell{padding:0 15px}.topbar{height:73px}.corner-tag{font-size:10px}.logo{font-size:16px}.hero-cover{border-radius:19px}.hero-bottom h1{font-size:23px}.question-card{padding:23px 15px}.q-text{font-size:19px}.section{padding:20px 16px}.highlights{grid-template-columns:1fr}.btn-row{grid-template-columns:1fr}.result-name{font-size:31px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;scroll-behavior:auto!important}}
+
+.share-modal{text-align:center}.share-modal h2{font-size:20px;color:#553565;margin:2px 0 8px}.share-hint{font-size:12px;color:#887791;line-height:1.75;margin:10px 0}.share-modal img{display:block;width:min(100%,340px);height:auto;max-height:54vh;object-fit:contain;border:1px solid #e6d6ed;border-radius:16px;margin:12px auto;box-shadow:0 12px 35px #68417822;user-select:auto;-webkit-touch-callout:default}.share-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}.share-buttons button{padding:12px 9px;font-size:13px;min-height:48px}@media(max-width:370px){.share-buttons{grid-template-columns:1fr}}
+
+
+/* V3: 手机答题固定操作栏，选择时不再整页重绘 */
+.quiz{padding-bottom:135px}
+.quiz-nav{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:30;width:min(620px,calc(100vw - 28px));margin:0;padding:10px;display:flex;gap:10px;align-items:stretch;border-radius:20px;border:1px solid #e5d5ec;background:rgba(255,255,255,.97);box-shadow:0 12px 38px #5736712d;backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.quiz-nav>.ghost,.quiz-nav>.primary{flex:1;min-width:0;min-height:52px}
+.quiz .quiz-tip{padding:8px 0 22px}
+@media(max-width:420px){.quiz-nav{width:calc(100vw - 20px);padding:8px;border-radius:17px}.quiz-nav>.ghost,.quiz-nav>.primary{padding:11px 7px;font-size:14px}.question-card{margin-top:12px;padding:18px 15px}.q-icon{padding:4px 0 8px;font-size:27px}.q-hint{margin-bottom:16px}.answer{padding:12px 11px;min-height:52px}}
+/* V3: 付费报告的可视化与内容结构 */
+.dual-view{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0}
+.dual-card{padding:17px 13px;border-radius:18px;background:#f6eafb;border:1px solid #e9d8f4}
+.dual-card:last-child{background:#f0e9f9}
+.dual-card small{display:block;color:#9875ac;font-size:11px;font-weight:800;letter-spacing:1px}
+.dual-card strong{display:block;color:#523166;font-size:18px;margin-top:5px}
+.dual-card p{font-size:12px;line-height:1.7;margin-top:5px}
+.report-intro{background:linear-gradient(125deg,#473459,#845d96);border-radius:22px;color:#fff;padding:25px 20px;margin:18px 0 6px;box-shadow:0 14px 35px #68448622}
+.report-intro small{color:#e7c8e9;letter-spacing:1.8px;font-size:10px}
+.report-intro h2{color:#fff;margin:5px 0;font-size:22px}
+.report-intro p{color:#f8eafd;font-size:13px;line-height:1.8}
+.report-kicker{display:inline-block;font-size:11px;font-weight:850;color:#a978c0;letter-spacing:1.5px;margin-bottom:6px}
+.insight-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.insight{background:#faf5fd;border:1px solid #eee0f3;border-radius:15px;padding:14px}
+.insight strong{display:block;color:#65417f;font-size:13px}
+.insight p{font-size:12px;margin-top:5px}
+.story-card{background:#f9f3fc;border-radius:16px;padding:16px;margin-top:10px;border-left:3px solid #c18ed9}
+.story-card strong{display:block;font-size:13px;color:#714a83}
+.story-card p{margin-top:5px}
+.report-callout{background:linear-gradient(115deg,#f8effb,#f3eefb);border-radius:15px;padding:16px;color:#765387;margin:14px 0;border:1px solid #ead8ef;font-size:14px;line-height:1.85}
+.guide-list{display:grid;gap:9px;margin:13px 0}
+.guide-row{display:flex;align-items:flex-start;gap:12px;padding:14px;background:#fbf7fd;border-radius:13px}
+.guide-row b{color:#a579b6;font-size:18px}
+.guide-row p{margin:0!important}
+.report-summary{border-radius:18px;background:#3f2c54;color:white;padding:22px;margin:12px 0;text-align:center}
+.report-summary p{color:#f5e8ff;font-size:16px}
+.report-summary small{color:#dec9e9;font-size:11px}
+@media(max-width:370px){.dual-view,.insight-grid{grid-template-columns:1fr}}
+
+
+/* V4: 优先呈现个性化好奇点，而不是在免费区复述完整报告 */
+.quick-summary p{font-size:14px;line-height:1.8}
+.quick-summary .quick-note{font-size:12px;color:#a390ad;margin-top:7px}
+.conversion-hook{padding:23px 20px;margin:12px 0 14px;border-color:#d9bee9;background:linear-gradient(150deg,#fffaff,#f5edfb);box-shadow:0 10px 34px #aa77be20}
+.hook-eyebrow{display:block;color:#a06bc0;font-weight:850;font-size:11px;letter-spacing:1px;margin-bottom:8px}
+.conversion-hook h2{font-size:21px;line-height:1.48;color:#503064;margin:0 0 10px}
+.conversion-hook p{font-size:13px;line-height:1.8}
+.hook-note{color:#85748c!important}
+.hook-choices{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:15px 0}
+.hook-choices>div{background:#fff;border:1px solid #ebd9f3;border-radius:14px;padding:13px 11px}
+.hook-choices small{display:block;color:#9e82ac;font-size:11px;margin-bottom:5px}
+.hook-choices p{color:#62436e;font-weight:650;line-height:1.65}
+.hook-question{font-weight:800!important;color:#5c3b72!important}
+.hook-answer{color:#735881!important}
+.value-wall{padding:25px 19px;border-style:solid;border-color:#e0c6ef;border-radius:22px}
+.value-wall h2{font-size:20px;line-height:1.5}
+.value-wall .paywall-lead{max-width:490px;margin:10px auto 14px;line-height:1.85}
+.value-sample{background:#fff;border:1px solid #ead8f0;padding:18px 15px;text-align:left;border-radius:16px;max-width:520px;margin:12px auto}
+.value-sample small{font-weight:800;color:#a079ad;font-size:11px}
+.value-sample p{color:#5d3d70;font-size:15px;line-height:1.85;margin:9px 0;font-weight:650}
+.value-sample span{font-size:12px;color:#96809f}
+.value-contents{display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:left;max-width:520px;margin:15px auto}
+.value-contents p{margin:0;background:#f8f0fb;border-radius:10px;padding:11px 10px;font-size:12px;color:#79578b;line-height:1.6}
+@media(max-width:480px){.hook-choices,.value-contents{grid-template-columns:1fr}.conversion-hook h2{font-size:19px}.conversion-hook{padding:19px 16px}}
+
+
+/* V5: 独立卖链接，站内仅验证资格，不再出现付费墙 */
+.gate-page{max-width:680px;margin:0 auto;padding-bottom:45px}
+.gate-hero{padding:35px 23px;text-align:center;overflow:hidden;background:radial-gradient(circle at 50% 0%,#e5cff3,#fff7fb 56%,#fff)}
+.gate-glow{color:#b78aca;letter-spacing:10px;font-size:32px}
+.gate-label{font-size:11px;font-weight:750;color:#9c75af;letter-spacing:1px}
+.gate-hero h1{font-size:28px;line-height:1.48;margin:12px 0;color:#563568}
+.gate-hero p{font-size:14px;color:#7d6b88;max-width:500px;line-height:1.9;margin:auto}
+.gate-samples{display:flex;flex-wrap:wrap;gap:9px;justify-content:center;margin:23px auto 0}
+.gate-samples span{font-size:12px;color:#8a61a0;background:#f6edfb;border-radius:20px;border:1px solid #ead8f2;padding:5px 13px}
+.gate-access{padding:25px 23px;margin:15px 0}
+.gate-access h2{font-size:21px;color:#543268;margin:4px 0 7px}
+.gate-access>p{font-size:13px;color:#887893;line-height:1.85}
+.gate-code-label{display:block;margin:15px 0 6px;font-size:12px;font-weight:750;color:#715387}
+.gate-access input{display:block;width:100%;padding:14px;font-size:15px;letter-spacing:.2px;outline:0;border:1px solid #d7bbeb;background:white;border-radius:13px;color:#49345a;min-height:52px;margin-bottom:12px}
+.gate-access input:focus{border-color:#9c6dbb;box-shadow:0 0 0 3px #dfc6f35c}
+.gate-message{margin-top:12px!important;font-size:12px!important;color:#87528f!important}
+.gate-benefits{padding:25px 20px;margin-top:15px}
+.gate-benefits h2{font-size:18px;margin-bottom:14px}
+.gate-benefit-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.gate-benefit-grid>div{padding:14px;border-radius:13px;background:#faf5fc}
+.gate-benefit-grid strong{font-size:13px;color:#654078}
+.gate-benefit-grid p{font-size:12px;color:#8d7a9a;line-height:1.75;margin-top:6px}
+.gate-price{margin-top:15px;color:#79518d;font-size:13px}
+.gate-price b{font-size:24px;color:#a75f94}
+.gate-disclaimer{margin-top:8px;color:#a294ab;font-size:11px;line-height:1.7}
+.unlocked-notice{margin:18px 0 9px;border:1px solid #d5b6e5;background:#f5ebfb;padding:16px;border-radius:15px;color:#71508d;font-weight:750;font-size:13px;line-height:1.8;text-align:center}
+@media(max-width:480px){.gate-hero{padding:27px 15px}.gate-hero h1{font-size:24px}.gate-access,.gate-benefits{padding:21px 16px}.gate-benefit-grid{grid-template-columns:1fr}}
+
+.hero-traits{max-width:540px;margin:9px auto 12px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}.hero-traits span{display:inline-block;padding:4px 12px;border:1px solid #e7d8ed;background:#faf4fc;color:#8b6aa1;border-radius:999px;font-size:12px;font-weight:700}
+
+/* V6 八仙国风系统：原创暗八仙器物、清透绢纸与玉青金色 */
+:root{
+ --ink:#263d38;--text:#40564e;--muted:#73857c;--accent:#27766b;
+ --accent2:#bc8462;--line:#d9e5d9;--bg:#f7f7ee;--card:#fffef8;
+ --light:#f1f7ef;--shadow:0 16px 42px rgba(39,84,64,.10)
+}
+body{background:radial-gradient(ellipse at 3% 0%,#e8f5ed 0,transparent 46%),
+ radial-gradient(ellipse at 100% 35%,#f9eee0 0,transparent 55%),
+ linear-gradient(165deg,#f8f7ed,#f1f7f1 60%,#f7f1e5);
+ color:var(--ink)}
+.ambient-one{background:#d6e9d6}.ambient-two{background:#f2dfcb}
+.logo{color:#2c544e}.logo-icon{background:#2d655f;border-radius:50%;border:2px solid #cead77;font-family:"Songti SC","STSong",serif;font-weight:800}
+.corner-tag{color:#538377;border-color:#c5dbce;background:#f6f9ef}
+.panel{background:rgba(255,254,247,.92);border-color:#dce7d8}
+.hero-label,.result-tag,.report-kicker{color:#4e8271}
+.chip,.hero-traits span{color:#477365;background:#edf5ec;border-color:#d2e5d5}
+.launch{background:#ebf7ed;border-color:#cfe5d4;color:#387a5f}
+.launch strong{color:#8b654a}
+.primary{background:linear-gradient(105deg,#1e645c,#428b77 58%,#71a18c);box-shadow:0 10px 23px #39776340}
+.primary:hover{box-shadow:0 12px 26px #39776355}
+.ghost{color:#2c7062;border-color:#c9decf;background:#fffdf8}
+.answer{background:linear-gradient(90deg,#fffefa,#f4f9f3);border-color:#d8e5d9;color:#3e6152}
+.answer.selected{background:#eaf5e9;border-color:#478f7b;box-shadow:0 0 0 2px #d9efdc inset}
+.answer .letter{background:#e6f1e6;color:#428b74}
+.answer.selected .letter{background:#357b69;color:#fff}
+.progress{background:#dce7d8}.progress>div{background:linear-gradient(90deg,#4b927c,#d8b274)}
+.quiz-nav{border-color:#d4e2d2;box-shadow:0 14px 30px #4d725027}
+.question-card{background:#fffefa}
+.gate-hero{background:radial-gradient(ellipse at 50% 0,#dbece3,#fffdf4 57%,#f6f0e5 100%);border:1px solid #d7e1cb}
+.gate-hero h1{color:#2c534b;font-family:"Songti SC","STSong","Noto Serif SC",serif;letter-spacing:2px;font-size:34px}
+.gate-hero p{color:#647f70}
+.gate-label{color:#577c6e}
+.gate-glow{color:#b08c58}
+.gate-access h2{color:#315e53}.gate-access input{border-color:#c4d9c8;color:#315548}
+.gate-access input:focus{border-color:#5c9881;box-shadow:0 0 0 3px #a7d3b96b}
+.gate-benefit-grid>div{background:#f1f7ee}.gate-benefit-grid strong{color:#497b69}
+.gate-samples span{background:#e7f1eb;color:#4c7969}
+.hero-crown{font-size:12px;letter-spacing:6px;color:#a27d53;text-align:center;font-weight:800;margin:7px 0}
+.immortal-cover{border-radius:25px;max-width:540px;width:100%;margin:0 auto;background:
+ radial-gradient(circle at 49% 0,#ffffffba,transparent 44%),
+ repeating-linear-gradient(-45deg,#ffffff10 0 5px,#b4c7a914 5px 6px),
+ linear-gradient(140deg,#e7f2e4 0,#f7f1df 48%,#deece7 100%);
+ border:1px solid #c5d6c0;padding:26px 16px 19px;box-shadow:0 22px 48px #477f6c24;position:relative;overflow:hidden}
+.immortal-cover:before,.immortal-cover:after{content:'☁';position:absolute;font-size:60px;color:#bfccb1aa;pointer-events:none}
+.immortal-cover:before{top:45px;left:-16px}.immortal-cover:after{right:-10px;bottom:30px}
+.immortal-cover h2{color:#2d5b51;font-size:31px;font-weight:850;letter-spacing:1px;font-family:"Songti SC","STSong",serif;text-align:center;line-height:1.4;margin:4px 0 6px}
+.immortal-cover-note{font-size:13px;color:#8a947d;text-align:center;margin-bottom:19px}
+.immortal-lineup{display:grid;gap:10px;grid-template-columns:repeat(4,minmax(0,1fr));position:relative;z-index:1}
+.immortal-mini{min-width:0;text-align:center;padding:8px 4px 10px;border:1px solid #d7e2d5;border-radius:14px;background:#ffffffab;box-shadow:0 5px 12px #2c61530d}
+.immortal-mini-portrait{aspect-ratio:320/345;overflow:hidden;border-radius:12px}
+.immortal-mini-portrait svg{width:100%;height:100%;display:block}
+.immortal-mini span{font-size:13px;color:#466d5d;display:block;margin:4px auto 0;font-weight:800}
+.cover-bottom{font-size:11px;text-align:center;margin:16px 0 0;color:#998360;letter-spacing:2px}
+.cover-bottom span{color:#448473;padding:0 4px}
+.gate-lineup{max-width:520px;margin:22px auto 0}
+.gate-lineup .immortal-mini{background:#fffdf7a8}
+.lore-note{font-size:11px!important;color:#8c987e!important;line-height:1.8;margin-top:9px!important}
+.result-hero{background:radial-gradient(circle at 50% 0,#e6f2e6,#fffdf3 68%,#f2eddd);border-color:#d6dec8}
+.result-hero:before{color:#d8decb;opacity:.3}
+.result-immortal-art{max-width:250px;margin:0 auto 8px;position:relative;z-index:1}
+.result-immortal-art svg{width:100%;height:auto;display:block;filter:drop-shadow(0 12px 12px #55705a26)}
+.immortal-eyebrow{color:#ad8961;letter-spacing:2px;font-size:11px;font-weight:900}
+.result-name{color:#2d6555;font-family:"Songti SC","STSong",serif;font-size:52px!important;line-height:1.33}
+.immortal-epithet{color:#a17754;font-size:18px;font-weight:850;letter-spacing:3px;margin:5px 0}
+.result-hero .subtitle{font-size:13px;color:#5c8275;line-height:1.8}
+.result-match{display:flex;align-items:baseline;justify-content:center;gap:12px;margin:12px auto}
+.result-match strong{font-size:29px;color:#ad8354;font-family:Georgia,serif}
+.result-match span{font-size:12px;color:#8a9b84}
+.immortal-weapon{font-size:12px;color:#9a7f5d;margin:6px auto}
+.result-hero .quote{background:#eff5e9;border-left-color:#ba9a63;color:#527669}
+.immortal-artifact{display:grid;place-items:center;flex:none;width:54px;height:54px;border-radius:50%;color:#fff9e9;background:#5b8878;border:2px solid #e7d1a1;font:900 24px "Songti SC","STSong",serif;box-shadow:0 5px 15px #477b6230}
+.lore-crest{display:flex;align-items:center;gap:14px;margin:15px 0;border-radius:16px;padding:14px;background:#eef6e9;border:1px solid #dce7d5}
+.lore-crest strong{display:block;color:#3b6d5b}
+.lore-crest p{margin:2px 0 0}
+.immortal-lore{background:linear-gradient(140deg,#fffefa,#f2f8ed)}
+.report-intro{background:linear-gradient(120deg,#265c55,#608879);box-shadow:0 12px 29px #2b756c24}
+.report-intro small{color:#daead9}.report-intro p{color:#f2faf2}
+.report-callout{background:#eff6e8;border-color:#d3dfcf;color:#4b705a}
+.dual-card{background:#eef6eb;border-color:#d2e1cd}
+.dual-card:last-child{background:#f7f0e5}
+.dual-card strong{color:#356c5b}
+.dual-card small{color:#739a82}
+.story-card{background:#f3f7ef;border-left-color:#b5a16e}
+.story-card strong{color:#50745b}
+.insight{background:#f6f8f0;border-color:#dce6d8}
+.insight strong{color:#447a66}.guide-row{background:#f3f8ed}
+.report-summary{background:#305a51}
+.report-summary p{color:#faf5df}
+.unlocked-notice{color:#52785f;background:#eaf4e7;border-color:#c9dfc8}
+.quote{background:#eff5e9;color:#496f5a;border-left-color:#b29a68}
+.share-modal h2{color:#356558}
+.modal-box{background:#fffef9}
+@media(max-width:480px){
+ .immortal-cover{padding:20px 10px 14px}
+ .immortal-cover h2{font-size:27px}
+ .immortal-lineup{gap:6px}
+ .immortal-mini{padding:6px 2px 8px;border-radius:10px}
+ .immortal-mini-portrait{border-radius:8px}
+ .immortal-mini span{font-size:11px;margin-top:2px}
+ .hero-crown{font-size:10px;letter-spacing:4px}
+ .gate-hero h1{font-size:27px}
+ .result-immortal-art{max-width:210px}
+ .result-name{font-size:44px!important}
+ .gate-lineup{gap:7px}
+}
+
+</style>
+  
+<link rel="canonical" href="https://rainwang628.github.io/rain-docs/tools/hidden-persona/"><meta property="og:site_name" content="rain 的文档"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="website"><meta property="og:url" content="https://rainwang628.github.io/rain-docs/tools/hidden-persona/"><meta property="og:image" content="https://rainwang628.github.io/rain-docs/assets/og/hidden-persona.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="八仙反差人格测试｜你的性格最像哪位仙人？"><meta name="twitter:description" content="12道题·8位八仙人物原型·专属国风分享卡·趣味测评"><meta name="twitter:image" content="https://rainwang628.github.io/rain-docs/assets/og/hidden-persona.png"></head>
+<body>
+  <div class="ambient ambient-one" aria-hidden="true"></div><div class="ambient ambient-two" aria-hidden="true"></div>
+  <div class="shell">
+    <header class="topbar">
+      <button id="logoBtn" class="logo" title="返回首页"><span class="logo-icon">仙</span><span>反差实验室 <small>PARADOX LAB</small></span></button>
+      <span class="corner-tag">八仙篇 · 原创人物原型测评</span>
+    </header>
+    <main id="app" aria-live="polite"></main>
+    <footer class="footer">
+      <span>© 2026 反差实验室 · 八仙人物原型企划</span>
+      <span>以传统神话为灵感的趣味测试，不代表心理诊断</span>
+      <button class="privacy-link" id="privacyBtn">隐私说明</button>
+    <a href="../../" style="font-size:12px;color:#78618c;text-decoration:underline">← 返回 rain 的网站首页</a>
+    </footer>
+  </div>
+  <dialog id="modal" class="modal"><div class="modal-box"><button class="modal-close" id="closeModal" aria-label="关闭">×</button><div id="modalBody"></div></div></dialog>
+<script>
+'use strict';
+/* 反差实验室 MVP - no tracking, no payment processing. All answers stay in the browser. */
+const questions = [
+  {q:'第一次参加朋友的聚会，通常你会？',icon:'🪞',axes:['warm','lead'],a:[['主动照顾大家，也自然安排节奏',2,2],['热情配合，但不太爱做决定',2,-2],['先观察气氛，需要时才接过主导权',-2,2],['安静听大家聊天，顺其自然就好',-2,-2]]},
+  {q:'如果被别人误解，你的第一反应是？',icon:'🌙',axes:['feel','bound'],a:[['心里很在意，也会认真解释清楚',2,2],['有点受伤，但先忍着不提',2,-2],['情绪变化不大，直接澄清事实',-2,2],['大多数时候觉得没必要争论',-2,-2]]},
+  {q:'在一个新环境里，你更像哪一种人？',icon:'✨',axes:['warm','feel'],a:[['主动和人打招呼，也很容易共情',2,2],['能自然聊天，但情绪比较稳定',2,-2],['安静观察，内心其实想得很多',-2,2],['默默熟悉环境，很少被气氛带着走',-2,-2]]},
+  {q:'精心安排的计划突然被打乱，你会？',icon:'🧩',axes:['lead','bound'],a:[['重新规划，并明确哪些事情不能变',2,2],['主动收拾残局，哪怕自己有点累',2,-2],['不强行接管，但清楚表达自己的底线',-2,2],['没关系，跟着大家调整就好',-2,-2]]},
+  {q:'不太熟的人向你提出一个麻烦的请求，你会？',icon:'🍃',axes:['warm','bound'],a:[['温柔地说明不能帮，并提供其他建议',2,2],['怕尴尬，常常先答应再想办法',2,-2],['话不多，但拒绝得很明确',-2,2],['先拖一拖，不知道怎么回复',-2,-2]]},
+  {q:'看到朋友情绪低落，你最可能？',icon:'💌',axes:['lead','feel'],a:[['主动想办法帮他，自己也会很心疼',2,2],['快速分析问题，提供可执行的方案',2,-2],['默默陪伴，等他愿意倾诉',-2,2],['给对方空间，避免不必要的干预',-2,-2]]},
+  {q:'当一群人迟迟无法做决定，你通常？',icon:'🪄',axes:['warm','lead'],a:[['先活跃气氛，再把事情推动下去',2,2],['鼓励大家讨论，最后让别人拍板',2,-2],['平时安静，关键时刻会主动做决定',-2,2],['专注自己的部分，选择尊重集体',-2,-2]]},
+  {q:'有人开了一个你不太喜欢的玩笑，你会？',icon:'🫧',axes:['feel','bound'],a:[['觉得被冒犯，也会认真说出来',2,2],['虽然介意，却常常笑着带过',2,-2],['不一定生气，但会当场制止',-2,2],['通常笑笑就过去，不放在心上',-2,-2]]},
+  {q:'喜欢的人突然发来消息，你更接近？',icon:'💫',axes:['warm','feel'],a:[['积极回应，心情也跟着雀跃',2,2],['大方聊天，但能保持自己的节奏',2,-2],['表面淡定，心里已经想了很多',-2,2],['慢慢回复，不轻易被打乱生活',-2,-2]]},
+  {q:'朋友请你临时帮一个很麻烦的忙，你会？',icon:'🗝️',axes:['lead','bound'],a:[['先整理方案，并说清我能做到哪一步',2,2],['习惯直接扛下来，有时有点透支',2,-2],['只承诺自己能完成的部分',-2,2],['看情况再说，通常不主动推动',-2,-2]]},
+  {q:'与朋友意见不一致时，你往往？',icon:'🌸',axes:['warm','bound'],a:[['语气温和，但会坚持自己的立场',2,2],['优先维护关系，偶尔会选择让步',2,-2],['直截了当说出想法，不太绕弯',-2,2],['不想争论，干脆退出这个话题',-2,-2]]},
+  {q:'一件很重要的事情结束以后，你会？',icon:'🌌',axes:['lead','feel'],a:[['反复复盘细节，情绪余温也很久',2,2],['很快总结经验，准备投入下一件事',2,-2],['一个人默默回味，暂时不急着行动',-2,2],['很快翻篇，接下来走一步看一步',-2,-2]]}
+];
+const types={
+  '110':{name:'温柔掌控者',immortal:'何仙姑',artifact:'荷花',seal:'莲',epithet:'莲心有尺',immortalInk:'#bc7773',immortalRobe:'#e3a9a5',immortalLore:'取荷花的清澈与自守，写出你温和外表下的独立判断。',immortalWhy:'你可以照顾场面，也可以在重要时刻守住自己的决定。',subtitle:'外表很柔软，心里却有一套自己的秩序',quote:'你看起来很好说话，其实很难被真正拿捏。',intro:'你擅长把锋芒藏进体贴里。别人看到的是你的平和与配合，而你心里对事情的轻重缓急一直很清楚。真正重要的节点，你会悄悄握住方向盘。',gap:'你的反差不在于突然强势，而在于安静地做决定。你很少证明自己有多厉害，却通常已经为变化准备好了第二套方案。',strengths:[['温柔有力量','不必提高音量，也能让人愿意配合'],['稳稳的节奏感','复杂局面里依然能把事情理顺'],['选择性坚持','只在真正重要的地方表达坚定']],relation:'在关系中，你愿意照顾对方的感受，也希望自己的意见得到认真对待。你喜欢一起解决问题，而不是反复争输赢。',blind:'你可能习惯一边照顾气氛，一边承担更多决策，久了反而容易疲惫。',advice:['把一些决定还给别人，不必每次都做兜底的人。','直接表达自己的需要，不用总等别人来猜。','你的温柔不必通过牺牲自己的节奏来证明。'],lines:['柔软是你的天赋，清醒是你的底气。','看似没有锋芒，其实自有方向。','你不必控制一切，也能稳稳向前。']},
+  '111':{name:'笑面反骨派',immortal:'张果老',artifact:'渔鼓',seal:'鼓',epithet:'反着走也坦荡',immortalInk:'#b97b53',immortalRobe:'#d7b47c',immortalLore:'借倒骑驴的民间故事，表达不循常规、却自有一套章法的幽默。',immortalWhy:'你待人热情，却会在关键原则上显出意想不到的坚持。',subtitle:'人前幽默随和，骨子里却自带一股不服输',quote:'看着挺好商量，真正的原则从不打折。',intro:'你很会照顾场面，也能迅速察觉别人情绪。但在那些看似很好商量的时刻，你的内心也会悄悄亮起自己的主张。',gap:'别人以为你总是好脾气，直到触及你真正相信的东西，才发现你那股不服输的劲儿。你的反差来自热情和坚持同时在线。',strengths:[['带动氛围','很容易让沉默的场合活起来'],['热烈的行动力','有感觉时就会想办法去实现'],['真实的勇气','能表达喜欢，也敢表达不赞同']],relation:'你希望彼此坦诚又好玩，不喜欢表面和气、心里却不说。你可能在意回应的温度，也珍惜对方尊重你选择的空间。',blind:'你有时会为了照顾关系先答应，之后又对被安排感到不舒服。',advice:['说“不”不等于破坏关系。','情绪来得快时，给自己一点判断时间。','真正适合你的人，会喜欢你的活泼也尊重你的原则。'],lines:['随和是我的表象，主见是我的底气。','热烈生活，不代表可以被随意定义。','我会温柔，但不会丢掉自己。']},
+  '101':{name:'热闹共情家',immortal:'汉钟离',artifact:'芭蕉扇',seal:'扇',epithet:'笑里有暖风',immortalInk:'#b17a63',immortalRobe:'#e4b98b',immortalLore:'以扇子的舒展和宽厚形象，比喻善于接住他人情绪的你。',immortalWhy:'热闹时你能让大家安心，独处时也需要照顾自己的感受。',subtitle:'人群里的小太阳，独处时也会悄悄多想',quote:'大家以为我负责开心，其实我也会收藏心事。',intro:'你总能迅速接住别人的话和情绪，是聚会里的温度担当。但热闹过去后，一些细小的瞬间仍会留在你心里。',gap:'你的反差是在人群中大大方方，回到自己的世界却格外敏感。你并非没心没肺，只是更愿意先让别人快乐。',strengths:[['共情雷达','很快感受到场上谁需要照顾'],['自然的亲和力','让陌生人也更容易放松'],['连接能力','愿意为关系创造共同回忆']],relation:'你喜欢有回应的关系，容易被细节打动。你也可能在别人没有及时回复时多想，需要学会允许不同的表达节奏。',blind:'热闹里经常照顾所有人，却容易把自己的疲惫藏起来。',advice:['偶尔让别人来照顾你的情绪。','不用每段沉默都靠你填满。','你的价值不只在于能让大家开心。'],lines:['热闹是你的光，细腻是你的影。','笑得最大声的人，也值得被认真听见。','喜欢世界，也别忘了抱抱自己。']},
+  '100':{name:'热闹疏离者',immortal:'蓝采和',artifact:'花篮',seal:'篮',epithet:'自在不设限',immortalInk:'#55908a',immortalRobe:'#8fc3b4',immortalLore:'取花篮与逍遥随性的意象，写出你热情却不被热闹束缚的气质。',immortalWhy:'你乐于与人相处，也懂得为自己的自由留出位置。',subtitle:'聊天可以很热情，心里始终有一块自由领地',quote:'我可以和所有人聊得来，但不必和所有人走得近。',intro:'你知道如何在社交场合保持轻松，也通常不被小事反复消耗。看起来朋友很多，但真正进入你内心的人可能并不多。',gap:'别人觉得你是随叫随到的气氛组，实际上你很擅长把社交与自己的生活分开。热情对你而言，是一种能力，不一定是承诺。',strengths:[['社交松弛感','能迅速找到舒适的互动方式'],['情绪复位快','小插曲通常不会占据你太久'],['轻盈的边界','喜欢热闹，也能享受一个人']],relation:'你偏爱不黏不绑的相处方式。比起不断确认关系，你更看重互相理解和各自精彩。',blind:'当你已经翻篇，对方可能还在等待一句明确的回应。',advice:['重要关系里，偶尔主动解释你的节奏。','给在乎的人一些被需要的确定感。','别用“我无所谓”省略真正想表达的东西。'],lines:['我很热情，但我也很自由。','不冷漠，只是不把每一刻都交出去。','轻松相处，是我的高级浪漫。']},
+  '010':{name:'冷面谋略家',immortal:'吕洞宾',artifact:'宝剑',seal:'剑',epithet:'心中自有剑',immortalInk:'#4e7b89',immortalRobe:'#89b3c1',immortalLore:'取宝剑的利落与清明，让你的冷静决断有一个鲜明的东方人物象征。',immortalWhy:'看似沉默，其实你往往早有判断，关键时刻更愿意亲自推动。',subtitle:'话不多、判断快，喜欢把底牌留到最后',quote:'沉默不是没想法，是我已经推演了三个版本。',intro:'你不太习惯第一时间展示态度，而是先把信息看清楚。别人可能以为你距离感强，但你只是习惯在充分判断后再行动。',gap:'你最大的反差是外表平静、内部高速运转。到了关键时刻，你可能比很多看起来强势的人更敢拍板。',strengths:[['清醒判断','面对噪声更愿意寻找关键事实'],['规划能力','习惯提前想好几种可能'],['克制表达','不轻易被场面带偏']],relation:'你对亲近的人往往是行动派。你不一定说很多甜言蜜语，却喜欢把实际问题处理好。',blind:'你可能太早进入解决问题模式，忘记对方首先需要被理解。',advice:['不是每个问题都需要马上得到答案。','让别人知道你在乎，偶尔直接说出来。','留一点空间给不按计划发生的惊喜。'],lines:['我的温度藏在行动里。','真正的底气，是不必急着亮底牌。','平静表面下，也有一整片星图。']},
+  '011':{name:'安静燃烧者',immortal:'韩湘子',artifact:'洞箫',seal:'箫',epithet:'笛声藏心事',immortalInk:'#7981a1',immortalRobe:'#a6b7d6',immortalLore:'借洞箫的悠远，描摹看起来克制、内心却始终有回响的你。',immortalWhy:'你不急着表现热情，但对在意的人与事会投入很多。',subtitle:'表面没什么波澜，心里却有一团认真生活的火',quote:'我不一定说出口，但我比想象中更在意。',intro:'你看起来慢热、克制，甚至让人觉得不太好接近。只有真正熟悉你的人才会发现，你对喜欢的人与事投入得很深。',gap:'你的反差来自情绪与行动的不同节奏：心里翻山越岭，脸上却风平浪静；做出决定以后，又有惊人的执行力。',strengths:[['深度投入','愿意为热爱的事长期坚持'],['细节感知','容易留意别人忽略的微小变化'],['关键时刻可靠','不爱夸口，但倾向把事情做到']],relation:'你更相信慢慢建立的信任。过于频繁的试探会让你疲惫，稳定而真诚的交流更能打动你。',blind:'你把很多在意藏得太深，别人可能误以为你不需要回应。',advice:['重要感受可以不用等到“合适时机”再说。','偶尔让热情被看见，而不是只让结果说话。','允许自己有不必完美的尝试。'],lines:['安静不是熄灭，而是蓄光。','没说出口的认真，也值得被听见。','我的火焰，不需要喧哗。']},
+  '001':{name:'冷感共情者',immortal:'铁拐李',artifact:'葫芦',seal:'葫',epithet:'粗衣藏仁心',immortalInk:'#8d8268',immortalRobe:'#bbc19c',immortalLore:'取葫芦与济人的民间象征，写出外在不张扬、内里有温度的反差。',immortalWhy:'你不擅长让所有人看见自己的体贴，却会记得少数人的细节。',subtitle:'表面像一阵清风，心里却能感受很多细节',quote:'我不是不在乎，只是不习惯把在乎说得很响。',intro:'你给人的第一印象可能偏淡、偏理性，但实际上你很容易感受到关系中的微妙变化。很多事你都记得，只是不一定当场表达。',gap:'别人以为你无所谓，你却可能在回家路上重新想起一句话。比起立刻拥抱整个世界，你更习惯认真守护少数重要的人。',strengths:[['细腻洞察','能看见情绪背后的细节'],['安静陪伴','尊重别人的空间和节奏'],['真诚连接','不追求热闹，但珍惜深交']],relation:'你对熟人比对陌生人热情得多。你希望被理解，也需要安全感来打开内心。',blind:'你可能太习惯等别人先靠近，错过一些值得开始的关系。',advice:['可以从一句简单的表达开始，不必一次说完所有心事。','把别人的情绪和自己的责任分开。','允许自己被照顾，而不只是理解别人。'],lines:['外表淡淡的，心里却开着一片花。','慢一点靠近，也可以很真诚。','你的细腻，不需要被所有人看懂。']},
+  '000':{name:'慢热自由派',immortal:'曹国舅',artifact:'玉板',seal:'玉',epithet:'沉稳有分寸',immortalInk:'#657c6e',immortalRobe:'#9eada3',immortalLore:'以玉板的端正克制，比喻你的从容与原则感。',immortalWhy:'你未必追求瞩目，却能在自己选择的事情上保持稳定与节奏。',subtitle:'不抢镜、不勉强，喜欢按自己的节奏生活',quote:'我不是没有故事，只是不急着交代给所有人。',intro:'你并不追求成为每个场合的中心，也不太希望被外界期待推着走。熟悉的人知道，你有一种稳稳的个人节奏。',gap:'别人眼里的你可能低调甚至有点佛系，但在真正珍惜的事情上，你会表现出安静的韧性。',strengths:[['内在稳定','不容易被集体情绪反复拉扯'],['自在独处','懂得给自己的生活留白'],['不盲从','更愿意自己感受、自己判断']],relation:'你喜欢舒服、松弛、互不消耗的相处。需要时愿意在场，但也珍惜独处的权利。',blind:'“顺其自然”有时会变成不主动，想争取的东西可能因此擦肩而过。',advice:['对真正重要的事，偶尔主动迈一步。','不擅长表达也没关系，但别一直让别人猜。','自在不是逃避，你可以温柔而坚定地选择。'],lines:['我有自己的速度，也有自己的方向。','不争一时喧哗，独享四季晴朗。','慢热，是我的认真筛选。']}
+};
+const dims={warm:['对外亲和','更热情','更克制'],lead:['内在主导','更主动','更随性'],feel:['情绪感知','更细腻','更冷静'],bound:['边界意识','更清晰','更包容']};
+const KEY='paradox-lab-quiz-v1';
+let answers=Array(questions.length).fill(null), current=0, view='home', showFull=false, advanceTimer=null;
+const app=document.getElementById('app');
+
+/* V5: 一单一码 · 买家链接只用于解锁本设备，绝不出现在分享卡里。 */
+const PERSONA_ACCESS_STORAGE='paradox-lab-purchased-access-v1';
+const PERSONA_ACCESS_URL='https://ucautsubldfvxoraeajb.supabase.co/functions/v1/persona-access';
+let accessActive=false,accessPending=false,accessError='',accessCode='',accessDevice='';
+const CODE_RE=/^[0-9a-f]{48}$/;
+function randomSecret(){
+ const bytes=new Uint8Array(24);crypto.getRandomValues(bytes);
+ return Array.from(bytes,x=>x.toString(16).padStart(2,'0')).join('');
+}
+function loadStoredAccess(){
+ try{
+  const o=JSON.parse(localStorage.getItem(PERSONA_ACCESS_STORAGE)||'null');
+  if(o && CODE_RE.test(o.code) && CODE_RE.test(o.device))return o;
+ }catch{}
+ return null;
+}
+function rememberAccess(code,device){
+ try{localStorage.setItem(PERSONA_ACCESS_STORAGE,JSON.stringify({code,device}));}catch{}
+}
+function stripCodeFromUrl(){
+ // Fragment 避免兑换码进入服务器请求和通常的访问日志，验证时马上从地址栏移除。
+ if(location.hash && location.hash.includes('code=')){
+  history.replaceState(null,'',location.pathname+location.search);
+ }
+}
+async function accessRequest(action){
+ const response=await fetch(PERSONA_ACCESS_URL,{
+  method:'POST',headers:{'Content-Type':'application/json'},
+  body:JSON.stringify({action,code:accessCode,device:accessDevice}),
+  cache:'no-store'
+ });
+ let payload;try{payload=await response.json();}catch{throw Error('校验服务返回异常，请稍后重试');}
+ if(payload.ok && payload.active)return {active:true};
+ if(payload.ok && payload.needs_activation)return {needs_activation:true};
+ if(payload.error==='already_activated_elsewhere')throw Error('这个体验码已绑定其他浏览器。如需换手机，请联系卖家重置。');
+ if(payload.error==='invalid_code')throw Error('体验码无效或已停用，请核对购买链接。');
+ throw Error('验证暂时失败，请稍后重试。');
+}
+
+const immortalCodes=['110','111','101','100','010','011','001','000'];
+function immortalBadge(t,cls=''){
+  return '<span class="immortal-artifact '+cls+'" aria-label="'+t.artifact+'">'+t.seal+'</span>';
+}
+function immortalSvg(t){
+  // 纯原创 SVG 小像：无需第三方图片，不调用外部字体或资源。
+  const ink=t.immortalInk,robe=t.immortalRobe;
+  const female=t.immortal==='何仙姑';
+  const official=t.immortal==='曹国舅';
+  const wander=t.immortal==='铁拐李'||t.immortal==='张果老';
+  const ornament=female?'<circle cx="214" cy="95" r="14" fill="#d09a65"/><path d="M200 95L230 95" stroke="#fff5cf" stroke-width="4"/>':official?'<path d="M110 85H212L203 63H116Z" fill="#29433f"/><path d="M101 84H221" stroke="#d7ad62" stroke-width="7"/>':wander?'<path d="M110 95Q159 66 211 95" stroke="#445a4b" stroke-width="16" fill="none"/>':'<path d="M147 63q12 -28 26 0" fill="#334342" stroke="#334342" stroke-width="8"/>';
+  return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 345" role="img" aria-label="原创国风人物造型：'+t.immortal+'">'+
+    '<defs><linearGradient id="robe-'+t.seal+'" x1="0" x2="1" y1="0" y2="1"><stop stop-color="'+robe+'"/><stop offset="1" stop-color="'+ink+'"/></linearGradient><linearGradient id="paper-'+t.seal+'" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#fff8e8"/><stop offset="1" stop-color="#e9efe6"/></linearGradient></defs>'+
+    '<circle cx="160" cy="166" r="149" fill="url(#paper-'+t.seal+')" stroke="#e0d2b8" stroke-width="2"/>'+
+    '<path d="M22 273Q92 241 146 293T296 266" fill="none" stroke="#b7d3c8" stroke-width="13" opacity=".65"/>'+
+    '<path d="M41 297Q107 266 153 312T287 291" fill="none" stroke="#d6b588" stroke-width="6" opacity=".55"/>'+
+    '<path d="M55 330Q78 231 131 222L189 222Q250 236 272 330Z" fill="url(#robe-'+t.seal+')" stroke="'+ink+'" stroke-width="3"/>'+
+    '<path d="M148 226L170 226L204 330H122Z" fill="#f9e8ca" opacity=".88"/>'+
+    '<path d="M98 249Q132 271 169 290Q200 269 236 243" fill="none" stroke="#fff8ef" stroke-width="8" opacity=".7"/>'+
+    '<path d="M109 151Q98 89 142 73Q181 60 209 93Q232 112 210 159L212 188H108Z" fill="#344640"/>'+
+    '<ellipse cx="160" cy="154" rx="51" ry="65" fill="#f6d6ad" stroke="#caad89" stroke-width="2"/>'+
+    '<path d="M104 136Q94 89 140 77Q196 68 213 129Q187 114 176 101Q135 119 104 136Z" fill="#344640"/>'+
+    '<path d="M129 153q11 -6 21 0m20 0q11 -6 21 0" stroke="#5b4a42" stroke-width="3" stroke-linecap="round" fill="none"/>'+
+    '<path d="M148 182q11 7 24 0" stroke="#b87972" stroke-width="3" stroke-linecap="round" fill="none"/>'+
+    ornament+
+    '<circle cx="246" cy="78" r="41" fill="'+ink+'" stroke="#fff7e5" stroke-width="4"/>'+
+    '<text x="246" y="94" font-size="34" text-anchor="middle" fill="#fff8e7" font-weight="700" font-family="serif">'+t.seal+'</text>'+
+    '<path d="M58 114q25 -17 42 2M224 230q31 -21 52 5" fill="none" stroke="'+ink+'" stroke-width="3" opacity=".45"/>'+
+    '</svg>';
+}
+
+function gateHome(){
+ view='gate';
+ window.scrollTo(0,0);
+ const haveCode=CODE_RE.test(accessCode);
+ app.innerHTML=`<div class="gate-page">
+  <p class="hero-label">✦ PARADOX LAB · PRIVATE EXPERIENCE ✦</p>
+  <div class="gate-hero panel"><div class="gate-glow">✦ ✧ ✦</div>
+   <span class="gate-label">八仙人格图鉴 · 12 道情境题 · 8 位仙人</span>
+   <h1>八仙过海，<br>你最像哪位仙人？</h1>
+   <p>有人像一柄剑，外静内决；有人像一朵莲，看似温柔却很有主见。通过 12 道真实情境题，寻找你的八仙人物原型。</p>
+   <div class="immortal-lineup gate-lineup">${immortalCodes.slice(0,4).map(k=>'<div class="immortal-mini"><div class="immortal-mini-portrait">'+immortalSvg(types[k])+'</div><span>'+types[k].immortal+'</span></div>').join('')}</div><p class="lore-note">八仙各显神通；你的反差，或许也有一件专属仙器。</p>
+  </div>
+  <div class="gate-access panel" id="gateAccess">
+   <span class="hook-eyebrow">✦ PURCHASED ACCESS · 已购买用户</span>
+   <h2>${haveCode?'专属体验资格已识别':'输入购买后收到的体验码'}</h2>
+   <p>一份订单对应一个激活码。首次激活后仅在当前浏览器使用；换设备可联系卖家申请重置。</p>
+   <label class="gate-code-label" for="accessInput">专属兑换码</label>
+   <input id="accessInput" aria-label="48位体验码" type="text" maxlength="48" spellcheck="false" autocomplete="off" autocapitalize="off" placeholder="粘贴 48 位兑换码" value="${haveCode?accessCode:''}">
+   <button id="activateAccess" class="primary wide" type="button" ${accessPending?'disabled':''}>${accessPending?'正在核验体验资格…':haveCode?'🔓 激活并进入测评':'验证体验码，进入测评'}</button>
+   <p id="accessMessage" class="gate-message" role="status">${accessError||'请勿转发购买链接，以免他人在你之前激活。'}</p>
+  </div>
+  <div class="gate-benefits panel"><h2>一次解锁，得到什么？</h2><div class="gate-benefit-grid">
+   <div><strong>🎭 你的八仙人物原型</strong><p>仙人名号、对应法器、反差标签与人格金句</p></div>
+   <div><strong>🪞 人前与内心的对照</strong><p>四维倾向、行为反差与具体的情境解读</p></div>
+   <div><strong>💜 关系使用说明书</strong><p>友情、亲密关系、你的舒适区和个人建议</p></div>
+   <div><strong>🖼️ 原创国风人物分享卡</strong><p>原创国风人物造型 + 高清 PNG，不携带体验码</p></div>
+  </div><p class="gate-disclaimer">请通过商品购买渠道获取专属体验链接。本网站只负责验证体验资格和交付测评，不提供站内支付。</p></div>
+ </div>`;
+ document.getElementById('activateAccess').onclick=async()=>{
+  const candidate=document.getElementById('accessInput').value.trim().toLowerCase();
+  if(!CODE_RE.test(candidate)){accessError='请输入订单附带的完整 48 位兑换码。';document.getElementById('accessMessage').textContent=accessError;return;}
+  const saved=loadStoredAccess();
+  accessCode=candidate;
+  accessDevice=(saved?.code===candidate&&CODE_RE.test(saved.device))?saved.device:randomSecret();
+  rememberAccess(accessCode,accessDevice);
+  accessPending=true;accessError='';gateHome();
+  try{
+   const res=await accessRequest('activate');
+   if(!res.active)throw Error('当前还无法激活，请稍后重试');
+   accessActive=true;
+   accessPending=false;accessError='';
+   home();
+  }catch(e){accessPending=false;accessError=e.message||'激活失败';gateHome();}
+ };
+}
+async function initPurchasedAccess(){
+ try{
+  const incoming=new URLSearchParams(location.hash.slice(1)).get('code')?.toLowerCase();
+  const saved=loadStoredAccess();
+  if(incoming){
+   stripCodeFromUrl();
+   if(!CODE_RE.test(incoming)){accessError='购买链接中的兑换码格式不正确';gateHome();return;}
+   accessCode=incoming;
+   accessDevice=saved?.code===incoming?saved.device:randomSecret();
+   rememberAccess(accessCode,accessDevice);
+  }else if(saved){accessCode=saved.code;accessDevice=saved.device;}
+  if(!CODE_RE.test(accessCode)||!CODE_RE.test(accessDevice)){gateHome();return;}
+  accessPending=true;gateHome();
+  const res=await accessRequest('check');
+  accessPending=false;
+  if(res.active){accessActive=true;home();}
+  else{accessError='兑换码有效，点击「激活并进入测评」即可使用。';gateHome();}
+ }catch(e){accessPending=false;accessError=e.message||'验证失败';gateHome();}
+}
+function home(){
+ if(!accessActive)return gateHome();
+ return unlockedHome();
+}
+
+function readSaved(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s?.version===1 && Array.isArray(s.answers)&&s.answers.length===questions.length){const a=s.answers.map(x=>Number.isInteger(x)&&x>=0&&x<=3?x:null);answers=a;current=Math.min(questions.length-1,Math.max(0,Number(s.current)||0));}}catch(e){/*private browsing may block storage*/}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify({version:1,answers,current}))}catch(e){/*no tracking*/}}
+function reset(){answers=Array(questions.length).fill(null);current=0;showFull=false;save();home();}
+function unlockedHome(){view='home';window.scrollTo(0,0);const started=answers.some(x=>x!==null);app.innerHTML=`<div class="hero"><div class="hero-label">✦ THE EIGHT IMMORTALS · PERSONALITY STORY ✦</div><div class="immortal-cover"><p class="hero-crown">八 · 仙 · 反 · 差 · 人 · 格</p><h2>你最像八仙中的谁？</h2><p class="immortal-cover-note">表面一副样子，内心另有一件法器。</p><div class="immortal-lineup cover-lineup">${immortalCodes.map(k=>'<div class="immortal-mini"><div class="immortal-mini-portrait">'+immortalSvg(types[k])+'</div><span>'+types[k].immortal+'</span></div>').join('')}</div><div class="cover-bottom">暗八仙 · 原创国风人物图鉴 <span>✦</span> 仙缘自有相</div></div><div class="hero-traits" aria-label="测评的人格关键词"><span>慢热</span><span>细腻</span><span>主见</span><span>自由</span><span>边界感</span></div><div class="hero-bottom"><div class="launch">✅ 体验资格验证成功 · <strong>可以开始测评</strong></div><h1>你骨子里，藏着哪位仙人？</h1><p class="subtitle">以八仙神话为灵感，寻找你表面与内心的性格原型。</p><div class="home-actions"><button class="primary wide" id="startBtn">${started?'继续我的测评':'开始我的测评 · 约 2 分钟'} →</button>${started?'<button class="ghost" id="restartBtn">重新测试</button>':''}</div><p class="launch-note">你的专属体验资格已验证 · 完整结果和分享图片均可查看</p><div class="help-strip"><span>✓ 12 道情境题</span><span>✓ 8 位八仙原型</span><span>✓ 无需注册</span></div></div><div class="explainer panel"><h3>✦ 八仙之中，每个人各有本领</h3><p>八仙各持法器过海，我们用 8 位传说人物象征 8 种反差人格。人物对应不分性别，只是文化趣味联想，不是运势或专业心理预测。</p><div class="chip-row">${['何仙姑 · 温柔掌控','吕洞宾 · 冷静果断','蓝采和 · 自在随性','韩湘子 · 安静炽热'].map(x=>`<span class="chip">${x}</span>`).join('')}</div></div></div>`;
+  document.getElementById('startBtn').onclick=()=>{const missing=answers.findIndex(x=>x===null);if(missing===-1)result();else {current=started?Math.max(0,current):0;quiz();}};
+  const restart=document.getElementById('restartBtn');if(restart)restart.onclick=()=>confirm('确认清空当前答题进度，重新开始吗？')&&reset();
+}
+
+function quiz(){if(!accessActive){home();return;}
+  if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}
+  view='quiz';window.scrollTo(0,0);
+  const q=questions[current];
+  app.innerHTML=`<div class="quiz"><div class="quiz-top"><span>正在发现你的另一面…</span><strong>${String(current+1).padStart(2,'0')} / ${questions.length}</strong></div><div class="progress" role="progressbar" aria-valuenow="${current+1}" aria-valuemin="1" aria-valuemax="12" aria-label="测评进度"><div style="width:${(current+1)/questions.length*100}%"></div></div><div class="question-card panel"><div class="q-icon">${q.icon}</div><div class="q-text">${q.q}</div><div class="q-hint">凭第一直觉选择，没有正确答案</div><div class="answers" role="group" aria-label="请选择最符合你的选项">${q.a.map((v,i)=>`<button class="answer ${answers[current]===i?'selected':''}" data-id="${i}" aria-pressed="${answers[current]===i}"><span class="letter">${'ABCD'[i]}</span>${v[0]}</button>`).join('')}</div></div><div class="quiz-nav" aria-label="题目导航"><button class="ghost" id="prevBtn">← ${current===0?'返回首页':'上一题'}</button><button class="primary" id="nextBtn" ${answers[current]===null?'disabled':''}>${current===questions.length-1?'查看我的结果':'下一题'} →</button></div><p class="quiz-tip">🔒 答题进度仅保存在当前设备 · 选择后自动进入下一题</p></div>`;
+  const buttons=[...app.querySelectorAll('.answer')];
+  buttons.forEach(b=>b.onclick=()=>{
+    answers[current]=Number(b.dataset.id);
+    save();
+    // 只修改按钮状态，不重建 DOM；避免 iOS 上自动回顶/跳屏。
+    for(const item of buttons){const yes=item===b;item.classList.toggle('selected',yes);item.setAttribute('aria-pressed',String(yes));}
+    document.getElementById('nextBtn').disabled=false;
+    b.blur();
+    const step=current;
+    if(advanceTimer!==null)clearTimeout(advanceTimer);
+    advanceTimer=setTimeout(()=>{
+      advanceTimer=null;
+      if(view!=='quiz'||current!==step)return;
+      if(current===questions.length-1)result();
+      else{current++;save();quiz();}
+    },480);
+  });
+  document.getElementById('prevBtn').onclick=()=>{if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}if(current===0)home();else{current--;save();quiz();}};
+  document.getElementById('nextBtn').onclick=()=>{if(answers[current]===null)return;if(advanceTimer!==null){clearTimeout(advanceTimer);advanceTimer=null;}if(current===questions.length-1)result();else{current++;save();quiz();}};
+}
+function calculate(){const totals={warm:0,lead:0,feel:0,bound:0};questions.forEach((q,i)=>{const a=q.a[answers[i]];if(a){totals[q.axes[0]]+=a[1];totals[q.axes[1]]+=a[2];}});const scores={};for(const k of Object.keys(totals)){let value=50+totals[k]*3.5;if(totals[k]===0){const q=questions.find(x=>x.axes.includes(k));const first=q.a[answers[questions.indexOf(q)]],axisPos=q.axes.indexOf(k);value=50+(first[axisPos+1]>0?1:-1)}scores[k]=Math.round(Math.max(5,Math.min(95,value)))}const code=(scores.warm>=50?'1':'0')+(scores.lead>=50?'1':'0')+(scores.feel>=50?'1':'0');const confidence=Math.round(75+Math.min(20,(Math.abs(scores.warm-50)+Math.abs(scores.lead-50)+Math.abs(scores.feel-50))/7));return {code,type:types[code],scores,confidence};}
+function result(){if(!accessActive){home();return;}showFull=true;if(answers.some(x=>x===null)){current=answers.findIndex(x=>x===null);return quiz()};view='result';window.scrollTo(0,0);const r=calculate();const t=r.type;const d=r.scores;app.innerHTML=`<div class="result"><p class="result-tag">✦ YOUR INNER IMMORTAL ✦</p><div class="result-hero"><div class="result-immortal-art">${immortalSvg(t)}</div><p class="immortal-eyebrow">✦ 八仙人物原型 · 专属结果 ✦</p><h1 class="result-name">${t.immortal}</h1><p class="immortal-epithet">${t.epithet}</p><p class="subtitle">你的人格原型：${t.name} · ${t.subtitle}</p><div class="result-match"><strong>${r.confidence}%</strong><span>趣味契合指数</span></div><p class="immortal-weapon">暗八仙法器：${t.artifact} · 一件属于你的人格象征</p><div class="chip-row"><span class="chip">${d.warm>=50?'亲和外表':'克制外表'}</span><span class="chip">${d.lead>=50?'隐藏主见':'自然随性'}</span><span class="chip">${d.feel>=50?'细腻敏感':'情绪冷静'}</span><span class="chip">${d.bound>=50?'有边界感':'心软包容'}</span></div><div class="quote">“${t.quote}”</div></div><div class="btn-row"><button id="shareBtn" class="primary">✨ 生成我的专属人格卡</button><button id="copyBtn" class="ghost">🔗 邀请朋友也测测</button></div><div class="unlocked-notice">✦ 八仙人物原型 · 你的专属深度档案</div><div id="full" class="full-report ${showFull?'':'hidden'}"></div><div class="btn-row"><button class="ghost" id="homeBtn">返回首页</button><button class="ghost" id="againBtn">重新测一次</button></div></div>`;
+ document.getElementById('shareBtn').onclick=()=>openSharePreview(r);
+ document.getElementById('copyBtn').onclick=copyShare;
+
+ document.getElementById('homeBtn').onclick=home;
+ document.getElementById('againBtn').onclick=()=>confirm('确定重新测试吗？现有选择将被清空。')&&reset();
+ if(showFull)renderFull(r);
+}
+function resultPreserve(){const y=window.scrollY;result();window.scrollTo(0,y);}
+function reportAxisInsight(key,score){
+ const h=score>=50;
+ const explanations={
+ warm:h?['自然亲和','你喜欢主动缓和气氛，也能和新人顺畅互动；好相处不代表没有底线。']:['慢热观察','你会先观察环境，再决定投入多少热情；这并不是冷漠。'],
+ lead:h?['内心有主见','面对重要选择，你倾向于主动推动；不必大声，也能有方向。']:['独立的节奏','不喜欢被推着走，更希望留住自己的决策空间。'],
+ feel:h?['细节感知力','能捕捉微妙情绪，但也要避免把别人的心情全部揽到自己身上。']:['冷静处理力','擅长把事情和情绪分开处理，关系里有时先共情再提方案。'],
+ bound:h?['清晰的边界','愿意明确说出可以和不可以，让关系更舒服。']:['重视别人感受','愿意照顾身边的人，也需要记得照顾自己的期待。']
+ };return explanations[key];
+}
+function renderFull(r){
+ const t=r.type,d=r.scores;
+ const outer=d.warm>=50?'第一眼，你似乎总是很好接近、好商量。':'初见时，你可能让人觉得安静、不太容易被看透。';
+ const inner=d.lead>=50?'真正关键的时候，你往往非常清楚自己想要什么。':'熟悉以后，别人才知道你很在意自己的节奏与自由。';
+ const scenes=[0,3,10].map((n,i)=>({
+  title:['初到聚会','计划变化','意见不同'][i],
+  answer:questions[n].a[answers[n]][0],
+  reading:[d.warm>=50?'你愿意先向世界释放友好。':'你更倾向先观察再靠近。',d.lead>=50?'你愿意主动把局面重新整理好。':'你能接纳变化，保留行动余地。',d.bound>=50?'你的立场感清晰，倾向于明确沟通。':'你比较体谅气氛，但也要给自己表达的机会。'][i]
+ }));
+ const blocks=[];
+ blocks.push('<div class="section panel immortal-lore"><span class="report-kicker">CHAPTER 01 · THE IMMORTAL</span><h2>为什么是'+t.immortal+'？</h2><div class="lore-crest">'+immortalBadge(t)+'<div><strong>你的仙器：'+t.artifact+'</strong><p>你的称号：'+t.epithet+'</p></div></div><p>'+t.immortalLore+'</p><div class="report-callout">'+t.immortalWhy+'</div><p class="lore-note">以上是从传统神话意象提取的现代性格创作，与真实历史、宗教解释无关。</p></div>');
+ blocks.push('<div class="report-intro"><small>PARADOX LAB · EIGHT IMMORTALS EDITION</small><h2>'+t.immortal+'｜'+t.name+'</h2><p>你在 12 道情境中的选择，与八仙传说中的哪种人物意象最有共鸣？这是一份原创文化趣味人格报告，并非心理诊断、真实人物鉴定或运势占卜。</p></div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 02 · CONTRAST</span><h2>别人看见的你 vs 内心的你</h2><div class="dual-view"><div class="dual-card"><small>他人初印象</small><strong>'+(d.warm>=50?'亲切好说话':'安静不张扬')+'</strong><p>'+outer+'</p></div><div class="dual-card"><small>真实内心</small><strong>'+(d.lead>=50?'自带主心骨':'坚持个人节奏')+'</strong><p>'+inner+'</p></div></div><p>'+t.gap+'</p></div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 03 · INNER MAP</span><h2>你的四维人格地图</h2><p>四项百分比来自答题选择的趣味换算，不是专业心理学量表，也无优劣之分。</p><div class="insight-grid">'+Object.entries(dims).map(([k,v])=>{const e=reportAxisInsight(k,d[k]);return '<div class="insight"><strong>'+v[0]+' · '+d[k]+'%</strong><p><b>'+e[0]+'</b></p><p>'+e[1]+'</p></div>'}).join('')+'</div></div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 04 · REAL SCENES</span><h2>三个来自你答案的情境剧本</h2><p>这部分直接引用了你自己的选择，不同答案生成的情境解读会不同。</p>'+scenes.map((v,i)=>'<div class="story-card"><strong>0'+(i+1)+'｜'+v.title+'</strong><p>你选择了：「'+v.answer+'」</p><p>'+v.reading+'</p></div>').join('')+'</div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 05 · YOUR STRENGTHS</span><h2>你可能低估的三个闪光点</h2><div class="highlights">'+t.strengths.map(x=>'<div class="highlight"><strong>✦ '+x[0]+'</strong><p>'+x[1]+'</p></div>').join('')+'</div><div class="report-callout">'+t.intro+'</div></div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 06 · CONNECTION</span><h2>友情与亲密关系使用说明</h2><p>'+t.relation+'</p><div class="insight-grid"><div class="insight"><strong>舒服的交流方式</strong><p>'+(d.feel>=50?'愿意认真倾听细微感受的人，通常更能让你放松。':'直接沟通需求、不靠猜测维持关系的人，通常更适合你的节奏。')+'</p></div><div class="insight"><strong>值得注意的边界</strong><p>'+(d.bound>=50?'清楚表达自己的边界很重要，也给别人调整的空间。':'照顾别人很好，但不需要把所有人的要求都变成自己的任务。')+'</p></div></div></div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 07 · BLIND SPOT</span><h2>你的一个隐藏盲区</h2><div class="report-callout">'+t.blind+'</div><p>下一次遇到类似情况，可以问自己：我是真的愿意，还是只是不想让对方失望？</p></div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 08 · ACTIONS</span><h2>给自己三个小练习</h2><div class="guide-list">'+t.advice.map((x,i)=>'<div class="guide-row"><b>0'+(i+1)+'</b><p>'+x+'</p></div>').join('')+'</div></div>');
+ blocks.push('<div class="section panel"><span class="report-kicker">CHAPTER 09 · YOUR SIGNATURE</span><h2>属于你的三句人格签名</h2>'+t.lines.map(x=>'<div class="quote">“'+x+'”</div>').join('')+'<div class="report-summary"><small>为你的人格故事收尾</small><p>“'+t.quote+'”</p></div><p class="notice">八仙人物原型借鉴传统神话，现代反差人格描述为原创趣味内容，不代表心理诊断或命运预测。</p></div>');
+ document.getElementById('full').innerHTML=blocks.join('');
+}
+async function copyShare(){const r=calculate();const link=window.location.origin+window.location.pathname+'?from=share';const message=`我测出八仙人物原型「${r.type.immortal}」！对应性格是「${r.type.name}」。\n“${r.type.quote}”\n你像哪位八仙？12 道题来测测：${link}\n（原创文化趣味测试，非心理诊断）`;try{await navigator.clipboard.writeText(message);flash('复制成功，可以发给朋友啦 ✨')}catch(e){const ta=document.createElement('textarea');ta.value=message;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');flash('已尝试复制分享文案')}catch(err){flash('无法复制，请使用浏览器的分享功能')}ta.remove();}}
+function flash(message){const el=document.createElement('div');el.textContent=message;Object.assign(el.style,{position:'fixed',bottom:'28px',left:'50%',transform:'translateX(-50%)',padding:'10px 20px',background:'#473057',color:'#fff',borderRadius:'25px',fontSize:'13px',zIndex:'1000',boxShadow:'0 10px 20px #0002',maxWidth:'90%',textAlign:'center'});document.body.appendChild(el);setTimeout(()=>el.remove(),2600)}
+function wrapped(ctx,str,x,y,maxWidth,lineHeight,maxLines=3){let line='',count=0;for(const char of str){if(ctx.measureText(line+char).width>maxWidth&&line){ctx.fillText(line,x,y+count*lineHeight);count++;line=char;if(count>=maxLines)return y+count*lineHeight}else line+=char;}if(line){ctx.fillText(line,x,y+count*lineHeight);count++}return y+count*lineHeight}
+// 每位用户在自己的浏览器中生成独立 PNG；不上传任何答题记录或照片。
+let shareImageUrl=null;
+function star(ctx,x,y,r=6,color='#d6a1cf'){
+ ctx.save();ctx.translate(x,y);ctx.fillStyle=color;ctx.beginPath();
+ ctx.moveTo(0,-r);ctx.quadraticCurveTo(r*.25,-r*.25,r,0);ctx.quadraticCurveTo(r*.25,r*.25,0,r);
+ ctx.quadraticCurveTo(-r*.25,r*.25,-r,0);ctx.quadraticCurveTo(-r*.25,-r*.25,0,-r);ctx.fill();ctx.restore();
+}
+function rounded(ctx,x,y,w,h,r){ctx.beginPath();ctx.roundRect(x,y,w,h,r)}
+function pill(ctx,text,x,y,w){
+ rounded(ctx,x,y,w,56,28);ctx.fillStyle='#f7eefb';ctx.fill();ctx.strokeStyle='#e4cdea';ctx.lineWidth=1.5;ctx.stroke();
+ ctx.fillStyle='#765688';ctx.textAlign='center';ctx.font='600 23px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText(text,x+w/2,y+37);
+}
+async function makeShareImage(r){
+  // 全部画面在当前设备生成。原始购买链接、兑换码、答题记录均不写入分享图。
+  const t=r.type,W=1080,H=1920;
+  const canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;
+  const ctx=canvas.getContext('2d');if(!ctx)throw Error('当前浏览器不支持图片生成');
+  const bg=ctx.createLinearGradient(0,0,W,H);
+  bg.addColorStop(0,'#e3efe7');bg.addColorStop(.47,'#fffdf3');bg.addColorStop(1,'#e2ede5');
+  ctx.fillStyle=bg;ctx.fillRect(0,0,W,H);
+  // 绢纸气息的云海与金线；不使用任何现成 IP 角色图片。
+  ctx.lineWidth=3;ctx.strokeStyle='#accac08a';
+  for(let j=0;j<8;j++){
+    ctx.beginPath();const yy=1100+j*53;
+    ctx.moveTo(-25,yy);
+    ctx.bezierCurveTo(210,yy-48,315,yy+30,525,yy-10);
+    ctx.bezierCurveTo(735,yy-55,880,yy+38,1120,yy-8);
+    ctx.stroke();
+  }
+  const inner=ctx.createLinearGradient(0,0,W,0);inner.addColorStop(0,'#fffdf4d9');inner.addColorStop(1,'#fffaf2ed');
+  ctx.fillStyle=inner;rounded(ctx,45,43,990,1834,39);ctx.fill();
+  ctx.lineWidth=3;ctx.strokeStyle='#c6ab7c';ctx.stroke();
+  ctx.lineWidth=1.5;ctx.strokeStyle='#d4ded0';rounded(ctx,61,61,958,1799,30);ctx.stroke();
+  ctx.fillStyle='#a88657';ctx.textAlign='center';ctx.font='800 26px "Songti SC","PingFang SC",serif';
+  ctx.fillText('八 · 仙 · 反 · 差 · 人 · 格',540,124);
+  ctx.font='22px Georgia,serif';ctx.fillStyle='#8a9d89';
+  ctx.fillText('THE EIGHT IMMORTALS · PERSONALITY STORY',540,165);
+  ctx.beginPath();ctx.moveTo(124,199);ctx.lineTo(956,199);ctx.strokeStyle='#d3bc90';ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle='#5f7c6f';ctx.font='700 28px "PingFang SC",sans-serif';ctx.fillText('测出来了，我的八仙人物原型是',540,259);
+  // 画出与网站一致的原创国风卡通人物头像，浏览器不支持 SVG 绘制时回退仙器章。
+  let portrait=false;
+  try{
+    const pic=new Image();
+    pic.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(immortalSvg(t));
+    await new Promise((resolve,reject)=>{
+      pic.onload=resolve;pic.onerror=()=>reject(Error('portrait'));
+      if(pic.complete && pic.naturalWidth>0)resolve();
+    });
+    ctx.drawImage(pic,330,292,420,453);portrait=true;
+  }catch{}
+  if(!portrait){
+    ctx.fillStyle='#ecf4e7';ctx.beginPath();ctx.arc(540,498,170,0,Math.PI*2);ctx.fill();
+    ctx.fillStyle=t.immortalInk;ctx.font='bold 154px "Songti SC",serif';ctx.fillText(t.seal,540,556);
+  }
+  ctx.fillStyle='#23584e';ctx.font='bold 79px "Songti SC","STSong","PingFang SC",serif';ctx.fillText(t.immortal,540,799);
+  ctx.fillStyle='#a88256';ctx.font='700 35px "Songti SC","PingFang SC",serif';ctx.fillText('「'+t.epithet+'」',540,849);
+  ctx.fillStyle='#688777';ctx.font='26px "PingFang SC","Microsoft YaHei",sans-serif';ctx.fillText('隐藏性格：'+t.name+'    ·    代表仙器：'+t.artifact,540,903);
+  rounded(ctx,192,932,696,67,32);ctx.fillStyle='#eaf2e7';ctx.fill();
+  ctx.fillStyle='#a27c4f';ctx.font='bold 36px Georgia,serif';ctx.fillText(r.confidence+'%',460,976);
+  ctx.fillStyle='#668574';ctx.font='24px "PingFang SC",sans-serif';ctx.fillText('趣味契合指数',652,976);
+  // 人格签名：一眼可分享的反差句
+  ctx.fillStyle='#f3f7ee';rounded(ctx,109,1042,860,171,23);ctx.fill();
+  ctx.strokeStyle='#d4dfcc';ctx.lineWidth=1.5;ctx.stroke();
+  ctx.fillStyle='#b18c57';ctx.font='22px Georgia,serif';ctx.fillText('✦  MY HIDDEN CHARACTER  ✦',540,1082);
+  ctx.fillStyle='#3f6657';ctx.font='600 33px "PingFang SC","Microsoft YaHei",sans-serif';
+  wrapped(ctx,'“'+t.quote+'”',540,1130,744,43,2);
+  ctx.textAlign='left';ctx.fillStyle='#2f6156';ctx.font='bold 29px "PingFang SC",sans-serif';ctx.fillText('你的一体两面',125,1277);
+  for(const [x,title,big,small] of [
+   [112,'别人可能看到',r.scores.warm>=50?'亲切好接近':'沉稳有距离',r.scores.warm>=50?'气氛里的友善回应':'熟悉前先看再说'],
+   [548,'真正的内在',r.scores.lead>=50?'自带主心骨':'享受自己的节奏',r.scores.lead>=50?'关键时刻有判断':'不把自由交出去']
+  ]){
+    ctx.fillStyle='#edf5e9';rounded(ctx,x,1303,420,173,17);ctx.fill();
+    ctx.fillStyle='#7e9881';ctx.font='22px "PingFang SC",sans-serif';ctx.fillText(title,x+25,1347);
+    ctx.fillStyle='#315e50';ctx.font='bold 31px "PingFang SC",sans-serif';ctx.fillText(big,x+25,1400);
+    ctx.fillStyle='#7c8e7d';ctx.font='21px "PingFang SC",sans-serif';ctx.fillText(small,x+25,1441);
+  }
+  ctx.fillStyle='#315e50';ctx.font='bold 28px "PingFang SC",sans-serif';ctx.fillText('四维选择倾向',125,1540);
+  const chart=[['对外亲和',r.scores.warm],['内在主导',r.scores.lead],['情绪感知',r.scores.feel],['边界意识',r.scores.bound]];
+  chart.forEach(([label,value],i)=>{
+    const y=1597+i*48;
+    ctx.textAlign='left';ctx.fillStyle='#5b7767';ctx.font='22px "PingFang SC",sans-serif';ctx.fillText(label,124,y);
+    rounded(ctx,300,y-17,553,17,9);ctx.fillStyle='#e2eadb';ctx.fill();
+    rounded(ctx,300,y-17,Math.max(28,553*value/100),17,9);ctx.fillStyle=i%2?'#ad996e':'#468a76';ctx.fill();
+    ctx.textAlign='right';ctx.fillStyle='#446f61';ctx.font='bold 22px Georgia,serif';ctx.fillText(value+'%',950,y);
+  });
+  ctx.textAlign='center';ctx.strokeStyle='#d3c097';ctx.beginPath();ctx.moveTo(124,1769);ctx.lineTo(956,1769);ctx.stroke();
+  ctx.fillStyle='#2f6354';ctx.font='bold 31px "PingFang SC",sans-serif';ctx.fillText('你，又是八仙中的哪一位？',540,1812);
+  ctx.fillStyle='#899580';ctx.font='20px "PingFang SC",sans-serif';ctx.fillText('12 道题 · 8 位仙人 · 每个人自有一面',540,1846);
+  ctx.font='16px "PingFang SC",sans-serif';ctx.fillText('灵感源于民间神话 · 仅供趣味探索 · 非心理诊断',540,1872);
+  return await new Promise((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(Error('图片生成失败')),'image/png'));
+}
+function imageDownload(blob,name){
+ const url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+}
+async function openSharePreview(r){
+ try{
+  const btn=document.getElementById('shareBtn');if(btn){btn.disabled=true;btn.textContent='正在生成高清图片…'}
+  const blob=await makeShareImage(r);const filename='八仙反差人格-'+r.type.immortal+'-'+r.type.name+'.png';
+  if(shareImageUrl)URL.revokeObjectURL(shareImageUrl);
+  shareImageUrl=URL.createObjectURL(blob);
+  document.getElementById('modalBody').innerHTML=`<div class="share-modal"><h2>✨ 你的八仙人格 · 专属国风结果图</h2><p class="share-hint">已生成 1080 × 1920 原创国风结果图：八仙人物原型、对应仙器、反差金句和四维倾向。</p><img id="sharePreview" alt="你的反差人格分享图片预览，可以长按保存" src="${shareImageUrl}"><div class="share-buttons"><button class="primary" id="downloadPng" type="button">⬇ 保存 PNG 图片</button><button class="ghost" id="systemShare" type="button">↗ 分享给朋友</button></div><p class="share-hint">iPhone：可长按上方图片选择“存储到照片”，也可点“分享给朋友”。如果在微信内打不开保存功能，可尝试用 Safari 打开。</p></div>`;
+  const modal=document.getElementById('modal');modal.showModal();
+  document.getElementById('downloadPng').onclick=()=>{imageDownload(blob,filename);flash('已触发 PNG 保存；iPhone 也可以长按预览图保存 ✨')};
+  document.getElementById('systemShare').onclick=async()=>{
+   const f=new File([blob],filename,{type:'image/png'});
+   try{if(navigator.share && (!navigator.canShare||navigator.canShare({files:[f]}))){await navigator.share({files:[f],title:'八仙反差人格测试',text:'你像八仙中的哪一位？试试这份国风反差人格测评！'});}else{imageDownload(blob,filename);flash('当前浏览器不支持直接分享图片，已尝试保存 PNG');}}
+   catch(e){if(e.name!=='AbortError')flash('无法调用系统分享，请长按预览图保存或点击保存 PNG')}
+  };
+ }catch(e){flash('图片生成失败：'+(e.message||'请重试'))}
+ finally{const btn=document.getElementById('shareBtn');if(btn){btn.disabled=false;btn.textContent='✨ 生成独立分享图片'}}
+}
+const modal=document.getElementById('modal');document.getElementById('closeModal').onclick=()=>modal.close();modal.addEventListener('close',()=>{if(shareImageUrl){URL.revokeObjectURL(shareImageUrl);shareImageUrl=null}});modal.addEventListener('click',e=>{if(e.target===modal)modal.close()});document.getElementById('privacyBtn').onclick=()=>{document.getElementById('modalBody').innerHTML=`<div class="privacy-body"><h3>隐私与数据说明</h3><p>本网站不要求手机号、真实姓名或注册账号，也不在站内收款。激活或校验资格时，体验码和本设备随机生成的标识会提交至 Supabase 校验接口；云端保存其哈希、激活状态及时间，不保存原始兑换码或设备标识。</p><p>答题记录存放在你自己设备的浏览器 localStorage 中，便于切屏回来继续。不会主动上传答题内容；你可以通过「重新测试」清空保存的进度，或在浏览器设置中清除本站数据。</p><p>保存结果卡时，图片在浏览器本地生成；分享给谁由你自行决定。</p><p>如果后续接入新的统计或订单服务，会更新相应的数据处理说明。</p><p>所有结果属于趣味内容，不代表心理学诊断。</p></div>`;modal.showModal()};document.getElementById('logoBtn').onclick=home;
+readSaved();initPurchasedAccess();
+
+</script>
+</body>
+</html>
