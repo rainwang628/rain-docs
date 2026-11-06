@@ -2,6 +2,8 @@
 from __future__ import annotations
 
 import json
+import html
+from hashlib import sha256
 import os
 from pathlib import Path
 import re
@@ -52,15 +54,48 @@ def delete_story(root: Path, slug: str) -> bool:
         if empty not in updated:
             raise ValueError("Story section layout changed; no files were deleted")
         updated = updated.replace(empty, "", 1)
+    new_records = [item for item in records if item.get("slug") != slug]
+    new_catalog = [item for item in public_records if item.get("slug") != slug]
+    catalog_text = json.dumps(new_catalog, ensure_ascii=False, indent=2) + "\n"
+    sitemap = root / "sitemap.xml"
+    sitemap_text = None
+    if sitemap.exists():
+        site = json.loads((root / "_source/site.json").read_text(encoding="utf-8"))
+        location = html.escape(site["base_url"].rstrip("/") + "/stories/" + slug + "/")
+        sitemap_text = sitemap.read_text(encoding="utf-8")
+        line = r'(?m)^[ \t]*<url><loc>' + re.escape(location) + r'</loc>(?:<lastmod>[^<]*</lastmod>)?</url>\r?\n?'
+        sitemap_text, removed_locations = re.subn(line, "", sitemap_text)
+        if removed_locations > 1:
+            raise ValueError("Duplicate story sitemap entries")
+    generated_manifest = root / "_source/generated-files.json"
+    generated_text = None
+    if generated_manifest.exists():
+        generated = json.loads(generated_manifest.read_text(encoding="utf-8"))
+        if generated.get("version") != 1 or not isinstance(generated.get("files"), dict):
+            raise ValueError("Invalid generated file manifest")
+        files = generated["files"].copy()
+        files.pop(f"stories/{slug}/index.html", None)
+        modified = {"index.html": updated, "assets/story-catalog.json": catalog_text}
+        if sitemap_text is not None:
+            modified["sitemap.xml"] = sitemap_text
+        for name, text in modified.items():
+            if name in files:
+                files[name] = sha256(text.encode("utf-8")).hexdigest()
+        generated_text = json.dumps({"version": 1, "files": dict(sorted(files.items()))},
+                                    ensure_ascii=False, indent=2) + "\n"
     # Validate all paths before any mutation.
-    for path in (manifest, catalog, homepage, source, published):
+    for path in (manifest, catalog, homepage, source, published, sitemap, generated_manifest):
         if not path.resolve().is_relative_to(root.resolve()):
             raise ValueError("Unsafe story path")
-    write_json(manifest, [item for item in records if item.get("slug") != slug])
-    write_json(catalog, [item for item in public_records if item.get("slug") != slug])
+    write_json(manifest, new_records)
+    catalog.write_text(catalog_text, encoding="utf-8")
     homepage.write_text(updated, encoding="utf-8")
     source.unlink(missing_ok=True)
     published.unlink(missing_ok=True)
+    if sitemap_text is not None:
+        sitemap.write_text(sitemap_text, encoding="utf-8")
+    if generated_text is not None:
+        generated_manifest.write_text(generated_text, encoding="utf-8")
     return True
 
 
@@ -110,7 +145,8 @@ def main() -> None:
         print("No story deletion requests")
         return
     accepted, failed = [], []
-    allowed_paths = {"index.html", "_source/stories.json", "assets/story-catalog.json"}
+    allowed_paths = {"index.html", "_source/stories.json", "assets/story-catalog.json",
+                     "sitemap.xml", "_source/generated-files.json"}
     for request in requests:
         try:
             if request.get("kind") != "story":

@@ -8,6 +8,7 @@ import html
 import json
 import re
 import shutil
+from urllib.parse import urlsplit
 
 root = Path(__file__).resolve().parent
 
@@ -67,10 +68,21 @@ def url(path, depth):
 
 
 SITE = json.loads((root / 'site.json').read_text(encoding='utf-8'))
+base_url = SITE['base_url']
+parts = urlsplit(base_url)
+if (parts.scheme not in ('http', 'https') or not parts.hostname or parts.username or parts.password
+        or parts.query or parts.fragment or any(c in base_url for c in '\"<>\\\r\n\t ')):
+    raise ValueError('site.json base_url must be a plain HTTP(S) site address')
 
 
 def absolute(path):
     return SITE['base_url'].rstrip('/') + path
+
+
+def write_standalone_html(source, target):
+    """Render the configured site address in standalone page metadata."""
+    markup = source.read_text(encoding='utf-8')
+    target.write_text(markup.replace('__SITE_BASE_URL__', SITE['base_url'].rstrip('/')), encoding='utf-8')
 
 
 def page(title, description, current, body, depth, structured=None, footer='rain 的文档 · 记录可复用的经验',
@@ -133,7 +145,7 @@ def build(out):
     slugs = [item['slug'] for item in articles]
     if len(slugs) != len(set(slugs)):
         raise ValueError('Article slugs must be unique')
-    if out == root or root in out.parents and out != root / 'dist':
+    if out == root or out in root.parents or (root in out.parents and out != root / 'dist'):
         raise ValueError('Build output must not overwrite the source tree')
     if out.exists():
         shutil.rmtree(out)
@@ -185,7 +197,7 @@ def build(out):
         out / 'index.html': page('文档与笔记', '个人笔记与文档分类', 'home', home, 0, path='/', structured={
             '@context': 'https://schema.org', '@type': 'WebSite',
             'name': 'rain 的文档', 'inLanguage': 'zh-CN',
-            'url': 'https://rainwang628.github.io/rain-docs/'}),
+            'url': absolute('/')}),
         out / 'categories/index.html': page('文章分类', '按主题浏览 AI 与技术笔记', 'category', overview, 1, path='/categories/'),
     }
     for key, category in categories.items():
@@ -282,14 +294,14 @@ def build(out):
     account_page = account_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/site-account.js?v=20261011-access2h" defer></script></head>')
     pages[out / 'tools/account/index.html'] = account_page
     game_body = protect((root / 'tools/games.html').read_text(encoding='utf-8'), 'games')
-    game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2, path='/tools/games/')
+    game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2, path='/tools/games/', robots='noindex,follow')
     game_page = game_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"></head>')
     pages[out / 'tools/games/index.html'] = game_page
     hub_page = page('我的模块', '访问已授权的网站模块', 'tools', (root / 'tools/module-hub.html').read_text(encoding='utf-8'), 1, path='/tools/')
     hub_page = hub_page.replace('</head>', (root / 'tools/module-hub.head.html').read_text(encoding='utf-8') + '</head>')
     pages[out / 'tools/index.html'] = hub_page
     party_body = protect((root / 'tools/truth-or-dare.html').read_text(encoding='utf-8'), 'games', 3)
-    party_page = page('今晚有点不对劲 · 真心话大冒险', '与朋友一起玩的小工具', 'tools', party_body, 3, footer='rain 的文档 · 今晚有点不对劲', path='/tools/games/truth-or-dare/')
+    party_page = page('今晚有点不对劲 · 真心话大冒险', '与朋友一起玩的小工具', 'tools', party_body, 3, footer='rain 的文档 · 今晚有点不对劲', path='/tools/games/truth-or-dare/', robots='noindex,follow')
     party_page = party_page.replace('</head>', '<link rel="stylesheet" href="../../../assets/usd-purchases.css"><link rel="stylesheet" href="../../../assets/truth-or-dare.css?v=20261011-longplay"><script src="../../../assets/truth-or-dare.js?v=20261011-longplay" defer></script></head>')
     pages[out / 'tools/games/truth-or-dare/index.html'] = party_page
     for ext in ('css', 'js'):
@@ -314,25 +326,34 @@ def build(out):
         if story_source.is_file():
             story_dest = out / 'stories' / story_slug / 'index.html'
             story_dest.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(story_source, story_dest)
+            write_standalone_html(story_source, story_dest)
     static = root / 'static'
     if static.is_dir():
         for source in sorted(static.rglob('*')):
             if source.is_file():
                 target = out / source.relative_to(static)
                 target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(source, target)
+                if source.suffix.lower() == '.html':
+                    write_standalone_html(source, target)
+                else:
+                    shutil.copyfile(source, target)
     for filename, markup in pages.items():
         filename.parent.mkdir(parents=True, exist_ok=True)
         filename.write_text(markup, encoding='utf-8')
-    private = {'/tools/account/', '/tools/article-categories/', '/tools/story-management/',
-               '/tools/surveys/', '/tools/usd-purchases/', '/tools/usd-cloud/'}
+    # Only explicitly public pages belong in the sitemap; new private tools
+    # must not become discoverable simply because they have an index.html.
+    public = {'/', '/categories/', '/tools/', '/tools/hidden-persona/'}
+    for key, category in categories.items():
+        public.add(f'/categories/{key}/')
+        public.update(f'/categories/{key}/{subkey}/' for subkey in category['subcategories'])
+    public.update(f'/articles/{item["slug"]}/' for item in articles)
+    public.update(f'/stories/{slug}/' for slug in story_slugs)
     dated = {f'/articles/{item["slug"]}/': item['date'] for item in articles}
     entries = []
     for filename in out.rglob('index.html'):
         parent = filename.parent.relative_to(out).as_posix()
         location = '/' if parent == '.' else f'/{parent}/'
-        if location in private:
+        if location not in public:
             continue
         entries.append(location)
     entries.sort(key=lambda value: (value.count('/'), value))

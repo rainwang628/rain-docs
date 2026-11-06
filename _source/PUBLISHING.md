@@ -11,12 +11,16 @@
 
 下载链接的 `.md` 文件带 UTF-8 BOM，方便部分 Windows 编辑器识别中文。`content/` 原文及生成的 `source/` 副本是标准无 BOM UTF-8，适合 AI、脚本和版本管理。旧文章的下载地址在生成时保留。
 
-生成器会清空并重建 `--output` 指向的目录；发布脚本只在临时目录构建，再逐个覆盖根目录中的同名文件，不会删除 `README.md`、`_source/` 等非生成文件。
+生成器会清空并重建 `--output` 指向的目录，不能指向仓库或源码目录；发布脚本只在临时目录构建。`generated-files.json` 记录上次生成的文件及校验值，发布时只清理清单中已不再生成的文件，不会删除 `README.md`、`_source/` 等非生成文件。若待清理的生成文件被手工改过，脚本会停止并提示，避免覆盖或删除修改。
+
+删除文章时，从 `articles.json` 移除条目后先运行 `python3 _source/publish.py --check` 查看将移除的发布文件，再运行发布脚本。原始 Markdown 和不再使用的分享封面仍保留在 `_source/`，如需从当前仓库移除应明确删除它们；公开仓库的 Git 历史与缓存不因此清除。
 
 
 ## SEO 与分享卡片
 
-`site.json` 保存站点地址、名称、语言和默认分享图，改域名只改这一处。生成器为每个页面输出 canonical、`og:*` 与 `twitter:*` 标签；文章页的分享图是 `/assets/og/<slug>.png`，找不到时回退到站点默认图。构建还会生成 `sitemap.xml` 和 `robots.txt`，管理页面（账号、分类管理、故事管理、问卷、购汇记录）带 `noindex,follow` 且不进入 sitemap。
+`site.json` 保存站点地址、名称、语言和默认分享图；生成器与独立 HTML 的 `__SITE_BASE_URL__` 使用同一地址。修改域名后需要重新运行发布脚本，历史文章中的文字链接和 Supabase Auth 的登录回调白名单仍需单独检查。生成器为页面输出 canonical、`og:*` 与 `twitter:*` 标签；文章页的分享图是 `/assets/og/<slug>.png`，找不到时回退到站点默认图。站点地图只列入明确公开的页面；账号、分类管理、故事管理、问卷、购汇记录、饮食管理及小游戏页面带 `noindex,follow` 且不进入 sitemap。新增公开页面时，需要在 `build.py` 的公开路径清单中登记。
+
+当前站点位于 GitHub Pages 的 `/rain-docs/` 子目录，生成的 `/rain-docs/robots.txt` 不是整个域名根目录的 `/robots.txt`，不能依赖它控制搜索引擎。可在搜索平台提交 `/rain-docs/sitemap.xml`；如将来配置了域名根站点，可在根站点的 `robots.txt` 中登记该站点地图。`noindex` 只能请求支持该规则的搜索引擎不收录，不能阻止他人访问公开仓库和页面源码，也不替代数据库权限控制。
 
 分享封面由 `_source/make_covers.py` 用 Pillow 渲染，输出到 `_source/static/assets/og/`，再由构建复制到 `/assets/og/`。新增文章后执行一次 `python3 -m pip install pillow && python3 _source/make_covers.py` 即可；不执行也能正常发布，只是新文章会使用默认封面。
 
@@ -24,7 +28,7 @@
 
 公开故事以 `stories.json` 为清单，源页面保存在 `stories/<slug>.html`，发布副本在网站根目录的 `stories/<slug>/index.html`。新增故事时，同时维护清单、源码和发布副本，并更新 `assets/story-catalog.json`；生成器会从清单生成首页入口，避免已删除故事在重建时再次出现。
 
-网站主人可在「我的模块 → 故事管理」提交删除请求。后台只处理故事：删除首页入口、故事 HTML 源文件与发布副本，更新两个故事清单并请求 GitHub Pages 重新发布。任务通常几分钟内处理，若发布失败会保留请求并重试。技术文章和 Markdown 不参与此流程。Git 提交历史仍可用于恢复；清理当前文件不等于清除历史或缓存。
+网站主人可在「我的模块 → 故事管理」提交删除请求。后台只处理故事：删除首页入口、故事 HTML 源文件与发布副本，同步更新故事清单、站点地图和生成文件清单，再请求 GitHub Pages 重新发布。任务通常几分钟内处理，若发布失败会保留请求并重试。技术文章和 Markdown 不参与此流程。Git 提交历史仍可用于恢复；清理当前文件不等于清除历史或缓存。
 
 GitHub Actions 使用短期 OIDC 身份验证访问仅限主人的请求队列，不把 GitHub 写入密钥或 Supabase 管理密钥写入公开网页。GitHub 的定时任务可能延迟，也可能在公开仓库长期无活动后暂停；管理页面会显示尚未完成的请求。
 
@@ -32,7 +36,7 @@ GitHub Actions 使用短期 OIDC 身份验证访问仅限主人的请求队列�
 
 美元购汇工具源文件在 `_source/tools/usd-purchases.html`、`.css`、`.js`，由 `build.py` 一起生成。首页与所有页面导航均提供“手工维护”入口。
 
-自带完整 HTML 的页面（`tools/nutrition/`、`tools/hidden-persona/`、`tools/games/uno-costume/`）和它们的外部资源放在 `_source/static/` 下对应路径，构建时原样复制到根目录。修改这些页面要改 `_source/static/` 里的文件，而不是根目录的副本。
+自带完整 HTML 的页面（`tools/nutrition/`、`tools/hidden-persona/`、`tools/games/uno-costume/`）和它们的外部资源放在 `_source/static/` 下对应路径，构建时 HTML 中的 `__SITE_BASE_URL__` 替换为配置地址，其他资源原样复制到根目录。修改这些页面要改 `_source/static/` 里的文件，而不是根目录的副本。
 
 登记记录仅存于访问者浏览器的 localStorage，不放入源代码或公开仓库；JSON 导出用于备份和跨设备导入，浏览器打印可保存 PDF。更新网站时须保留存储键 `rain.usd-purchases.v1`，不得发布用户的实际交易记录。
 
