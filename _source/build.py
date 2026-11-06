@@ -107,7 +107,7 @@ def page(title, description, current, body, depth, structured=None, footer='rain
     favicon = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"
     nav = ''.join(
         f'<a href="{url(target, depth)}"' + (' id="account-link"' if key == 'account' else '') + (' aria-current="page"' if current == key else '') + f'>{label}</a>'
-        for key, target, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块')]
+        for key, target, label in [('home', '/', '首页'), ('category', '/categories/', '文章分类'), ('tools', '/tools/', '我的模块'), ('fun', '/fun/', '轻松一下')]
     )
     data = '<script type="application/ld+json">' + json.dumps(structured, ensure_ascii=False, separators=(',', ':')).replace('<', '\\u003c') + '</script>' if structured else ''
     full_title = f'{title} · {SITE["name"]}'
