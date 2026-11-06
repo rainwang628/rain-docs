@@ -124,7 +124,7 @@ def page(title, description, current, body, depth, structured=None, footer='rain
             f'<meta name="description" content="{html.escape(description, quote=True)}">'
             + ''.join(seo) + (
             f'<link rel="icon" type="image/svg+xml" href="{favicon}">'
-            f'<link rel="stylesheet" href="{url("/assets/site.css?v=20260930-1930", depth)}">{data}'
+            f'<link rel="stylesheet" href="{url("/assets/site.css?v=20261107-header", depth)}">{data}'
             f'<script src="{url("/assets/usd-cloud-config.js", depth)}" defer></script>'
             f'<script src="{url("/assets/site-categories.js", depth)}" defer></script>'
             f'<script src="{url("/assets/site-nav.js?v=20260930-1930", depth)}" defer></script>'
