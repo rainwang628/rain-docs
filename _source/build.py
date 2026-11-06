@@ -221,9 +221,6 @@ def build(out):
     home = (f'<main class="wrap"><div class="intro"><div class="eyebrow">PERSONAL NOTES</div>'
             f'<h1>文档与笔记</h1><p>整理日常遇到的问题和已经验证的做法。</p></div>'
             f'<h2 class="section-title">文章分类</h2><div class="grid">{category_tiles(0)}</div>'
-            f'<section data-module="usd-purchases" hidden><h2 class="section-title">手工维护</h2><div class="grid"><a class="tile" href="{url("/tools/usd-cloud/", 0)}"><span class="count">个人记录</span><h2>美元购汇记录</h2><p>跨设备登记购买、修改明细，自动计算平均成本。</p></a></div></section>'
-            f'<section data-module="article-categories" hidden><h2 class="section-title">分类管理</h2><p><a href="{url("/tools/article-categories/", 0)}">手动调整文章分类</a></p></section>'
-            f'<section data-owner hidden><h2 class="section-title">故事管理</h2><p><a href="{url("/tools/story-management/", 0)}">管理和删除故事</a></p></section>'
             f'<h2 class="section-title">最近发布</h2><div class="grid">{cards_home}</div></main>')
     overview = (f'<main class="wrap"><div class="crumb"><a href="{url("/", 1)}">首页</a> / 文章分类</div>'
                 f'<div class="intro"><div class="eyebrow">CATEGORIES</div><h1>文章分类</h1>'
