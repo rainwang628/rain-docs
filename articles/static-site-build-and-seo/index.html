@@ -1,0 +1,66 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GitHub Pages 个人站重构：统一构建源与 SEO 补全 · rain 的文档</title><meta name="description" content="把散落在根目录的手改页面收回 _source，让重建不再覆盖线上功能；补上 canonical、分享卡片和 sitemap。"><link rel="canonical" href="https://rainwang628.github.io/rain-docs/articles/static-site-build-and-seo/"><meta property="og:site_name" content="rain 的文档"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="og:title" content="GitHub Pages 个人站重构：统一构建源与 SEO 补全 · rain 的文档"><meta property="og:description" content="把散落在根目录的手改页面收回 _source，让重建不再覆盖线上功能；补上 canonical、分享卡片和 sitemap。"><meta property="og:url" content="https://rainwang628.github.io/rain-docs/articles/static-site-build-and-seo/"><meta property="og:image" content="https://rainwang628.github.io/rain-docs/assets/og/static-site-build-and-seo.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="GitHub Pages 个人站重构：统一构建源与 SEO 补全 · rain 的文档"><meta name="twitter:description" content="把散落在根目录的手改页面收回 _source，让重建不再覆盖线上功能；补上 canonical、分享卡片和 sitemap。"><meta name="twitter:image" content="https://rainwang628.github.io/rain-docs/assets/og/static-site-build-and-seo.png"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="../../assets/site.css?v=20260930-1930"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"GitHub Pages 个人站重构：统一构建源与 SEO 补全","dateModified":"2026-11-07","inLanguage":"zh-CN"}</script><script src="../../assets/usd-cloud-config.js" defer></script><script src="../../assets/site-categories.js" defer></script><script src="../../assets/site-nav.js?v=20260930-1930" defer></script><script src="../../assets/site-access.js?v=20261024-session-stable" defer></script></head><body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><a href="../../tools/account/" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航"><a href="../../">首页</a><a href="../../categories/">文章分类</a><a href="../../tools/">我的模块</a></nav></div></header><main class="wrap"><div class="crumb"><a href="../../">首页</a> / <a href="../../categories/technical/">技术笔记</a> / <a href="../../categories/technical/github/">GitHub</a> / GitHub Pages 个人站重构：统一构建源与 SEO 补全</div><div class="document"><div class="doc-head"><span class="tag">技术笔记 · GitHub</span><h1>GitHub Pages 个人站重构：统一构建源与 SEO 补全</h1><div class="meta"><span>更新于 2026-11-07</span><a class="download" href="../../assets/downloads/technical/github/static-site-build-and-seo.md" download="static-site-build-and-seo.md">下载 Markdown 原文</a></div></div><article class="article"><h1>GitHub Pages 个人站重构：统一构建源与 SEO 补全</h1>
+<p>这个站点的页面一直由 <code>_source/build.py</code> 生成，但生成结果需要手工复制到仓库根目录才会上线。改得多了之后，根目录和 <code>_source/</code> 慢慢变成了两套东西：有些页面只在根目录里有，有些页面线上比源文件新。</p>
+<p>这次把两套合成一套，顺带补齐了 SEO，也踩到了一次 GitHub Pages 部署卡死。本文记录改造思路、验证方法和这次故障的排查过程。</p>
+<h2>一、问题：生成器和线上不是一套</h2>
+<p>README 一直写着 <code>build.py</code> 是唯一的页面生成器。实际比对后发现，它并不知道三个页面的存在：</p>
+<div class="table-wrap"><table><thead><tr><th>页面</th><th>路径</th><th>build.py 是否生成</th></tr></thead><tbody><tr><td>饮食管理</td><td><code>tools/nutrition/</code></td><td>否</td></tr><tr><td>八仙反差人格测试</td><td><code>tools/hidden-persona/</code></td><td>否</td></tr><tr><td>UNO 装备大赛</td><td><code>tools/games/uno-costume/</code></td><td>否</td></tr></tbody></table></div>
+<p>另外几个工具页的线上版本比 <code>_source/tools/</code> 里的源文件新：模块首页多了拖拽排序和两个新入口，问卷页换过几次资源版本号，情侣主题的样式只存在于 <code>assets/surveys.css</code>。</p>
+<p>根源是每个工具页存了两份：<code>_source/tools/x.html</code> 是嵌进站点框架的正文，<code>tools/x/index.html</code> 是生成后的完整页面。两边各自演化就会分叉。</p>
+<p>后果很具体：当时如果跑一次 <code>build.py</code> 再覆盖到根目录，<code>tools/index.html</code> 会退回旧版——饮食管理和八仙人格的入口会从导航里消失，问卷的情侣主题样式会被旧 CSS 覆盖回去。也就是说，<strong>生成器已经不能安全地重建这个站点了</strong>。</p>
+<h2>二、先把目标写成一条能验证的规则</h2>
+<p>在动手之前，先定一条可检验的规则：</p>
+<p class="note">构建输出与仓库根目录逐字节一致。</p>
+<p>只要这条成立，重建就永远不会丢东西，也不需要每次发布前肉眼检查。验证方式比人眼可靠：</p>
+<div class="code-head">text</div><pre><code>$ python3 _source/publish.py --check
+would change 0 files</code></pre>
+<p>改造的第一步不是写代码，而是反向对齐——<strong>以线上为准</strong>，把已经分叉的页面回填成源文件，而不是让旧源覆盖线上。顺序反过来，就会真的丢功能。</p>
+<h2>三、改造：让根目录变成纯输出</h2>
+<p>新的目录职责：</p>
+<div class="table-wrap"><table><thead><tr><th>位置</th><th>角色</th></tr></thead><tbody><tr><td>仓库根目录</td><td>生成物，GitHub Pages 直接发布，不再手改</td></tr><tr><td><code>_source/content/</code>、<code>articles.json</code></td><td>文章原文与文章清单</td></tr><tr><td><code>_source/tools/</code></td><td>嵌进站点框架的工具页正文与资源</td></tr><tr><td><code>_source/static/</code></td><td>按相同路径原样发布：自带完整 HTML 的页面、背景图、独立脚本</td></tr></tbody></table></div>
+<p><code>_source/static/</code> 是这次新增的机制。饮食管理、八仙人格、UNO 这三个页面本身就是完整 HTML，不需要套框架，放进 <code>static/</code> 后按相对路径复制到输出目录即可。它们的资源（<code>nutrition.js</code>、<code>module-sort.js</code>、<code>couple-*.svg</code>）也一并收进来，从此 <code>assets/</code> 里不再有&quot;没有源&quot;的文件。</p>
+<p>发布脚本把&quot;构建&quot;和&quot;覆盖&quot;合成一步，避免手工复制时的漏拷：</p>
+<div class="code-head">bash</div><pre><code>python3 _source/publish.py --check   # 只报告会改动哪些文件
+python3 _source/publish.py           # 构建并写回仓库根目录</code></pre>
+<p>脚本在临时目录里构建，然后逐个覆盖根目录的同名文件。它不会删除 <code>README.md</code>、<code>_source/</code>、<code>.github/</code> 这些非生成文件，所以即使源里少写了什么，也不会误删仓库内容。</p>
+<p>顺手修掉的几处问题：</p>
+<ul><li><code>build.py</code> 原来在样式表末尾重复追加了 535 字节已经存在的 CSS，属于历史遗留；</li><li>真心话大冒险页的自定义页脚 <code>rain 的文档 · 今晚有点不对劲</code> 在生成时丢失，现在由 <code>page()</code> 的参数控制；</li><li>生成器用了 f-string 里带反斜杠的写法，只有 Python 3.12 以上能解析，已改成等价的普通写法，Python 3.9 也能跑。</li></ul>
+<h2>四、SEO：静态站能做的其实不少</h2>
+<p>改造前全站没有一个 <code>canonical</code>，没有 <code>og:</code> 标签，也没有 <code>sitemap.xml</code> 和 <code>robots.txt</code>。对个人站来说这些成本很低，但分享出去的效果差别明显。</p>
+<h3>1. 元信息</h3>
+<p>每个页面现在输出 canonical、Open Graph 和 Twitter 卡片标签，形如：</p>
+<div class="code-head">html</div><pre><code>&lt;link rel=&quot;canonical&quot; href=&quot;https://rainwang628.github.io/rain-docs/articles/xxx/&quot;&gt;
+&lt;meta property=&quot;og:type&quot; content=&quot;article&quot;&gt;
+&lt;meta property=&quot;og:title&quot; content=&quot;文章标题 · rain 的文档&quot;&gt;
+&lt;meta property=&quot;og:image&quot; content=&quot;https://rainwang628.github.io/rain-docs/assets/og/xxx.png&quot;&gt;
+&lt;meta name=&quot;twitter:card&quot; content=&quot;summary_large_image&quot;&gt;</code></pre>
+<p>站点地址只写一处，放在 <code>_source/site.json</code>：</p>
+<div class="code-head">json</div><pre><code>{
+  &quot;base_url&quot;: &quot;https://rainwang628.github.io/rain-docs&quot;,
+  &quot;name&quot;: &quot;rain 的文档&quot;,
+  &quot;locale&quot;: &quot;zh_CN&quot;,
+  &quot;twitter_card&quot;: &quot;summary_large_image&quot;,
+  &quot;og_image&quot;: &quot;/assets/og/home.png&quot;
+}</code></pre>
+<p>以后绑定自定义域名，改这一行即可，不用全站搜索替换。项目型 GitHub Pages 的地址带仓库路径（<code>/rain-docs/</code>），canonical 必须写成完整绝对地址，这一点容易漏。</p>
+<h3>2. 分享卡片</h3>
+<p><code>og:image</code> 是一张 1200×630 的图片，由 <code>_source/make_covers.py</code> 用 Pillow 渲染：顶部是分类面包屑，中间是标题（自动换行、过长时自动缩小字号），下面是摘要，底部是日期。文章新增后跑一次脚本，会按 <code>articles.json</code> 为每篇生成一张。</p>
+<p>生成的 PNG 用 256 色调色板重新量化，合集从 648KB 降到 272KB，肉眼几乎看不出差别。图片缺失时构建会回退到站点默认图，不会出现引用 404。</p>
+<h3>3. 抓取</h3>
+<p>构建时自动生成 <code>sitemap.xml</code> 和 <code>robots.txt</code>：文章页带 <code>lastmod</code>，首页、分类页和公开工具页也一并列出。管理类页面（账号、分类管理、故事管理、问卷、购汇记录）带 <code>noindex,follow</code>，并且不进入 sitemap——不希望它们出现在搜索结果里，但也不建议用 <code>robots.txt</code> 的 <code>Disallow</code> 去屏蔽，那样反而可能让 URL 被索引而内容为空。</p>
+<p>结构化数据也补了：首页是 <code>WebSite</code>，文章页是 <code>TechArticle</code>，故事页是 <code>Article</code>。</p>
+<h2>五、发布时踩的坑：部署卡住 ≠ 构建失败</h2>
+<p>推送之后站点一直不更新，首页标题还是旧的。第一反应是构建内容出了问题，于是反复看 <code>pages/builds</code> 接口——它报 <code>Page build failed</code>，看不出更多细节。</p>
+<p>真正的线索在 Actions 的运行记录里：那次 <code>pages build and deployment</code> 的 <strong>build job 是 success，deploy job 一直停在 in_progress</strong>。</p>
+<div class="table-wrap"><table><thead><tr><th>观察点</th><th>看到的现象</th><th>说明</th></tr></thead><tbody><tr><td><code>pages/builds</code></td><td><code>errored</code></td><td>容易误判成内容构建失败</td></tr><tr><td>Actions 的 build job</td><td><code>success</code></td><td>页面其实已经构建好了</td></tr><tr><td>Actions 的 deploy job</td><td><code>in_progress</code> 长时间不动</td><td>卡在部署阶段</td></tr></tbody></table></div>
+<p>GitHub Pages 的部署有并发组，一个挂住的部署会把后面所有发布都堵住。这种情况下改代码、反复重推都没用。</p>
+<p>处理方式是调用取消接口：</p>
+<div class="code-head">bash</div><pre><code>curl -X POST \
+  -H &quot;Accept: application/vnd.github+json&quot; \
+  -H &quot;Authorization: Bearer $TOKEN&quot; \
+  &quot;https://api.github.com/repos/&lt;owner&gt;/&lt;repo&gt;/pages/deployments/&lt;id&gt;/cancel&quot;</code></pre>
+<p>返回 <code>204</code> 之后约三分钟，部署自行完成，站点更新。之后要排查发布问题，先看 Actions 里 build 和 deploy 两个 job 分别是什么状态，比只看 <code>pages/builds</code> 准确得多。</p>
+<h2>六、现在的日常流程</h2>
+<ol><li>在 <code>_source/content/</code> 写 Markdown，文章清单里加一条。</li><li>需要新封面时运行 <code>python3 _source/make_covers.py</code>（依赖 Pillow，只在这一步用到）。</li><li><code>python3 _source/publish.py --check</code> 确认改动范围，去掉 <code>--check</code> 执行发布。</li><li>提交并推送，GitHub Pages 自动部署。</li><li>部署后打开线上地址确认，必要时用社交平台的卡片调试工具验证分享效果。</li></ol>
+<p>盯着一句 <code>would change 0 files</code>，比每次发布前手工核对三十个页面省心得多。这次改造之后，生成器重新变成了可信的入口。</p>
+<h2>官方参考</h2>
+<ul><li><a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages" target="_blank" rel="noopener noreferrer">GitHub Pages 的构建与发布</a></li><li><a href="https://docs.github.com/en/pages/using-github-pages/troubleshooting-jekyll-build-errors-for-github-pages-sites" target="_blank" rel="noopener noreferrer">GitHub Pages 部署的排查说明</a></li><li><a href="https://docs.github.com/en/rest/pages/pages#cancel-a-pages-deployment" target="_blank" rel="noopener noreferrer">取消 Pages 部署的接口</a></li><li><a href="https://ogp.me/" target="_blank" rel="noopener noreferrer">Open Graph 协议</a></li><li><a href="https://www.sitemaps.org/protocol.html" target="_blank" rel="noopener noreferrer">sitemap 协议</a></li></ul></article></div></main><footer class="footer">rain 的文档 · 记录可复用的经验</footer></body></html>

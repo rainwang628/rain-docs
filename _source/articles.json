@@ -1,5 +1,14 @@
 [
   {
+    "slug": "static-site-build-and-seo",
+    "title": "GitHub Pages 个人站重构：统一构建源与 SEO 补全",
+    "description": "把散落在根目录的手改页面收回 _source，让重建不再覆盖线上功能；补上 canonical、分享卡片和 sitemap。",
+    "source": "content/static-site-build-and-seo.md",
+    "date": "2026-11-07",
+    "category": "technical",
+    "subcategory": "github"
+  },
+  {
     "slug": "claude-code-mac-setup",
     "title": "Mac（M4）安装 Claude Code 与 CC Switch",
     "description": "从 Homebrew 与 PATH 配置，到 Claude Code、CC Switch 安装和地区跳转排障。",
