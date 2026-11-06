@@ -24,7 +24,7 @@
 <p>关键字段如下：</p>
 <div class="table-wrap"><table><thead><tr><th>字段</th><th>含义</th></tr></thead><tbody><tr><td>id</td><td>购买记录的唯一 ID</td></tr><tr><td>user_id</td><td>记录所属的网站账号 ID</td></tr><tr><td>purchase_date</td><td>实际购买日期</td></tr><tr><td>usd / cny</td><td>美元金额 / 人民币实付</td></tr><tr><td>note</td><td>备注</td></tr><tr><td>revision</td><td>修改版本标识，用于检测其他设备的变更</td></tr><tr><td>created_at</td><td>创建时间</td></tr></tbody></table></div>
 <p>建表时还设置金额范围、备注长度和 RLS。未登录用户没有表的读写权限；登录用户的查询、新增、修改、删除都需要满足 <code>auth.uid() = user_id</code>。</p>
-<p>完整脚本见<a href="https://rainwang628.github.io/rain-docs/usd-cloud-schema.sql" target="_blank" rel="noopener noreferrer">本网站使用的建表与权限 SQL</a>。这是首次初始化脚本，已经建表后不要整份重复执行；修改现有数据库应使用单独的迁移脚本。</p>
+<p>完整脚本见<a href="https://rainwang628.github.io/rain-docs/assets/sql/usd-cloud-schema.sql" target="_blank" rel="noopener noreferrer">本网站使用的建表与权限 SQL</a>。这是首次初始化脚本，已经建表后不要整份重复执行；修改现有数据库应使用单独的迁移脚本。</p>
 <h3>3. 设置登录跳转地址</h3>
 <p>在 Authentication 的 URL Configuration 中配置：</p>
 <div class="code-head">text</div><pre><code>Site URL

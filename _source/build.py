@@ -151,6 +151,8 @@ def build(out):
         shutil.rmtree(out)
     out.mkdir(parents=True, exist_ok=True)
     (out / 'assets').mkdir(exist_ok=True)
+    sql_assets = out / 'assets' / 'sql'
+    sql_assets.mkdir(parents=True, exist_ok=True)
     (out / 'assets' / 'site.css').write_text(css, encoding='utf-8')
     (out / '.nojekyll').touch()
 
@@ -272,7 +274,7 @@ def build(out):
     for filename in ('usd-cloud.js', 'usd-cloud-config.js'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     for filename in ('usd-cloud-schema.sql', 'usd-cloud-setup.md'):
-        shutil.copyfile(root / 'database' / 'usd' / filename, out / filename)
+        shutil.copyfile(root / 'database' / 'usd' / filename, sql_assets / filename)
     (out / 'assets/article-catalog.json').write_text(json.dumps({'categories': categories, 'articles': articles}, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     (out / 'assets/story-catalog.json').write_text(json.dumps(stories, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     story_management = out / 'tools/story-management/index.html'
@@ -288,10 +290,10 @@ def build(out):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
     for filename in ('site-nav.js', 'site-access.js', 'site-account.js'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
-    shutil.copyfile(root / 'database/website/website-access-schema.sql', out / 'website-access-schema.sql')
+    shutil.copyfile(root / 'database/website/website-access-schema.sql', sql_assets / 'website-access-schema.sql')
     account_body = (root / 'tools/site-account.html').read_text(encoding='utf-8')
     account_page = page('账号与权限', '申请与管理网站模块访问', 'account', account_body, 2, path='/tools/account/', robots='noindex,follow')
-    account_page = account_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/site-account.js?v=20261011-access2h" defer></script></head>')
+    account_page = account_page.replace('</head>', '<link rel="stylesheet" href="../../assets/usd-purchases.css"><link rel="stylesheet" href="../../assets/article-categories.css"><script src="../../assets/site-account.js?v=20261107-sql-path" defer></script></head>')
     pages[out / 'tools/account/index.html'] = account_page
     game_body = protect((root / 'tools/games.html').read_text(encoding='utf-8'), 'games')
     game_page = page('小游戏', '与朋友一起玩的小工具', 'tools', game_body, 2, path='/tools/games/', robots='noindex,follow')
@@ -308,11 +310,11 @@ def build(out):
         shutil.copyfile(root / f'tools/truth-or-dare.{ext}', out / f'assets/truth-or-dare.{ext}')
     survey_body = (root / 'tools/surveys.html').read_text(encoding='utf-8')
     survey_page = page('问卷调研', '创建问卷、收集答卷与查询活动反馈', 'tools', survey_body, 2, path='/tools/surveys/', robots='noindex,follow')
-    survey_page = survey_page.replace('</head>', '<link rel="stylesheet" href="../../assets/surveys.css?v=20261025-dad-edit"><script src="../../assets/surveys-model.js?v=20261025-dad-edit" defer></script><script src="../../assets/couple-pdf.js?v=20261024" defer></script><script src="../../assets/surveys.js?v=20261025-dad-edit" defer></script></head>')
+    survey_page = survey_page.replace('</head>', '<link rel="stylesheet" href="../../assets/surveys.css?v=20261025-dad-edit"><script src="../../assets/surveys-model.js?v=20261025-dad-edit" defer></script><script src="../../assets/couple-pdf.js?v=20261024" defer></script><script src="../../assets/surveys.js?v=20261107-sql-path" defer></script></head>')
     pages[out / 'tools/surveys/index.html'] = survey_page
     for filename in ('surveys.js', 'surveys-model.js', 'surveys.css'):
         shutil.copyfile(root / 'tools' / filename, out / 'assets' / filename)
-    shutil.copyfile(root / 'database/surveys/surveys-schema.sql', out / 'surveys-schema.sql')
+    shutil.copyfile(root / 'database/surveys/surveys-schema.sql', sql_assets / 'surveys-schema.sql')
     # Preserve download URLs from the first two published articles.
     for slug, previous in {
         'claude-code-proxy': 'claude-code-install-proxy.md',

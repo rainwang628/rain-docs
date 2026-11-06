@@ -61,7 +61,7 @@ GitHub Pages 上的 HTML、JS 和静态小游戏代码依然公开可下载；�
 
 ## 问卷调研
 
-页面源码在 tools/surveys.* 与 surveys-model.js，初始化 SQL 原文在 database/surveys/surveys-schema.sql。执行一次生成在站点根目录的 surveys-schema.sql 后，活动模板问卷会自动创建。管理入口 /tools/surveys/ 仅网站主人可管理；分享地址参数 id 是问卷 UUID，朋友可免登录填写。数据库不保存答卷者账号、姓名或邮箱。
+页面源码在 tools/surveys.* 与 surveys-model.js，初始化 SQL 原文在 database/surveys/surveys-schema.sql，公开副本生成到 assets/sql/surveys-schema.sql。执行一次该脚本后，活动模板问卷会自动创建。管理入口 /tools/surveys/ 仅网站主人可管理；分享地址参数 id 是问卷 UUID，朋友可免登录填写。数据库不保存答卷者账号、姓名或邮箱。
 
 列表、答卷和统计数据通过 RLS 限定网站主人；公开 RPC 只读取指定问卷及校验后提交答卷。评分 0 表示未参加，不进入均值。单个浏览器按固定提交 UUID 幂等重试；清除浏览器存储或换设备可再次提交，此机制不是每人限填一次。草稿仅存当前设备。数据库不删除历史答卷，结束收集可重新开放。模板和新问卷创建后题目不再修改，避免已有答卷失去含义。
 

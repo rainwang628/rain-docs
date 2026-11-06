@@ -36,7 +36,7 @@
   $('logout').onclick=()=>action(async()=>{const {error}=await client.auth.signOut({scope:'local'});if(error)throw error;message('已退出。');});
   $('copy-setup').onclick=()=>action(async()=>{
     const {data,error}=await client.auth.getUser();if(error)throw error;if(!data?.user?.email)throw Error('请先登录你的网站主人账号');
-    const response=await fetch(new URL('../../website-access-schema.sql',location.href),{cache:'no-store'});if(!response.ok)throw Error('初始化脚本加载失败');
+    const response=await fetch(new URL('../../assets/sql/website-access-schema.sql',location.href),{cache:'no-store'});if(!response.ok)throw Error('初始化脚本加载失败');
     const text=(await response.text()).replaceAll('__OWNER_EMAIL__',data.user.email.replaceAll("'","''"));
     $('setup-sql').value=text;$('setup-sql').hidden=false;
     try{await navigator.clipboard.writeText(text);message('已复制当前账号的初始化 SQL，请在你现有项目的 SQL Editor 粘贴执行。');}catch{message('初始化 SQL 已生成，请从下方文本框复制到 SQL Editor。');}

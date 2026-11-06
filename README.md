@@ -15,11 +15,11 @@
 | `_source/content/` | 文章 Markdown 原文 |
 | `_source/tools/`、`_source/static/` | 工具页面、脚本、样式和独立页面源码 |
 | `_source/database/` | 按饮食、问卷、故事、网站权限和购汇分类的 SQL 与配置说明 |
-| `articles/`、`categories/`、`tools/`、`stories/`、`assets/` | 网站生成的页面与资源 |
+| `articles/`、`categories/`、`tools/`、`stories/`、`assets/` | 网站生成的页面与资源；公开 SQL 副本在 `assets/sql/` |
 | `source/` | 无 BOM 的文章原文下载件 |
 | `supabase/`、`tests/`、`.github/` | 云端函数、测试及自动化工作流 |
 
-根目录仍保留现有 Markdown 下载件及网站使用的 SQL 公开副本，以兼容现有链接；修改时请编辑 `_source/` 中的原文件，再重新生成发布。
+根目录保留现有 Markdown 下载件，以兼容文章下载链接。SQL 脚本以 `_source/database/` 中的原文件为准，网站使用的公开副本生成到 `assets/sql/`；旧的根目录 SQL 直链已变更。
 
 新增文章时，在 `_source/content/` 放入 Markdown，并向 `_source/articles.json` 增加一项。改完后运行：
 

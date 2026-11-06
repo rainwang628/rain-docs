@@ -120,12 +120,17 @@ class PublishingTests(unittest.TestCase):
 
     def test_published_database_scripts_match_organized_sources(self):
         for source, published in (
-            ('_source/database/usd/usd-cloud-schema.sql', 'usd-cloud-schema.sql'),
-            ('_source/database/usd/usd-cloud-setup.md', 'usd-cloud-setup.md'),
-            ('_source/database/website/website-access-schema.sql', 'website-access-schema.sql'),
-            ('_source/database/surveys/surveys-schema.sql', 'surveys-schema.sql'),
+            ('_source/database/usd/usd-cloud-schema.sql', 'assets/sql/usd-cloud-schema.sql'),
+            ('_source/database/usd/usd-cloud-setup.md', 'assets/sql/usd-cloud-setup.md'),
+            ('_source/database/website/website-access-schema.sql', 'assets/sql/website-access-schema.sql'),
+            ('_source/database/surveys/surveys-schema.sql', 'assets/sql/surveys-schema.sql'),
         ):
             self.assertEqual((self.root / source).read_bytes(), (self.root / published).read_bytes())
+        self.assertFalse(list(self.root.glob('*.sql')))
+        account = (self.root / 'assets/site-account.js').read_text(encoding='utf-8')
+        surveys = (self.root / 'assets/surveys.js').read_text(encoding='utf-8')
+        self.assertIn('../../assets/sql/website-access-schema.sql', account)
+        self.assertIn('../../assets/sql/surveys-schema.sql', surveys)
 
 
 if __name__ == '__main__':

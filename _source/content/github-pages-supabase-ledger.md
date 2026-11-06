@@ -71,7 +71,7 @@ Publishable key 可以用于浏览器。它标识访问项目的应用，用户�
 
 建表时还设置金额范围、备注长度和 RLS。未登录用户没有表的读写权限；登录用户的查询、新增、修改、删除都需要满足 `auth.uid() = user_id`。
 
-完整脚本见[本网站使用的建表与权限 SQL](https://rainwang628.github.io/rain-docs/usd-cloud-schema.sql)。这是首次初始化脚本，已经建表后不要整份重复执行；修改现有数据库应使用单独的迁移脚本。
+完整脚本见[本网站使用的建表与权限 SQL](https://rainwang628.github.io/rain-docs/assets/sql/usd-cloud-schema.sql)。这是首次初始化脚本，已经建表后不要整份重复执行；修改现有数据库应使用单独的迁移脚本。
 
 ### 3. 设置登录跳转地址
 
