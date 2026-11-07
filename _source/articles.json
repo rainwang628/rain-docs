@@ -20,9 +20,9 @@
   {
     "slug": "mac-usage-notes",
     "title": "Mac 使用经验（持续更新）",
-    "description": "持续整理 macOS 截图、触控板、Terminal、窗口管理和常用快捷键。",
+    "description": "持续整理 macOS 截图、触控板、Terminal、Finder 与安装包处理，以及常用快捷键和系统版本记录。",
     "source": "content/mac-usage-notes.md",
-    "date": "2026-11-06",
+    "date": "2026-11-07",
     "category": "technical",
     "subcategory": "mac"
   },

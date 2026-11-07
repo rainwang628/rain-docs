@@ -2,7 +2,7 @@
 
 > 本文作为 Mac 日常使用经验的长期记录。以后遇到新的 macOS 操作、快捷键、触控板或 Terminal 问题，统一追加到本文，不另建零散的 Mac 技巧文章。
 >
-> 当前记录环境：Apple M4、macOS Sequoia 15.6.1、English 系统界面、zsh；本次主要使用 MacBook 触控板，没有外接鼠标。系统升级完成后，再补充升级后的版本和界面差异。
+> 当前记录环境：Apple M4、macOS 27.2（Build 26B123）、English 系统界面、zsh；本次主要使用 MacBook 触控板，没有外接鼠标。系统已于 2026 年 11 月 6 日晚从 macOS Sequoia 15.6.1 升级到 27.2，升级前的记录保留原文，并在系统版本记录里注明对应版本。
 
 ## 一、Mac 与 Windows 常用快捷键对照
 
@@ -132,9 +132,76 @@ macOS 默认的 **Natural scrolling** 与很多 Windows 用户习惯的方向相
 
 本次安装的是 Command Line Tools，不是完整 Xcode。仅为了安装 Homebrew 和 Claude Code，通常不需要额外下载完整 Xcode。
 
-## 七、系统版本记录
+## 七、Finder：在当前文件夹打开终端
 
-本次操作时系统为 **macOS Sequoia 15.6.1**，系统界面语言为 English。后续如果完成系统升级，再把升级后的 macOS 版本、设置入口变化和兼容性检查补充到这里；未实际完成的升级不作为已验证经验记录。
+在 Finder 里定位到某个目录后，想直接让终端停在该目录，有三条路，按启动成本从低到高：
+
+| 方式 | 操作 | 说明 |
+| --- | --- | --- |
+| 右键服务 | 在文件夹上右键 → **Services** → **New Terminal at Folder** | 系统自带，零依赖 |
+| 拖拽 | 把文件夹拖到 Dock 上的 **Terminal** 图标 | 会新开一个窗口并自动 `cd` |
+| 命令 | `open -a Terminal .` | 在已有终端里对当前目录开新窗口 |
+
+如果右键菜单里没有 **New Terminal at Folder**，去 **System Settings → Keyboard → Keyboard Shortcuts → Services → Files and Folders** 勾选它。在终端里想补全路径，输入 `cd ` 后把文件夹拖进窗口即可。
+
+### 1. Go2Shell：Finder 工具栏按钮
+
+右键服务每次要展开两层菜单，用得多了嫌慢，于是装了 **Go2Shell**：它会在 Finder 工具栏加一个 `>_` 按钮，点一下就在当前目录打开终端。
+
+安装步骤（dmg 版）：
+
+1. 打开 `Go2Shell.dmg`，把 **Go2Shell.app** 拖进 `/Applications`。
+2. 打开 Go2Shell，点窗口里的 **Install Go2Shell**，把按钮注册进 Finder 工具栏。
+3. 或者按住 **Command**，把 `Go2Shell.app` 直接拖到 Finder 工具栏上。
+4. 在其偏好设置里可以选择按钮打开的是 **Terminal** 还是 **iTerm**。
+
+注意两点：
+
+- **重复安装会出现两个 `>_` 按钮**（点了 Install 又拖了一次就会这样）。删掉多余的那个：按住 **Command** 把它拖出工具栏，图标会“噗”一下消失；拖不动就在工具栏空白处右键 → **Customize Toolbar…** 拖出多余的图标再点 **Done**。
+- Go2Shell 是免费的老工具，更新不勤，macOS 大版本升级后如果按钮失效，重装一次通常就能恢复。
+
+本次验证环境：macOS 27.2（Build 26B123）、Apple 芯片、English 界面，Go2Shell v2.5。
+
+## 八、安装 dmg 软件后的挂载卷
+
+双击 `.dmg` 后，Finder 会把它当成一块磁盘挂载，桌面出现一个卷图标（白色磁盘、带向下箭头），`/Volumes/` 下也多一个同名目录。这**只是安装镜像被挂载了，不代表软件已装好**，把里面的 `.app` 拖进 `/Applications` 才算完成。
+
+装完后这个卷没有自动消失，需要手动推出，三种方式等价：
+
+- 在卷图标上右键 → **Eject “Go2Shell v2.5”**；
+- 把卷图标拖到废纸篓（等于推出，不会删掉任何文件）；
+- 选中后按 **Command + E**。
+
+命令行：
+
+```zsh
+diskutil eject "/Volumes/Go2Shell v2.5"
+```
+
+`hdiutil detach` 也能用，但 macOS 会提示已废弃，建议改用 `diskutil eject`。
+
+推出后还有两件收尾：
+
+1. **确认 App 真的在**：`ls -d /Applications/Go2Shell.app` 有输出才算装好，没有输出说明只挂载了没拖过去。
+2. **删掉安装包**：卷退出后 `~/Downloads/Go2Shell.dmg` 就没用了，可以直接删除。
+
+两个容易踩的点：
+
+- 桌面那个图标看着像“软件装出来的东西”，其实只是挂载卷，删了不会卸载软件；反过来，**直接在卷里双击运行 App 而不拖进 `/Applications`**，一推出卷 App 就打不开了。
+- 想确认到底挂了什么，用 `ls /Volumes`，或用 `hdiutil info` 看 `image-path` 和挂载点。
+
+## 九、系统版本记录
+
+| 时间 | 系统版本 | 说明 |
+| --- | --- | --- |
+| 2026-11-06 之前 | macOS Sequoia 15.6.1（Build 未记录） | 第一至六节在此版本上记录 |
+| 2026-11-06 晚 | macOS 27.2（Build 26B123） | 完成系统升级；第七、八节在此版本验证 |
+
+系统界面语言为 English。升级后第七、八节的操作路径（Finder 工具栏、挂载卷推出）与 15.6.1 上一致，没有遇到入口变化。
+
+需要区别对待的是第四、五节：触控板三指拖移和滚动方向的设置页面只在 15.6.1 上确认过，**升级到 27.2 后尚未逐项复验**。如果要按文中的路径去找，先在 **System Settings** 的搜索框里搜关键词（如 Natural scrolling、Three Finger Drag）更稳，找不到再按前一节的旧路径对照。
+
+后续再遇到系统升级，继续往这张表里追加一行，并注明受影响的章节。
 
 ---
 
