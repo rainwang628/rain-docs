@@ -20,7 +20,7 @@
   {
     "slug": "mac-usage-notes",
     "title": "Mac 使用经验（持续更新）",
-    "description": "持续整理 macOS 截图、触控板、Terminal、Finder 与安装包处理，以及常用快捷键和系统版本记录。",
+    "description": "持续整理 macOS 快捷键、Terminal、Finder 与安装包处理，以及 Stats 性能监测和菜单栏图标隐藏方法。",
     "source": "content/mac-usage-notes.md",
     "date": "2026-11-07",
     "category": "technical",
