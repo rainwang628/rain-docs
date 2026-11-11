@@ -39,6 +39,16 @@
   },
   "articles": [
     {
+      "slug": "mac-background-traffic-audit",
+      "title": "网速变慢排查：Adobe 后台流量与关不掉的启动项",
+      "description": "从装插件变慢查起，用连接面板定位流量来源，发现 Creative Cloud 的 plist、BTM 与 launchd override 三层状态互相矛盾，最终用免 sudo 的方式关掉自启。",
+      "source": "content/mac-background-traffic-audit.md",
+      "date": "2026-11-12",
+      "category": "technical",
+      "subcategory": "mac",
+      "tag": "技术笔记 · Mac 使用经验"
+    },
+    {
       "slug": "static-site-build-and-seo",
       "title": "GitHub Pages 个人站重构：统一构建源与 SEO 补全",
       "description": "把散落在根目录的手改页面收回 _source，让重建不再覆盖线上功能；补上 canonical、分享卡片和 sitemap。",
