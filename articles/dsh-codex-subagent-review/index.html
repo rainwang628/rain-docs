@@ -1,0 +1,58 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DSH 会话里让 Codex 复审方案：原生子任务的装法与代价 · rain 的文档</title><meta name="description" content="三份 codex 组件谁调用谁，插件管理器装到一半中断为什么显示「已装好」却调用即报错，以及一次审阅约 4% 订阅额度的真实成本。"><link rel="canonical" href="https://rainwang628.github.io/rain-docs/articles/dsh-codex-subagent-review/"><meta property="og:site_name" content="rain 的文档"><meta property="og:locale" content="zh_CN"><meta property="og:type" content="article"><meta property="og:title" content="DSH 会话里让 Codex 复审方案：原生子任务的装法与代价 · rain 的文档"><meta property="og:description" content="三份 codex 组件谁调用谁，插件管理器装到一半中断为什么显示「已装好」却调用即报错，以及一次审阅约 4% 订阅额度的真实成本。"><meta property="og:url" content="https://rainwang628.github.io/rain-docs/articles/dsh-codex-subagent-review/"><meta property="og:image" content="https://rainwang628.github.io/rain-docs/assets/og/home.png"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="DSH 会话里让 Codex 复审方案：原生子任务的装法与代价 · rain 的文档"><meta name="twitter:description" content="三份 codex 组件谁调用谁，插件管理器装到一半中断为什么显示「已装好」却调用即报错，以及一次审阅约 4% 订阅额度的真实成本。"><meta name="twitter:image" content="https://rainwang628.github.io/rain-docs/assets/og/home.png"><link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='15' fill='%231e3344'/%3E%3Cpath d='M18 13h20l9 9v29H18z' fill='none' stroke='%23d9f0e6' stroke-width='4'/%3E%3Cpath d='M37 13v11h10M24 34h17M24 42h13' fill='none' stroke='%23d9f0e6' stroke-width='3'/%3E%3C/svg%3E"><link rel="stylesheet" href="../../assets/site.css?v=d4feb56b70"><script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"DSH 会话里让 Codex 复审方案：原生子任务的装法与代价","dateModified":"2026-11-15","inLanguage":"zh-CN"}</script><script src="../../assets/usd-cloud-config.js?v=626697b3ac" defer></script><script src="../../assets/site-categories.js?v=95be1720e0" defer></script><script src="../../assets/site-nav.js?v=50e9ea2d51" defer></script><script src="../../assets/site-access.js?v=b247f59457" defer></script></head><body><header class="top"><div class="top-inner"><a class="brand" href="../../">rain / 文档</a><a href="../../tools/account/" id="account-link" class="account-status">账号</a><button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-navigation" aria-label="展开或收起主导航">☰ 菜单</button><nav class="nav" id="site-navigation" aria-label="主导航"><a href="../../">首页</a><a href="../../tools/">我的模块</a></nav></div></header><main class="wrap"><div class="crumb"><a href="../../">首页</a> / <a href="../../categories/ai/">AI</a> / <a href="../../categories/ai/chatgpt/">ChatGPT</a> / DSH 会话里让 Codex 复审方案：原生子任务的装法与代价</div><div class="document"><div class="doc-head"><span class="tag">AI · ChatGPT</span><h1>DSH 会话里让 Codex 复审方案：原生子任务的装法与代价</h1><div class="meta"><span>更新于 2026-11-15</span><a class="download" href="../../assets/downloads/ai/chatgpt/dsh-codex-subagent-review.md" download="dsh-codex-subagent-review.md">下载 Markdown 原文</a></div></div><article class="article"><h1>DSH 会话里让 Codex 复审方案：原生子任务的装法与代价</h1>
+<p class="note">记录日期：2026-11-15。环境：Apple Silicon macOS、DeepSeek Harness 0.2.2-rc.3、dsh-codex-subscription 3.2.16、ChatGPT 订阅登录。</p>
+<p>&gt;</p>
+<p class="note">目标：DSH 会话进行到一半时，能自动把方案交给 Codex 复审，并把它的反对意见带回来。本文记录实际走通的装法、踩过的坑、以及这件事的真实成本——<strong>一次简短审阅大约吃掉 4% 的订阅额度</strong>，不是随手能调的。</p>
+<h2>最终结果</h2>
+<ul><li>插件「Codex 订阅」的子任务后端切到 Codex 后，会话里的 <code>subagent</code> 已经路由到订阅模型：发一句自检，回的是「我是基于 GPT-6 的 Codex」。</li><li>插件自带 <code>codex-cli 0.167.0</code> 的平台二进制补齐，<code>--version</code> 输出正好是插件要求的 <code>codex-cli 0.167.0</code>。</li><li>官方 bundle 的入口被停用、包保留，避免两套 Codex 混用时报 400。</li><li>一次审阅的实测量级：3.9k / 7.7k / 14k tokens（带联网搜索那一次最高），按额度看约 4%。</li></ul>
+<h2>一、先分清三个「Codex 组件」</h2>
+<p>这套东西最容易绕晕的地方，是同一台机器上会同时存在三份和 Codex 有关的包，各自职责不同：</p>
+<div class="table-wrap"><table><thead><tr><th>组件</th><th>内容</th><th>体积</th><th>作用</th></tr></thead><tbody><tr><td><code>dsh-codex-subscription</code></td><td>插件本体</td><td>~2.9 MB</td><td>登录订阅、模型选择、出图、连接器</td></tr><tr><td><code>@deepseek-ai/dsh-subagent-codex</code></td><td>官方 bundle + 内置 <code>@openai/codex</code> 0.153.4</td><td>228 KB + 275 MB</td><td>「官方 Codex 独立子任务」适配器</td></tr><tr><td><code>dsh-codex-subtask-cli</code></td><td>别名指向 <code>@openai/codex@0.167.0</code></td><td>366 MB 平台二进制</td><td>插件实际执行时用的 CLI</td></tr></tbody></table></div>
+<p>关键点：插件<strong>不执行</strong>官方 bundle 里那份 0.153.4，它只用适配器包做运行时校验，真正的子进程是插件自己那份 0.167.0。所以适配器包必须装着、不能卸，而它的入口又最好停用（见第四节）。</p>
+<h2>二、三种失败，原因不同</h2>
+<h3>1. 没配模型：父会话的模型名被原样发给 Codex</h3>
+<p>官方 bundle 的 provider 没有默认 <code>model</code>，不配就继承父会话，于是把 <code>deepseek-flash</code> 当模型名发给 Codex，直接 400。这不是配置写错，是缺省行为。</p>
+<h3>2. 内置 CLI 太老：认不出账号里的新模型</h3>
+<p>同一份 0.153.4，实测结果：</p>
+<div class="code-head">text</div><pre><code>-m gpt-6.1-terra → 400 model_not_found: The &#x27;gpt-6.1-terra&#x27; model is not supported when using Codex with a ChatGPT account
+-m gpt-5.6-luna  → 正常返回</code></pre>
+<p>也就是说给 bundle 配 <code>model: gpt-5.6-luna</code> 能救活，但模型档位被锁死在这一档。要跟账号里的 6.x 对齐，只能等 bundle 升级内置 CLI，或改用插件那套 0.167.0。</p>
+<h3>3. 最隐蔽的一种：安装被中断，界面却说装好了</h3>
+<p>插件的「准备 CLI」走 pnpm 装 <code>dsh-codex-subtask-cli</code>。这次安装跑到 <code>resolved 150, downloaded 2, added 1</code> 就没了下文——没有 <code>Done in</code>，因为中途重启了 DSH。</p>
+<p>结果是<strong>清单和锁文件都写好了，平台二进制没落地</strong>。于是：</p>
+<ul><li>插件的静态检查（依赖声明、包版本）全部通过，界面显示「已安装」；</li><li>真正调用时，wrapper 用 <code>require.resolve(&#x27;@openai/codex-darwin-arm64&#x27;)</code> 解析到 bundle 带进来的那份 0.153.4，吐出 <code>codex-cli 0.153.4</code>；</li><li>插件启动子进程时严格比对 <code>codex-cli 0.167.0</code>，不匹配就拒绝运行。</li></ul>
+<p><strong>这就是「装好了但报错」的全部真相</strong>：不是版本冲突，是安装只完成了三分之二。</p>
+<p>判断方法很简单：</p>
+<div class="code-head">bash</div><pre><code>ls ~/.dsh/profiles/desktop/node_modules/dsh-codex-subtask-cli/node_modules/@openai/
+ELECTRON_RUN_AS_NODE=1 &quot;/Applications/DeepSeek Harness.app/Contents/MacOS/DeepSeek Harness&quot; \
+  ~/.dsh/profiles/desktop/node_modules/dsh-codex-subtask-cli/bin/codex.js --version</code></pre>
+<p>目录为空、或版本号不是 0.167.0，就是没装完。</p>
+<h2>三、补装：用 DSH 自带的 pnpm 续上</h2>
+<p>系统里没有全局 node / pnpm，但 DSH 自带了一份（与插件管理器同版本 11.28.5），可以用 Electron 的 node 模式跑：</p>
+<div class="code-head">bash</div><pre><code>cd ~/.dsh/profiles/desktop
+ELECTRON_RUN_AS_NODE=1 &quot;/Applications/DeepSeek Harness.app/Contents/MacOS/DeepSeek Harness&quot; \
+  ~/.dsh/dsh-runtimes/dsh-primary-runtime/dependencies/pnpm/bin/pnpm.cjs \
+  add --save-exact --ignore-scripts dsh-codex-subtask-cli@npm:@openai/codex@0.167.0</code></pre>
+<p>本次耗时 2 分 34 秒，下载 366 MB，结束后 0.167.0 的平台包正确嵌套在 <code>dsh-codex-subtask-cli/node_modules/@openai/</code> 下。补完后 <code>package.json</code> 与 <code>pnpm-lock.yaml</code> 都没有变化——它们本来就是完整的，缺的只是 <code>node_modules</code>。</p>
+<p>补装前建议把两份文件各留一份备份，<code>pnpm add</code> 会重新计算依赖树，出问题好回退。</p>
+<h2>四、停用官方 bundle 的入口，但保留包</h2>
+<p>两套并存时，<code>subagent_codex</code> 那个工具会带着 0.153.4 冒出来，调用即 400。在 profile 的 <code>cordis.patch.yml</code> 末尾加两条即可（<code>disabled</code> 只停入口，不影响包被解析）：</p>
+<div class="code-head">yaml</div><pre><code>- id: subagent-codex
+  disabled: true
+- id: tool-subagent-codex
+  disabled: true</code></pre>
+<p>注意两点：id 补丁是<strong>整体替换</strong> config，不要在这两条里再写别的配置；以后重装这个 bundle，补丁仍然生效，要恢复就删掉这两条。</p>
+<h2>五、验证与成本</h2>
+<p>验证只要一句：</p>
+<div class="code-head">text</div><pre><code>subagent → 「你是什么模型？」
+返回：我是基于 GPT-6 的 Codex</code></pre>
+<p>成本要单独说，因为它决定了用法：</p>
+<div class="table-wrap"><table><thead><tr><th>场景</th><th>tokens</th><th>备注</th></tr></thead><tbody><tr><td>一句自检</td><td>3.9k</td><td>不含工具调用</td></tr><tr><td>一次短问 + 联网搜索</td><td>7.7k</td><td>会自己去搜资料</td></tr><tr><td>一次带代码/配置的审阅</td><td>14k</td><td>实测约占订阅额度 4%</td></tr></tbody></table></div>
+<p>结论很直接：<strong>这不该每轮都调</strong>。只在方案定稿、不可逆操作、多步长任务、或自己确实拿不准的时候调用一次；把问题合并成一次问完，比连问三次省得多。它的系统提示本身就不小，短问题也要几 k tokens 起步。</p>
+<h2>六、升级时会咬人的地方</h2>
+<ul><li>适配器包必须与 DSH 版本<strong>完全一致</strong>。DSH 换版本（例如升到 0.2.3 系）后，适配器可能直接失配，插件 3.2.16 也不支持 0.2.3 及预发布版。</li><li>插件要求的 CLI 版本是<strong>写死</strong>的。插件升级后如果要求变成别的版本，旧的别名会失效，而且<strong>启动时不报错，只有选了 Codex 去调用时才会失败</strong>。</li><li>平台包是可选依赖，任何一次中断、跳过或切换机器架构，都可能重演第二节第三种失败。</li><li>停用补丁是长期生效的；上游若改名或复用同名 ID，补丁可能失效或误禁。</li></ul>
+<h2>七、回滚</h2>
+<ol><li>删掉 <code>cordis.patch.yml</code> 末尾那两条 <code>disabled</code>。</li><li>需要彻底退回时，移除 <code>dsh-codex-subtask-cli</code> 别名，恢复 <code>package.json</code> 与 <code>pnpm-lock.yaml</code> 的备份。</li><li>插件设置里把「子任务后端」切回 DSH，普通对话和出图不受影响。</li></ol>
+<h2>未解决</h2>
+<ul><li>适配器与 CLI 的协议版本需要人工对齐，没有自动跟随机制；DSH 或插件任一升级后，都得重新验一次 <code>--version</code> 与一次真实调用。</li><li>这套只在 macOS + 应用内自带 pnpm 的组合下验证过；其他平台的 pnpm 位置和平台包名不同。</li></ul>
+<h2>复发处理</h2>
+<p>出现「界面显示已装、调用就报错」时，先跑第二节的两条命令看 wrapper 的真实版本，再决定是补装还是回滚；不要先怀疑模型或权限。</p></article></div></main><footer class="footer">rain 的文档 · 记录可复用的经验</footer></body></html>

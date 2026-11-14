@@ -39,6 +39,16 @@
   },
   "articles": [
     {
+      "slug": "dsh-codex-subagent-review",
+      "title": "DSH 会话里让 Codex 复审方案：原生子任务的装法与代价",
+      "description": "三份 codex 组件谁调用谁，插件管理器装到一半中断为什么显示「已装好」却调用即报错，以及一次审阅约 4% 订阅额度的真实成本。",
+      "source": "content/dsh-codex-subagent-review.md",
+      "date": "2026-11-15",
+      "category": "ai",
+      "subcategory": "chatgpt",
+      "tag": "AI · ChatGPT"
+    },
+    {
       "slug": "mac-background-traffic-audit",
       "title": "网速变慢排查：Adobe 后台流量与关不掉的启动项",
       "description": "从装插件变慢查起，用连接面板定位流量来源，发现 Creative Cloud 的 plist、BTM 与 launchd override 三层状态互相矛盾，最终用免 sudo 的方式关掉自启。",
