@@ -121,7 +121,15 @@ RunAtLoad => true
 
 修改时间还是 6 月 23 日。**界面上的"关"，没有写进这个文件。**
 
-那它写到哪去了？macOS 从 Ventura 开始，后台项的开关不再直接写 plist，而是记在系统的 BTM（Background Task Management）数据库里。用 `sfltool dumpbtm` 能看到这个库——不需要 sudo 就能读：
+那它写到哪去了？macOS 从 Ventura 开始，后台项的开关不再直接写 plist，而是记在系统的 BTM（Background Task Management）数据库里，用 `sfltool dumpbtm` 读：
+
+```bash
+sfltool dumpbtm
+```
+
+> **注意**：这条命令要申请管理员授权——macOS 27.2 上会弹「Allow administrator access for "sfltool"?」，不回答就一直挂着。它只是读取，点 Cancel 没有任何副作用；但**别把它放进脚本、定时任务或 AI agent 的后台命令里**，否则就是反复弹窗。免授权的 `sfltool list` 只能列出列表名，拿不到条目明细，所以要看后台项还是手动在终端跑一次。
+
+当时的输出是这样：
 
 ```
 Name: Adobe Creative Cloud

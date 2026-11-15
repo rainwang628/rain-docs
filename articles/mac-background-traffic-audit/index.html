@@ -55,7 +55,10 @@
 <div class="code-head">TEXT</div><pre><code>-rw-r--r--  1 root  wheel  661 Jun 23 17:11  com.adobe.AdobeCreativeCloud.plist
 RunAtLoad =&gt; true</code></pre>
 <p>修改时间还是 6 月 23 日。<strong>界面上的&quot;关&quot;，没有写进这个文件。</strong></p>
-<p>那它写到哪去了？macOS 从 Ventura 开始，后台项的开关不再直接写 plist，而是记在系统的 BTM（Background Task Management）数据库里。用 <code>sfltool dumpbtm</code> 能看到这个库——不需要 sudo 就能读：</p>
+<p>那它写到哪去了？macOS 从 Ventura 开始，后台项的开关不再直接写 plist，而是记在系统的 BTM（Background Task Management）数据库里，用 <code>sfltool dumpbtm</code> 读：</p>
+<div class="code-head">bash</div><pre><code>sfltool dumpbtm</code></pre>
+<p class="note"><strong>注意</strong>：这条命令要申请管理员授权——macOS 27.2 上会弹「Allow administrator access for &quot;sfltool&quot;?」，不回答就一直挂着。它只是读取，点 Cancel 没有任何副作用；但<strong>别把它放进脚本、定时任务或 AI agent 的后台命令里</strong>，否则就是反复弹窗。免授权的 <code>sfltool list</code> 只能列出列表名，拿不到条目明细，所以要看后台项还是手动在终端跑一次。</p>
+<p>当时的输出是这样：</p>
 <div class="code-head">TEXT</div><pre><code>Name: Adobe Creative Cloud
 Type: developer (0x20)
 Disposition: [disabled, allowed, notified]</code></pre>
